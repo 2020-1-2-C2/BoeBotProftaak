@@ -14,7 +14,7 @@ public class RobotMain {
             BoeBot.wait(250);
 
             System.out.println(state);
-
+            System.out.println("Lars");
         }
     }
 }
