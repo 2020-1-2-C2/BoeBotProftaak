@@ -16,11 +16,11 @@ public class RobotMain {
             System.out.println("test");
             System.out.println("Gamer");
             //Dit is een episch speler momentje
+            System.out.println("Martijn");
 
         }
 
-        //testing if I can commit
-        // testing testing testing Martijn
+
     }
 }
 
