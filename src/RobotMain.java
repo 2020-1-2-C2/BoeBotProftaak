@@ -14,6 +14,8 @@ public class RobotMain {
             BoeBot.wait(250);
 
             System.out.println("test");
+            System.out.println("Gamer");
+            //Dit is een episch speler momentje
 
         }
 
