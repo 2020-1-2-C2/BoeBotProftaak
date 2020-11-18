@@ -13,8 +13,8 @@ public class RobotMain {
             BoeBot.digitalWrite(0, state);
             BoeBot.wait(250);
 
-            System.out.println(state);
-            System.out.println("Lars");
+            System.out.println("test");
+
         }
     }
 }
