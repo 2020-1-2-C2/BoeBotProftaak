@@ -1,3 +1,5 @@
+package Hardware;
+
 import TI.BoeBot;
 import TI.Servo;
 

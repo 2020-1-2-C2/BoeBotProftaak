@@ -1,34 +1,46 @@
+import Hardware.Led;
+import Hardware.Motors;
+import Hardware.RGB;
 import TI.BoeBot;
-import TI.PinMode;
+import Utils.Updatable;
+
+import java.util.ArrayList;
 
 public class RobotMain {
 
-    public static void main(String[] args) {
-        Motors motors = new Motors();
+    private ArrayList<Updatable> updatables = new ArrayList<>();
 
-/*        boolean state = true;
-        BoeBot.setMode(0, PinMode.Output);
+    public void Run() {
+        Led led = new Led(11);
+        led.blink(1000);
+        updatables.add(led);
 
+        int i = 0;
 
         while (true) {
-            state = !state;
-            BoeBot.digitalWrite(0, state);
-            BoeBot.wait(250);
-
-            System.out.println("test");
-            System.out.println("Gamer");
-            //Dit is een episch speler momentje
-            System.out.println("Martijn");
-
+            if (i > 1000) {
+                led.off();
+                System.out.println("Hardware.Led off");
+            } else {
+                for (Updatable u : updatables) {
+                    u.Update();
+                }
+            }
+            i++;
+            BoeBot.wait(10);
         }
-        */
-
-        motors.drive(1700);
-        BoeBot.wait(1000);
-        motors.goToSpeed(1300, 10);
-        motors.goToSpeedLeft(1700,20);
-        motors.goToSpeed(1500, 30);
-        motors.emergencyBrake();
     }
-}
 
+    public static void main(String[] args) {
+        RobotMain main = new RobotMain();
+        main.Run();
+    }
+
+/*    public static void main(String[] args) {
+        Hardware.Motors motor = new Hardware.Motors();
+        motor.drive(1700);
+        BoeBot.wait(1000);
+        motor.goToSpeed(200,10);
+        motor.emergencyBrake();
+    }*/
+}

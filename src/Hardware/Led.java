@@ -1,6 +1,9 @@
+package Hardware;
+
 import TI.BoeBot;
 import TI.PWM;
 import TI.Timer;
+import Utils.Updatable;
 
 public class Led implements Updatable {
     private int pinId;
@@ -9,7 +12,7 @@ public class Led implements Updatable {
     private int interval;
 
     /**
-     * Constructor for Led class
+     * Constructor for Hardware.Led class
      * @param pinId the pin where the LED is attached.
      */
     public Led(int pinId) {
