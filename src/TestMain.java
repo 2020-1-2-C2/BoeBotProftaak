@@ -8,22 +8,18 @@ public class TestMain {
     private ArrayList<Updatable> updatables = new ArrayList<>();
 
     public void Run() {
-        Led led = new Led(11);
-        led.blink(1000);
-        updatables.add(led);
-
-        int i = 0;
+        Hardware.Motors motors = new Hardware.Motors();
+        motors.drive(1300);
+        updatables.add(motors);
+        BoeBot.wait(1000);
+        motors.goToSpeedRight(1700, 100);
+        BoeBot.wait(1000);
+        motors.goToSpeedLeft(1700, 100);
 
         while (true) {
-            if (i > 1000) {
-                led.off();
-                System.out.println("Hardware.Led off");
-            } else {
-                for (Updatable u : updatables) {
-                    u.update();
-                }
+            for (Updatable u : updatables) {
+                u.update();
             }
-            i++;
             BoeBot.wait(10);
         }
     }
@@ -37,7 +33,7 @@ public class TestMain {
         Hardware.Motors motor = new Hardware.Motors();
         motor.drive(1700);
         BoeBot.wait(1000);
-        motor.goToSpeed(200,10);
+        motor.goToSpeed(1300,10);
         motor.emergencyBrake();
     }*/
 
