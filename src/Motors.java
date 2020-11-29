@@ -13,16 +13,18 @@ public class Motors {
     }
 
     public Motors() {
-        this(10);
+        this(5);
     }
-
 
     public void emergencyBrake() {
         this.servoLeft.update(1500);
         this.servoRight.update(1500);
     }
 
-
+    /**
+     *
+     * @param speed speed witch the boebot wil drive at
+     */
     public void drive(int speed) {
         this.servoLeft.update(speed);
         this.servoRight.update(((speed - 1500) * -1) + 1500);
@@ -36,6 +38,12 @@ public class Motors {
         this.servoRight.update(((speed - 1500) * -1) + 1500);
     }
 
+    /**
+     *
+     * @param speed speed the boebot wants to drive at
+     * @param servo servo witch speed wil be changed
+     * @return boolean if the current speed is the wanted speed
+     */
     private boolean goToSpeedOneStep(int speed,Servo servo) {
         int currentSpeed = servo.getPulseWidth();
         if (currentSpeed > speed - this.stepSize && currentSpeed < speed + this.stepSize){
@@ -55,29 +63,56 @@ public class Motors {
         return true;
     }
 
+    /**
+     *
+     * @param speed speed the boebot wants to drive at
+     * @param acceleration time taken between every increase of speed
+     */
     public void goToSpeed(int speed, int acceleration) {
-        boolean leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
-        boolean rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-        while (!(leftIsSpeed && rightIsSpeed)) {
-            leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
-            rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-            BoeBot.wait(acceleration);
+        if (speed > 1300 && speed < 1700) {
+            boolean leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
+            boolean rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+            while (!(leftIsSpeed && rightIsSpeed)) {
+                leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
+                rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+                BoeBot.wait(acceleration);
+            }
+        } else {
+            System.out.println("inpossible speed");
         }
     }
 
+    /**
+     *
+     * @param speed speed the boebot wants to drive at
+     * @param acceleration time taken between every increase of speed
+     */
     public void goToSpeedLeft (int speed, int acceleration) {
-        boolean isSpeed = goToSpeedOneStep(speed, this.servoLeft);
-        while (!isSpeed) {
-            isSpeed = goToSpeedOneStep(speed, this.servoLeft);
-            BoeBot.wait(acceleration);
+        if (speed > 1300 && speed < 1700) {
+            boolean isSpeed = goToSpeedOneStep(speed, this.servoLeft);
+            while (!isSpeed) {
+                isSpeed = goToSpeedOneStep(speed, this.servoLeft);
+                BoeBot.wait(acceleration);
+            }
+        } else {
+            System.out.println("inpossible speed");
         }
     }
 
+    /**
+     *
+     * @param speed speed the boebot wants to drive at
+     * @param acceleration time taken between every increase of speed
+     */
     public void goToSpeedRight (int speed, int acceleration) {
-        boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-        while (!isSpeed) {
-            isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-            BoeBot.wait(acceleration);
+        if (speed > 1300 && speed < 1700) {
+            boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+            while (!isSpeed) {
+                isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+                BoeBot.wait(acceleration);
+            }
+        } else {
+            System.out.println("inpossible speed");
         }
     }
 
