@@ -160,7 +160,7 @@ public class Motors implements Updatable {
     }
 
     @Override
-    public void Update() {
+    public void update() {
         if (this.servoTimer.timeout()) {
             if (this.acceleratingLeft && this.acceleratingRight) {
                 goToSpeed(this.speedLeft, this.acceleration);

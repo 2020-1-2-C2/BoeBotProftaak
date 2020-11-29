@@ -62,7 +62,7 @@ public class Led implements Updatable {
      * Updates the blinker
      */
     @Override
-    public void Update() {
+    public void update() {
         if (this.blinkingTimer.timeout()) {
             blink(this.interval);
             this.blinkingTimer.mark();
