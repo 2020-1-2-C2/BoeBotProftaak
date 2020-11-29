@@ -26,7 +26,7 @@ public class RobotMain {
         motors.drive(1700);
         BoeBot.wait(1000);
         motors.goToSpeed(1300, 10);
-        motors.goToSpeedIndividual(1700,20, 12);
+        motors.goToSpeedLeft(1700,20);
         motors.goToSpeed(1500, 30);
         motors.emergencyBrake();
     }

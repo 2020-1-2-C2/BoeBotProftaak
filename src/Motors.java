@@ -1,6 +1,5 @@
 import TI.BoeBot;
 import TI.Servo;
-import TI.Timer;
 
 public class Motors {
     private Servo servoLeft;
@@ -30,13 +29,19 @@ public class Motors {
     }
 
     private boolean goToSpeedOneStep(int speed,Servo servo) {
+        int stepSize = 10;
         int currentSpeed = servo.getPulseWidth();
-        if (currentSpeed < speed) {
-            servo.update(currentSpeed++);
+        if (currentSpeed > speed - stepSize && currentSpeed < speed + stepSize){
+            servo.update(speed);
+            return true;
+        } else if (currentSpeed < speed) {
+            currentSpeed += stepSize;
+            servo.update(currentSpeed);
             System.out.println(servo.getPulseWidth());
             return false;
         } else if (currentSpeed > speed) {
-            servo.update(currentSpeed--);
+            currentSpeed -= stepSize;
+            servo.update(currentSpeed);
             System.out.println(servo.getPulseWidth());
             return false;
         }
@@ -53,14 +58,23 @@ public class Motors {
         }
     }
 
-    public void goToSpeedIndividual (int speed, int acceleration, int servoID) {
-        Servo servo = new Servo(servoID);
-        boolean isSpeed = goToSpeedOneStep(speed, servo);
+    public void goToSpeedLeft (int speed, int acceleration) {
+        boolean isSpeed = goToSpeedOneStep(speed, this.servoLeft);
         while (!isSpeed) {
-            isSpeed = goToSpeedOneStep(speed, servo);
+            isSpeed = goToSpeedOneStep(speed, this.servoLeft);
             BoeBot.wait(acceleration);
         }
     }
+
+    public void goToSpeedRight (int speed, int acceleration) {
+        boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+        while (!isSpeed) {
+            isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+            BoeBot.wait(acceleration);
+        }
+    }
+
+
 
     /* public void goToSpeed(int speed, int acceleration) {
         int goToSpeed = speed;
