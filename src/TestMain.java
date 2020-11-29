@@ -20,7 +20,7 @@ public class TestMain {
                 System.out.println("Hardware.Led off");
             } else {
                 for (Updatable u : updatables) {
-                    u.Update();
+                    u.update();
                 }
             }
             i++;
