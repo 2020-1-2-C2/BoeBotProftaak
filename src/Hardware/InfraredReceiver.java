@@ -1,11 +1,15 @@
 package Hardware;
 
 import TI.BoeBot;
+import TI.PinMode;
 import Utils.InfraredCallback;
 import Utils.Updatable;
 
 import java.util.HashMap;
 
+/**
+ * Klasse voor het hardware onderdeel infraroodsensor, bevat methodes om het signaal van de infraroodsensor te ontvangen en verwerken.
+ */
 public class InfraredReceiver implements Updatable {
 
     private int pinId;
@@ -22,9 +26,12 @@ public class InfraredReceiver implements Updatable {
      */
     public InfraredReceiver(int pinId, InfraredCallback infraredCallback){
         this.pinId = pinId;
+        BoeBot.setMode(this.pinId, PinMode.Input);
         this.infraredCallback = infraredCallback;
         this.remoteButtons = new HashMap<>();
 
+        // Hashmap van de verschillende knoppen voor de infrarood afstandsbediening.
+        // De key is het bit signaal dat wordt gestuurd, de value is de bijbehorende knop in een String.
         this.remoteButtons.put(0b000010010000, "ch+");
         this.remoteButtons.put(0b000010010001, "ch-");
         this.remoteButtons.put(0b000010010010, "vol+");
@@ -33,7 +40,6 @@ public class InfraredReceiver implements Updatable {
         this.remoteButtons.put(0b000010000001, "2");
         this.remoteButtons.put(0b000010000010, "3");
         this.remoteButtons.put(0b000010010101, "power");
-
     }
 
     /**
@@ -41,6 +47,7 @@ public class InfraredReceiver implements Updatable {
      * @return true wanneer er een startsignaal binnenkomt.
      */
     public boolean listenForStartSignal(){
+        // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
         int pulseLen = BoeBot.pulseIn(this.pinId, false, 6000);
         return pulseLen > 2000;
     }
@@ -52,7 +59,8 @@ public class InfraredReceiver implements Updatable {
     public int[] listenForBitSignal(){
         int lengths[] = new int[12];
         for (int i = 0; i < 12; i++) {
-            lengths[i] = BoeBot.pulseIn(0, false, 20000);
+            // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
+            lengths[i] = BoeBot.pulseIn(this.pinId, false, 20000);
         }
         return lengths;
     }
