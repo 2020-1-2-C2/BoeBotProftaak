@@ -28,7 +28,7 @@ public class Led implements Updatable {
 
     /**
      * Fade the LED
-     * @param fade fades the LED. (Value: 0-255, 0 is full brightness, 255 is off.
+     * @param fade fades the LED. (Value: 0-100, 0 is full brightness, 100 is off.
      */
     public void fade(int fade) {
         PWM pwm = new PWM(this.pinId, fade);
