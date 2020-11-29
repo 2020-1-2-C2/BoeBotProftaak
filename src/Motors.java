@@ -13,7 +13,7 @@ public class Motors {
     }
 
     public Motors() {
-        this(10);
+        this(5);
     }
 
     public void emergencyBrake() {
@@ -69,12 +69,16 @@ public class Motors {
      * @param acceleration time taken between every increase of speed
      */
     public void goToSpeed(int speed, int acceleration) {
-        boolean leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
-        boolean rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-        while (!(leftIsSpeed && rightIsSpeed)) {
-            leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
-            rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-            BoeBot.wait(acceleration);
+        if (speed > 1300 && speed < 1700) {
+            boolean leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
+            boolean rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+            while (!(leftIsSpeed && rightIsSpeed)) {
+                leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
+                rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+                BoeBot.wait(acceleration);
+            }
+        } else {
+            System.out.println("inpossible speed");
         }
     }
 
@@ -84,10 +88,14 @@ public class Motors {
      * @param acceleration time taken between every increase of speed
      */
     public void goToSpeedLeft (int speed, int acceleration) {
-        boolean isSpeed = goToSpeedOneStep(speed, this.servoLeft);
-        while (!isSpeed) {
-            isSpeed = goToSpeedOneStep(speed, this.servoLeft);
-            BoeBot.wait(acceleration);
+        if (speed > 1300 && speed < 1700) {
+            boolean isSpeed = goToSpeedOneStep(speed, this.servoLeft);
+            while (!isSpeed) {
+                isSpeed = goToSpeedOneStep(speed, this.servoLeft);
+                BoeBot.wait(acceleration);
+            }
+        } else {
+            System.out.println("inpossible speed");
         }
     }
 
@@ -97,10 +105,14 @@ public class Motors {
      * @param acceleration time taken between every increase of speed
      */
     public void goToSpeedRight (int speed, int acceleration) {
-        boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-        while (!isSpeed) {
-            isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
-            BoeBot.wait(acceleration);
+        if (speed > 1300 && speed < 1700) {
+            boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+            while (!isSpeed) {
+                isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+                BoeBot.wait(acceleration);
+            }
+        } else {
+            System.out.println("inpossible speed");
         }
     }
 
