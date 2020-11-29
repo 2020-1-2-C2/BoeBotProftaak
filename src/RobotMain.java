@@ -4,10 +4,11 @@ import TI.PinMode;
 public class RobotMain {
 
     public static void main(String[] args) {
-        Motors motors = new Motors(1300);
+        Motors motors = new Motors();
 
-        boolean state = true;
+/*        boolean state = true;
         BoeBot.setMode(0, PinMode.Output);
+
 
         while (true) {
             state = !state;
@@ -20,11 +21,13 @@ public class RobotMain {
             System.out.println("Martijn");
 
         }
+        */
 
-
-        motors.drive();
-        BoeBot.wait(2500);
-        motors.goToSpeed(1700,100);
+        motors.drive(1700);
+        BoeBot.wait(1000);
+        motors.goToSpeed(1300, 10);
+        motors.goToSpeedIndividual(1700,20, 12);
+        motors.goToSpeed(1500, 30);
         motors.emergencyBrake();
     }
 }
