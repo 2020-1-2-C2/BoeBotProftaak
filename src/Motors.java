@@ -4,16 +4,24 @@ import TI.Servo;
 public class Motors {
     private Servo servoLeft;
     private Servo servoRight;
+    private int stepSize;
 
-    public Motors() {
+    public Motors(int stepSize) {
         this.servoLeft = new Servo(12);
         this.servoRight = new Servo(13);
+        this.stepSize = stepSize;
     }
+
+    public Motors() {
+        this(10);
+    }
+
 
     public void emergencyBrake() {
         this.servoLeft.update(1500);
         this.servoRight.update(1500);
     }
+
 
     public void drive(int speed) {
         this.servoLeft.update(speed);
@@ -29,18 +37,17 @@ public class Motors {
     }
 
     private boolean goToSpeedOneStep(int speed,Servo servo) {
-        int stepSize = 10;
         int currentSpeed = servo.getPulseWidth();
-        if (currentSpeed > speed - stepSize && currentSpeed < speed + stepSize){
+        if (currentSpeed > speed - this.stepSize && currentSpeed < speed + this.stepSize){
             servo.update(speed);
             return true;
         } else if (currentSpeed < speed) {
-            currentSpeed += stepSize;
+            currentSpeed += this.stepSize;
             servo.update(currentSpeed);
             System.out.println(servo.getPulseWidth());
             return false;
         } else if (currentSpeed > speed) {
-            currentSpeed -= stepSize;
+            currentSpeed -= this.stepSize;
             servo.update(currentSpeed);
             System.out.println(servo.getPulseWidth());
             return false;
@@ -74,27 +81,11 @@ public class Motors {
         }
     }
 
+    public int getStepSize() {
+        return this.stepSize;
+    }
 
-
-    /* public void goToSpeed(int speed, int acceleration) {
-        int goToSpeed = speed;
-        Timer timer = new Timer(acceleration);
-
-        while (this.servoLeft.getPulseWidth() != speed) {
-
-            if (timer.timeout()) {
-                if (this.servoLeft.getPulseWidth() < speed) {
-                    setSpeed(speed++);
-                    drive();
-                } else if (this.servoLeft.getPulseWidth() > speed) {
-                    setSpeed(speed++);
-                    drive();
-                }
-
-                System.out.println("Left: " + this.servoLeft.getPulseWidth());
-                System.out.println("Right: " + this.servoRight.getPulseWidth());
-                timer.mark();
-            }
-        }
-    }*/
+    public void setStepSize(int stepSize) {
+        this.stepSize = stepSize;
+    }
 }
