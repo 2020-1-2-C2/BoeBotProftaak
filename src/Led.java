@@ -52,7 +52,7 @@ public class Led implements Updatable {
     }
 
     public boolean getIsOn() {
-        return isOn;
+        return this.isOn;
     }
 
     /**
