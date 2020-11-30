@@ -1,8 +1,9 @@
 package Hardware;
 
 import TI.BoeBot;
+import Utils.Updatable;
 
-public class Buzzer {
+public class Buzzer implements Updatable {
     private int pinId;
     private boolean isOn;
 
@@ -57,5 +58,10 @@ public class Buzzer {
      */
     public boolean getIsOn() {
         return this.isOn;
+    }
+
+    @Override
+    public void update() {
+
     }
 }
