@@ -3,7 +3,7 @@ package Hardware;
 import TI.Servo;
 import TI.Timer;
 import Utils.Updatable;
-
+//TODO make interface "Motors" and refactor this to "Servos" implementing "Motors"
 public class Motors implements Updatable {
     private Servo servoLeft;
     private Servo servoRight;
@@ -155,6 +155,14 @@ public class Motors implements Updatable {
             this.acceleratingRight = false;
             System.out.println("inpossible speed");
         }
+    }
+
+    public int getSpeedLeft() {
+        return speedLeft;
+    }
+
+    public int getSpeedRight() {
+        return speedRight;
     }
 
     public int getStepSize() {

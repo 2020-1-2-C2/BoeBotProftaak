@@ -1,16 +1,21 @@
 import Hardware.InfraredReceiver;
+import Hardware.Motors;
 import Hardware.UltraSonicReceiver;
+import Logic.CollisionDetection;
+import Logic.DriveSystem;
 import TI.BoeBot;
 import TI.PinMode;
+import Utils.CollisionDetectionCallback;
 import Utils.InfraredCallback;
 import Utils.UltraSonicCallback;
 import Utils.Updatable;
 
 import java.util.ArrayList;
 
-public class RobotMain implements InfraredCallback, UltraSonicCallback {
+public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     private ArrayList<Updatable> updatables = new ArrayList<>();
+    private DriveSystem driveSystem;
 
     public static void main(String[] args) {
 
@@ -26,9 +31,18 @@ public class RobotMain implements InfraredCallback, UltraSonicCallback {
     public void run() {
         BoeBot.setMode(0, PinMode.Input);
         InfraredReceiver infraredReceiver = new InfraredReceiver(0, this);
-        UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, this);
+
+        CollisionDetection collisionDetection = new CollisionDetection(this);
+        UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
+
+        Motors motors = new Motors(5);
+        driveSystem = new DriveSystem(motors);
+
+
         updatables.add(infraredReceiver);
         updatables.add(ultraSonicReceiver);
+        updatables.add(collisionDetection);
+        updatables.add(driveSystem);
 
         while (true) {
             for (Updatable u : updatables) {
@@ -48,13 +62,8 @@ public class RobotMain implements InfraredCallback, UltraSonicCallback {
         System.out.println(button);
     }
 
-    /**
-     * Receives the distance calculated using the ultrasonicsensor pulse and prints it.
-     * @param distance calculated distance using an ultrasonsicsensor pulse.
-     */
     @Override
-    public void onUltraSonicPulse(Integer distance) {
-        // TODO, distance can be a null object with wrong measurements, this needs to be taken into account.
-        System.out.println(distance);
+    public void onCollisionDetection(Integer distance) {
+        driveSystem.emergencyStop(distance);
     }
 }
