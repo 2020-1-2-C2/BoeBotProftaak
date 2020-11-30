@@ -26,6 +26,9 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
      */
     @Override
     public void onUltraSonicPulse(Integer distance) {
+        if (distance == null){
+            distance = 0;
+        }
         if (distance < STOPPING_DISTANCE) {
             stopCounter++;
         } else {
@@ -34,6 +37,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
 
         if (stopCounter + continueCounter > 10) {
             if (stopCounter > continueCounter) {
+
                 collisionDetectionCallback.onCollisionDetection(distance);
             }
         }

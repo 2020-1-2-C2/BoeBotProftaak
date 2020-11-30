@@ -1,5 +1,5 @@
 package Utils;
 
 public interface CollisionDetectionCallback {
-    void onCollisionDetection(Integer distance);
+    void onCollisionDetection(int distance);
 }
