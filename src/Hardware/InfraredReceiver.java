@@ -56,7 +56,7 @@ public class InfraredReceiver implements Updatable {
      * @return the length of 12 false infrared pulses received by the sensor.
      */
     private int[] listenForBitSignal(){
-        int lengths[] = new int[12];
+        int[] lengths = new int[12];
         for (int i = 0; i < 12; i++) {
             // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
             lengths[i] = BoeBot.pulseIn(this.pinId, false, 20000);
@@ -87,11 +87,7 @@ public class InfraredReceiver implements Updatable {
      */
     private String getPressedremoteButtons(){
         int bitSignalBinary = convertBitSignalToBinary(listenForBitSignal());
-        if (this.remoteButtons.containsKey(bitSignalBinary)){
-            return this.remoteButtons.get(bitSignalBinary);
-        } else {
-            return null;
-        }
+        return this.remoteButtons.getOrDefault(bitSignalBinary, null);
     }
 
     /**

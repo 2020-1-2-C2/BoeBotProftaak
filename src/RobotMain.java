@@ -7,7 +7,6 @@ import TI.BoeBot;
 import TI.PinMode;
 import Utils.CollisionDetectionCallback;
 import Utils.InfraredCallback;
-import Utils.UltraSonicCallback;
 import Utils.Updatable;
 
 import java.util.ArrayList;
@@ -55,13 +54,14 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     /**
      * Receives the pressed button on an infrared remote and prints it.
+     *
      * @param button received button pressed on the infrared remote.
      */
     @Override
     public void OnInfraredButton(String button) {
         // TODO, code can be a null object with wrong or unrecognised measurements, this needs to be taken into account.
-        if (button != null){
-            switch (button){
+        if (button != null) {
+            switch (button) {
                 case "power":
                     driveSystem.stop();
                     running = false;

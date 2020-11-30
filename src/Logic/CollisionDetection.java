@@ -1,6 +1,5 @@
 package Logic;
 
-import Hardware.UltraSonicReceiver;
 import Utils.CollisionDetectionCallback;
 import Utils.UltraSonicCallback;
 import Utils.Updatable;
