@@ -8,21 +8,20 @@ import Utils.Updatable;
 import java.util.HashMap;
 
 /**
- * Klasse voor het hardware onderdeel infraroodsensor, bevat methodes om het signaal van de infraroodsensor te ontvangen en verwerken.
+ * Class for the hardware part infraredsensor, contains methods to receive and interprit the signal from the infraredsensor.
  */
 public class InfraredReceiver implements Updatable {
 
     private int pinId;
-    private boolean isDetected;
     private InfraredCallback infraredCallback;
 
     private HashMap<Integer, String> remoteButtons;
 
 
     /**
-     * Constructor voor Hardware.InfraredReceiver
-     * @param pinId
-     * @param infraredCallback
+     * Constructor for the infraredsensor
+     * @param pinId infraredsensor input signal pin id
+     * @param infraredCallback infraredcallback object
      */
     public InfraredReceiver(int pinId, InfraredCallback infraredCallback){
         this.pinId = pinId;
@@ -43,8 +42,8 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Kijkt of er een startsignaal van een infrarood-afstandsbediening wordt ontvangen.
-     * @return true wanneer er een startsignaal binnenkomt.
+     * Listens for the startsignal of an infrared remote
+     * @return true when a startsignal has been read.
      */
     public boolean listenForStartSignal(){
         // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
@@ -53,8 +52,8 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Ontvangt een infrarood-bitsignaal, en zet dit om naar een Array van de lengtes van de signalen.
-     * @return
+     * Listens for an infrared bit-signal and puts the length of each low pulse in an array.
+     * @return the length of 12 false infrared pulses received by the sensor.
      */
     public int[] listenForBitSignal(){
         int lengths[] = new int[12];
@@ -66,9 +65,9 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Zet een infrarood-bitsignaal om naar een binair getal.
-     * @param rawBitSignal
-     * @return
+     * Converts an array of infrared-bitsignal pulse lengths to a binary number.
+     * @param rawBitSignal array of 12 pulse lengths
+     * @return binary number
      */
     public int convertBitSignalToBinary(int[] rawBitSignal){
         int bitSignalBinary = 0b0;
@@ -83,8 +82,8 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Zet een ontvangen infrarood-signaal in de vorm van een binair getal om in een string van de desbetreffende knop.
-     * @return
+     * Interprits an infrareed signal in the form of a binary number and translates it to the String of the attached button on the infrared remote.
+     * @return String of infrared remote button corresponding to the found infrared signal, if no corresponding button exists then null is returned.
      */
     public String getPressedremoteButtons(){
         int bitSignalBinary = convertBitSignalToBinary(listenForBitSignal());
@@ -96,12 +95,12 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Als er een startsignaal is ontvangen, wordt er een bitsignaal ontvangen en wordt de desbetreffende knop mee gegeven aan de Utils.InfraredCallback.
+     * If a startsignal is received, then a bit-signal is received and the corresponding infrared remote button is given to the callback object.
      */
     @Override
     public void update() {
         if (listenForStartSignal()){
-            this.infraredCallback.OnInfraredCode(getPressedremoteButtons());
+            this.infraredCallback.OnInfraredButton(getPressedremoteButtons());
         }
     }
 }

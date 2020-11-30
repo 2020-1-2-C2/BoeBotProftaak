@@ -21,7 +21,7 @@ public class RobotMain implements InfraredCallback, UltraSonicCallback {
 
 
     /**
-     * Main run methode voor de BoeBot logica.
+     * Main run method for the boebot logic.
      */
     public void run() {
         BoeBot.setMode(0, PinMode.Input);
@@ -39,23 +39,22 @@ public class RobotMain implements InfraredCallback, UltraSonicCallback {
     }
 
     /**
-     * Ontvangt een infrarood-code en print deze.
-     *
-     * @param code
+     * Receives the pressed button on an infrared remote and prints it.
+     * @param button received button pressed on the infrared remote.
      */
     @Override
-    public void OnInfraredCode(String code) {
-        // TODO, code kan een null object zijn, dit gebeurt bij foutieve en niet herkende metingen. Dit moet worden verwerkt.
-        System.out.println(code);
+    public void OnInfraredButton(String button) {
+        // TODO, code can be a null object with wrong or unrecognised measurements, this needs to be taken into account.
+        System.out.println(button);
     }
 
     /**
-     * Ontvangt de afstand van de ultrasoonsensor en print deze.
-     * @param distance
+     * Receives the distance calculated using the ultrasonicsensor pulse and prints it.
+     * @param distance calculated distance using an ultrasonsicsensor pulse.
      */
     @Override
     public void onUltraSonicPulse(Integer distance) {
-        // TODO, distance kan een null object zijn, dit gebeurt bij foutieve metingen. Dit moet worden verwerkt.
+        // TODO, distance can be a null object with wrong measurements, this needs to be taken into account.
         System.out.println(distance);
     }
 }

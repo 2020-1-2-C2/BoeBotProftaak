@@ -1,3 +1,4 @@
+// TODO, no support for single pin ultrasonicsensor, if used, need to implement new methods/subclasses.
 package Hardware;
 
 import TI.BoeBot;
@@ -7,7 +8,7 @@ import Utils.UltraSonicCallback;
 import Utils.Updatable;
 
 /**
- * Klasse voor het hardware onderdeel ultrasoonsensor, bevat methodes om het signaal van de ultrasoonsensor te ontvangen en verwerken.
+ * Class for the hardware part ultrasonicsensor, contains methods to receive and interprit the signal from the ultrasonicsensor.
  */
 public class UltraSonicReceiver implements Updatable {
 
@@ -15,13 +16,12 @@ public class UltraSonicReceiver implements Updatable {
     private int pinIdEcho;
     private Timer ultraSonicPulseTimer = new Timer(50);
     private UltraSonicCallback ultraSonicCallback;
-    private boolean isDetected;
 
     /**
-     * Constructor voor de ultrasonic ontvanger
-     * @param pinIdTrigger
-     * @param pinIdEcho
-     * @param ultraSonicCallback
+     * Constructor for the ultrasonicsensor.
+     * @param pinIdTrigger ultrasonicsensor trigger pin id.
+     * @param pinIdEcho ultrasonicsensor echo pin id.
+     * @param ultraSonicCallback ultrasoniccallback object.
      */
     public UltraSonicReceiver(int pinIdTrigger, int pinIdEcho, UltraSonicCallback ultraSonicCallback) {
         this.pinIdTrigger = pinIdTrigger;
@@ -32,8 +32,8 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Meet de afstand in microseconden.
-     * @return
+     * Measure the amount of time it takes to send and receive an ultrasonic pulse in microseconds.
+     * @return time in microseconds to send and receive back an ultrasonic pulse.
      */
     private Integer ultraSonicPulse() {
         BoeBot.digitalWrite(this.pinIdTrigger, true);
@@ -51,8 +51,8 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Berekend de gemeten afstand in cm.
-     * @return
+     * Calculate the distance of an ultrasonicpulse echo in cm.
+     * @return the distance an ultrasonicpulse has traveled one way, in cm.
      */
     private Integer distance() {
         Integer pulse = ultraSonicPulse();
@@ -64,7 +64,7 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Als er genoeg tijd is verstreken voor de timer, dan wordt een ultrasonische puls uitgestuurd, daarvan de afstand berekend en teruggeven naar de callback.
+     * If enough time has elapsed for the timer, then an ultrasonic pulse is sent, of which the distance is calculated and then sent to the callback object.
      */
     @Override
     public void update() {
