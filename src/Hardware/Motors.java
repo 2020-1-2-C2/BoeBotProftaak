@@ -97,8 +97,6 @@ public class Motors implements Updatable {
             boolean leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
             boolean rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
             if (!(leftIsSpeed && rightIsSpeed)) {
-                leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
-                rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
                 this.servoTimer.setInterval(acceleration);
                 this.speedLeft = speed;
                 this.speedRight = speed;
@@ -125,7 +123,6 @@ public class Motors implements Updatable {
         if (speed >= 1300 && speed <= 1700) {
             boolean isSpeed = goToSpeedOneStep(speed, this.servoLeft);
             if (!isSpeed) {
-                isSpeed = goToSpeedOneStep(speed, this.servoLeft);
                 this.servoTimer.setInterval(acceleration);
                 this.speedLeft = speed;
                 this.acceleratingLeft = true;
@@ -148,7 +145,6 @@ public class Motors implements Updatable {
         if (speed >= 1300 && speed <= 1700) {
             boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
             if (!isSpeed) {
-                isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
                 this.servoTimer.setInterval(acceleration);
                 this.speedRight = speed;
                 this.acceleratingRight = true;
