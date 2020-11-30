@@ -17,14 +17,6 @@ public class RobotMain implements InfraredCallback, UltraSonicCallback {
         RobotMain main = new RobotMain();
         main.run();
 
-//        Motors motors = new Motors();
-//
-//        motors.drive(1700);
-//        BoeBot.wait(1000);
-//        motors.goToSpeed(1300, 10);
-//        motors.goToSpeedLeft(1700,20);
-//        motors.goToSpeed(1500, 30);
-//        motors.emergencyBrake();
     }
 
 

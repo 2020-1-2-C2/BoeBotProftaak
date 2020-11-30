@@ -44,17 +44,21 @@ public class Motors implements Updatable {
         this.servoRight.update(((speed - 1500) * -1) + 1500);
         this.speedLeft = speed;
         this.speedRight = ((speed - 1500) * -1) + 1500;
+        this.acceleratingLeft = false;
+        this.acceleratingRight = false;
     }
 
 
     public void driveLeft(int speed) {
         this.servoLeft.update(speed);
         this.speedLeft = speed;
+        this.acceleratingLeft = false;
     }
 
     public void driveRight(int speed) {
         this.servoRight.update(((speed - 1500) * -1) + 1500);
         this.speedRight = ((speed - 1500) * -1) + 1500;
+        this.acceleratingRight = false;
     }
 
     /**
@@ -100,6 +104,9 @@ public class Motors implements Updatable {
                 this.acceleratingLeft = true;
                 this.acceleratingRight = true;
                 this.timeBetweenAcceleration = acceleration;
+            } else {
+                this.acceleratingLeft = false;
+                this.acceleratingRight = false;
             }
         } else {
             this.acceleratingLeft = false;
@@ -122,6 +129,8 @@ public class Motors implements Updatable {
                 this.speedLeft = speed;
                 this.acceleratingLeft = true;
                 this.timeBetweenAcceleration = acceleration;
+            } else {
+                this.acceleratingLeft = false;
             }
         } else {
             this.acceleratingLeft = false;
@@ -143,6 +152,8 @@ public class Motors implements Updatable {
                 this.speedRight = speed;
                 this.acceleratingRight = true;
                 this.timeBetweenAcceleration = acceleration;
+            } else {
+                this.acceleratingRight = false;
             }
         } else {
             this.acceleratingRight = false;
