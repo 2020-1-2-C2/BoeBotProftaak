@@ -1,5 +1,6 @@
 package Hardware;
 
+import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
 import Utils.Updatable;
