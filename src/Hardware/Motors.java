@@ -1,6 +1,5 @@
 package Hardware;
 
-import TI.BoeBot;
 import TI.Servo;
 import TI.Timer;
 import Utils.Updatable;
@@ -8,24 +7,24 @@ import Utils.Updatable;
 public class Motors implements Updatable {
     private Servo servoLeft;
     private Servo servoRight;
-    private int stepSize;
+    private int accelerationChange;
     private Timer servoTimer;
     private boolean acceleratingLeft;
     private boolean acceleratingRight;
     private int speedLeft;
     private int speedRight;
-    private int acceleration;
+    private int timeBetweenAcceleration;
 
-    public Motors(int stepSize) {
+    public Motors(int accelerationChange) {
         this.servoLeft = new Servo(12);
         this.servoRight = new Servo(13);
-        this.stepSize = stepSize;
+        this.accelerationChange = accelerationChange;
         this.servoTimer = new Timer(0);
         this.acceleratingLeft = false;
         this.acceleratingRight = false;
         this.speedLeft = 1500;
         this.speedRight = 1500;
-        this.acceleration = 10;
+        this.timeBetweenAcceleration = 10;
     }
 
     public Motors() {
@@ -66,16 +65,16 @@ public class Motors implements Updatable {
      */
     private boolean goToSpeedOneStep(int speed,Servo servo) {
         int currentSpeed = servo.getPulseWidth();
-        if (currentSpeed > speed - this.stepSize && currentSpeed < speed + this.stepSize){
+        if (currentSpeed > speed - this.accelerationChange && currentSpeed < speed + this.accelerationChange){
             servo.update(speed);
             return true;
         } else if (currentSpeed < speed) {
-            currentSpeed += this.stepSize;
+            currentSpeed += this.accelerationChange;
             servo.update(currentSpeed);
             System.out.println(servo.getPulseWidth());
             return false;
         } else if (currentSpeed > speed) {
-            currentSpeed -= this.stepSize;
+            currentSpeed -= this.accelerationChange;
             servo.update(currentSpeed);
             System.out.println(servo.getPulseWidth());
             return false;
@@ -100,7 +99,7 @@ public class Motors implements Updatable {
                 this.speedRight = speed;
                 this.acceleratingLeft = true;
                 this.acceleratingRight = true;
-                this.acceleration = acceleration;
+                this.timeBetweenAcceleration = acceleration;
             }
         } else {
             this.acceleratingLeft = false;
@@ -122,7 +121,7 @@ public class Motors implements Updatable {
                 this.servoTimer.setInterval(acceleration);
                 this.speedLeft = speed;
                 this.acceleratingLeft = true;
-                this.acceleration = acceleration;
+                this.timeBetweenAcceleration = acceleration;
             }
         } else {
             this.acceleratingLeft = false;
@@ -143,7 +142,7 @@ public class Motors implements Updatable {
                 this.servoTimer.setInterval(acceleration);
                 this.speedRight = speed;
                 this.acceleratingRight = true;
-                this.acceleration = acceleration;
+                this.timeBetweenAcceleration = acceleration;
             }
         } else {
             this.acceleratingRight = false;
@@ -151,23 +150,23 @@ public class Motors implements Updatable {
         }
     }
 
-    public int getStepSize() {
-        return this.stepSize;
+    public int getAccelerationChange() {
+        return this.accelerationChange;
     }
 
-    public void setStepSize(int stepSize) {
-        this.stepSize = stepSize;
+    public void setAccelerationChange(int accelerationChange) {
+        this.accelerationChange = accelerationChange;
     }
 
     @Override
     public void update() {
         if (this.servoTimer.timeout()) {
             if (this.acceleratingLeft && this.acceleratingRight) {
-                goToSpeed(this.speedLeft, this.acceleration);
+                goToSpeed(this.speedLeft, this.timeBetweenAcceleration);
             } else if (this.acceleratingLeft) {
-                goToSpeedLeft(this.speedLeft, this.acceleration);
+                goToSpeedLeft(this.speedLeft, this.timeBetweenAcceleration);
             } else if (this.acceleratingRight) {
-                goToSpeedRight(this.speedRight, this.acceleration);
+                goToSpeedRight(this.speedRight, this.timeBetweenAcceleration);
             }
             this.servoTimer.mark();
         }
