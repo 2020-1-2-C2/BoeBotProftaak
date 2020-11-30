@@ -16,6 +16,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
+    private boolean running = true;
 
     public static void main(String[] args) {
 
@@ -44,7 +45,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         updatables.add(collisionDetection);
         updatables.add(driveSystem);
 
-        while (true) {
+        while (running) {
             for (Updatable u : updatables) {
                 u.update();
             }
@@ -59,6 +60,26 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
     @Override
     public void OnInfraredButton(String button) {
         // TODO, code can be a null object with wrong or unrecognised measurements, this needs to be taken into account.
+        if (button != null){
+            switch (button){
+                case "power":
+                    driveSystem.stop();
+                    running = false;
+                    break;
+                case "ch+":
+                    driveSystem.addForwardSpeed();
+                    break;
+                case "ch-":
+                    driveSystem.addBackwardSpeed();
+                    break;
+                case "vol+":
+                    // TODO, turn left
+                    break;
+                case "vol-":
+                    // TODO, turn right
+                    break;
+            }
+        }
         System.out.println(button);
     }
 

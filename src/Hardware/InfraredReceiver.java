@@ -45,7 +45,7 @@ public class InfraredReceiver implements Updatable {
      * Listens for the startsignal of an infrared remote
      * @return true when a startsignal has been read.
      */
-    public boolean listenForStartSignal(){
+    private boolean listenForStartSignal(){
         // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
         int pulseLen = BoeBot.pulseIn(this.pinId, false, 6000);
         return pulseLen > 2000;
@@ -55,7 +55,7 @@ public class InfraredReceiver implements Updatable {
      * Listens for an infrared bit-signal and puts the length of each low pulse in an array.
      * @return the length of 12 false infrared pulses received by the sensor.
      */
-    public int[] listenForBitSignal(){
+    private int[] listenForBitSignal(){
         int lengths[] = new int[12];
         for (int i = 0; i < 12; i++) {
             // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
@@ -69,7 +69,7 @@ public class InfraredReceiver implements Updatable {
      * @param rawBitSignal array of 12 pulse lengths
      * @return binary number
      */
-    public int convertBitSignalToBinary(int[] rawBitSignal){
+    private int convertBitSignalToBinary(int[] rawBitSignal){
         int bitSignalBinary = 0b0;
         for (int i = 11; i >= 0; i--){
             if (rawBitSignal[i] > 900){
@@ -85,7 +85,7 @@ public class InfraredReceiver implements Updatable {
      * Interprits an infrareed signal in the form of a binary number and translates it to the String of the attached button on the infrared remote.
      * @return String of infrared remote button corresponding to the found infrared signal, if no corresponding button exists then null is returned.
      */
-    public String getPressedremoteButtons(){
+    private String getPressedremoteButtons(){
         int bitSignalBinary = convertBitSignalToBinary(listenForBitSignal());
         if (this.remoteButtons.containsKey(bitSignalBinary)){
             return this.remoteButtons.get(bitSignalBinary);
