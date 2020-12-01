@@ -6,6 +6,7 @@ import TI.Timer;
 import Utils.Led;
 import Utils.Updatable;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Notifications implements Updatable {
@@ -20,6 +21,8 @@ public class Notifications implements Updatable {
     private int buzzerInterval;
     private boolean timerIsEnabled = false;
     private boolean repeat = false;
+    private Color ledColor;
+    private boolean ledState = false;
 
     public Notifications(ArrayList<Buzzer> buzzers, ArrayList<Led> leds) {
         this.buzzers = buzzers;
@@ -35,6 +38,7 @@ public class Notifications implements Updatable {
         this.ledInterval = 500;
         this.buzzerInterval = 1000;
         this.timerIsEnabled = true;
+        this.ledColor = Color.red;
 
 
         buzzerTimer.setInterval(this.buzzerInterval);
@@ -42,15 +46,9 @@ public class Notifications implements Updatable {
     }
 
     public void remoteNotification(){
-        this.timerIsEnabled = false;
+        this.timerIsEnabled = true;
+        this.ledColor = Color.green;
 
-        for (Led led : leds) {
-            if (led instanceof RGB) {
-                ((RGB) led).setColor(true, false, false);
-            }
-
-            led.blink(ledInterval);
-        }
     }
 
     @Override
@@ -60,15 +58,39 @@ public class Notifications implements Updatable {
                 buzzer.buzz(buzzerTime, buzzerFrequency);
             }
         }
-        if (ledTimer.timeout() && timerIsEnabled)
-        for (Led led : leds) {
-            if (led instanceof RGB) {
-                ((RGB) led).setColor(true, false, false);
+        if (ledTimer.timeout() && timerIsEnabled && repeat){
+            for (Led led : leds) {
+                if (!ledState){
+                    if (led instanceof RGB) {
+                        ((RGB) led).setColor(ledColor);
+                    }
+                    else{
+                        led.on();
+                    }
+                    ledState = true;
+                } else {
+                    led.off();
+                    ledState = false;
+                }
+
+
             }
-            else{
-                led.on();
+        } else if (!repeat)  {
+            for (Led led : leds) {
+                if (led instanceof RGB) {
+                    ((RGB) led).setColor(ledColor);
+                }
+                else{
+                    led.on();
+                }
+            }
+            if (ledTimer.timeout() ){
+                for (Led led : leds) {
+                    led.off();
+                }
             }
 
         }
+
     }
 }

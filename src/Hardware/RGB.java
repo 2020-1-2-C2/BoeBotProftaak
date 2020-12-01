@@ -35,6 +35,7 @@ public class RGB implements Led {
      */
     //TODO convert to PWM
     public void setColor(Color color) {
+        this.color = color;
         pwmRed.update(color.getRed());
         pwmGreen.update(color.getGreen());
         pwmBlue.update(color.getBlue());
@@ -59,6 +60,7 @@ public class RGB implements Led {
 
     @Override
     public void fade(int fade) {
+        this.color = new Color(fade, fade, fade);
         pwmRed.update(fade);
         pwmGreen.update(fade);
         pwmBlue.update(fade);
@@ -78,15 +80,15 @@ public class RGB implements Led {
     }
 
     public int getBlue() {
-        return this.blue;
+        return this.color.getBlue();
     }
 
     public int getGreen() {
-        return this.green;
+        return this.color.getGreen();
     }
 
     public int getRed() {
-        return this.red;
+        return this.color.getRed();
     }
 
     @Override
