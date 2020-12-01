@@ -73,10 +73,10 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
                     driveSystem.addBackwardSpeed();
                     break;
                 case "vol+":
-                    // TODO, turn left
+                    driveSystem.turnRight();
                     break;
                 case "vol-":
-                    // TODO, turn right
+                    driveSystem.turnLeft();
                     break;
             }
         }
