@@ -1,8 +1,7 @@
-import Hardware.InfraredReceiver;
-import Hardware.Motors;
-import Hardware.UltraSonicReceiver;
+import Hardware.*;
 import Logic.CollisionDetection;
 import Logic.DriveSystem;
+import Logic.Notifications;
 import TI.BoeBot;
 import TI.PinMode;
 import Utils.CollisionDetectionCallback;
@@ -38,11 +37,18 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         Motors motors = new Motors(5);
         driveSystem = new DriveSystem(motors);
 
+        Buzzer buzzer = new Buzzer(6);
+        ArrayList<Buzzer> buzzers = new ArrayList<>();
+        buzzers.add(buzzer);
+        ArrayList<Led> leds = new ArrayList<>();
+        Notifications notifications = new Notifications(buzzers, leds);
+
 
         updatables.add(infraredReceiver);
         updatables.add(ultraSonicReceiver);
         updatables.add(collisionDetection);
         updatables.add(driveSystem);
+        updatables.add(buzzer);
 
         while (running) {
             for (Updatable u : updatables) {
@@ -59,7 +65,6 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
      */
     @Override
     public void OnInfraredButton(String button) {
-        // TODO, code can be a null object with wrong or unrecognised measurements, this needs to be taken into account.
         if (button != null) {
             switch (button) {
                 case "power":

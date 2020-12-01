@@ -33,6 +33,7 @@ public class RGB extends Led{
      * @param green boolean to turn the color on or off.
      * @param blue boolean to turn the color on or off.
      */
+    //TODO convert to PWM
     public void setColor(boolean red, boolean green, boolean blue) {
         BoeBot.digitalWrite(this.pinRed, red);
         BoeBot.digitalWrite(this.pinGreen, green);
