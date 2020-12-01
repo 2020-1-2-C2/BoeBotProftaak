@@ -158,11 +158,11 @@ public class Motors implements Updatable {
     }
 
     public int getSpeedLeft() {
-        return speedLeft;
+        return this.speedLeft;
     }
 
     public int getSpeedRight() {
-        return speedRight;
+        return this.speedRight;
     }
 
     public int getStepSize() {
