@@ -5,49 +5,51 @@ import TI.PWM;
 import TI.Timer;
 import Utils.Led;
 
+import java.awt.*;
+
 public class RGB implements Led {
-    private int red;
-    private int green;
-    private int blue;
     private int pinRed;
     private int pinGreen;
     private int pinBlue;
     private boolean isOn;
     private Timer blinkingTimer;
     private int interval;
+    private PWM pwmRed;
+    private PWM pwmGreen;
+    private PWM pwmBlue;
+    private Color color;
 
-    public RGB(int red, int green, int blue, int pinRed, int pinGreen, int pinBlue) {
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
+    public RGB(int pinRed, int pinGreen, int pinBlue, Color color) {
         this.pinRed = pinRed;
         this.pinGreen = pinGreen;
         this.pinBlue = pinBlue;
+        this.color = color;
+        pwmRed = new PWM(this.pinRed, color.getRed());
+        pwmGreen = new PWM(this.pinGreen, color.getGreen());
+        pwmBlue = new PWM(this.pinBlue, color.getBlue());
     }
 
     /**
      * Mixes the colors
-     * @param red boolean to turn the color on or off.
-     * @param green boolean to turn the color on or off.
-     * @param blue boolean to turn the color on or off.
+     * @param color
      */
     //TODO convert to PWM
-    public void setColor(boolean red, boolean green, boolean blue) {
-        BoeBot.digitalWrite(this.pinRed, red);
-        BoeBot.digitalWrite(this.pinGreen, green);
-        BoeBot.digitalWrite(this.pinBlue, blue);
+    public void setColor(Color color) {
+        pwmRed.update(color.getRed());
+        pwmGreen.update(color.getGreen());
+        pwmBlue.update(color.getBlue());
     }
 
     @Override
     public void on() {
         this.isOn = true;
-        setColor(true, true, true);
+        setColor(Color.white);
     }
 
     @Override
     public void off() {
         this.isOn = false;
-        setColor(false, false, false);
+        setColor(Color.white);
     }
 
     @Override
@@ -57,9 +59,6 @@ public class RGB implements Led {
 
     @Override
     public void fade(int fade) {
-        PWM pwmRed = new PWM(this.pinRed, fade);
-        PWM pwmGreen = new PWM(this.pinGreen, fade);
-        PWM pwmBlue = new PWM(this.pinBlue, fade);
         pwmRed.update(fade);
         pwmGreen.update(fade);
         pwmBlue.update(fade);
