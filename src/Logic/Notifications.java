@@ -38,17 +38,27 @@ public class Notifications implements Updatable {
         this.ledInterval = 500;
         this.buzzerInterval = 1000;
         this.timerIsEnabled = true;
+        this.repeat = true;
         this.ledColor = Color.red;
 
 
         buzzerTimer.setInterval(this.buzzerInterval);
+        ledTimer.setInterval(this.ledInterval);
 
     }
 
     public void remoteNotification(){
+        this.buzzerFrequency = 400;
+        this.buzzerTime = 500;
+        this.ledInterval = 500;
+        this.buzzerInterval = 1000;
         this.timerIsEnabled = true;
+        this.repeat = false;
+        this.ledState = false;
         this.ledColor = Color.green;
 
+        buzzerTimer.setInterval(this.buzzerInterval);
+        ledTimer.setInterval(this.ledInterval);
     }
 
     @Override
@@ -58,7 +68,7 @@ public class Notifications implements Updatable {
                 buzzer.buzz(buzzerTime, buzzerFrequency);
             }
         }
-        if (ledTimer.timeout() && timerIsEnabled && repeat){
+        if (ledTimer.timeout() && timerIsEnabled){
             for (Led led : leds) {
                 if (!ledState){
                     if (led instanceof RGB) {
@@ -71,26 +81,11 @@ public class Notifications implements Updatable {
                 } else {
                     led.off();
                     ledState = false;
-                }
-
-
-            }
-        } else if (!repeat)  {
-            for (Led led : leds) {
-                if (led instanceof RGB) {
-                    ((RGB) led).setColor(ledColor);
-                }
-                else{
-                    led.on();
+                    if (!repeat) {
+                        timerIsEnabled = false;
+                    }
                 }
             }
-            if (ledTimer.timeout() ){
-                for (Led led : leds) {
-                    led.off();
-                }
-            }
-
         }
-
     }
 }

@@ -9,6 +9,7 @@ import Utils.InfraredCallback;
 import Utils.Led;
 import Utils.Updatable;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
@@ -42,7 +43,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         Buzzer buzzer = new Buzzer(6);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
         buzzers.add(buzzer);
-        RGB rgb = new RGB(0, 0 , 0, 5, 4, 3);
+        RGB rgb = new RGB(5, 4, 3, Color.black);
         ArrayList<Led> leds = new ArrayList<>();
         leds.add(rgb);
         notifications = new Notifications(buzzers, leds);
@@ -71,6 +72,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
     @Override
     public void OnInfraredButton(String button) {
         if (button != null) {
+            notifications.remoteNotification();
             switch (button) {
                 case "power":
                     driveSystem.stop();
