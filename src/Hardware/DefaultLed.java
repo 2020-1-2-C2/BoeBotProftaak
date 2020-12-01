@@ -3,27 +3,29 @@ package Hardware;
 import TI.BoeBot;
 import TI.PWM;
 import TI.Timer;
-import Utils.Updatable;
+import Utils.Led;
 
-public class Led implements Updatable {
+public class DefaultLed implements Led {
     private int pinId;
     private boolean isOn;
     private Timer blinkingTimer;
     private int interval;
 
     /**
-     * Constructor for Hardware.Led class
+     * Constructor for Hardware.DefaultLed class
      * @param pinId the pin where the LED is attached.
      */
-    public Led(int pinId) {
+    public DefaultLed(int pinId) {
         this.pinId = pinId;
     }
 
+    @Override
     public void on() {
         this.isOn = true;
         BoeBot.digitalWrite(this.pinId, false);
     }
 
+    @Override
     public void off() {
         this.isOn = false;
         BoeBot.digitalWrite(this.pinId, true);
@@ -33,6 +35,7 @@ public class Led implements Updatable {
      * Fade the LED
      * @param fade fades the LED. (Value: 0-100, 0 is full brightness, 100 is off.
      */
+    @Override
     public void fade(int fade) {
         PWM pwm = new PWM(this.pinId, fade);
         pwm.update(fade);
@@ -42,6 +45,7 @@ public class Led implements Updatable {
      * Blink the LED
      * @param interval is the interval between each blink.
      */
+    @Override
     public void blink(int interval) {
         this.interval = interval;
         if (interval > 0) {
@@ -54,6 +58,7 @@ public class Led implements Updatable {
         }
     }
 
+    @Override
     public boolean getIsOn() {
         return this.isOn;
     }

@@ -6,6 +6,7 @@ import TI.BoeBot;
 import TI.PinMode;
 import Utils.CollisionDetectionCallback;
 import Utils.InfraredCallback;
+import Utils.Led;
 import Utils.Updatable;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
+    private Notifications notifications;
     private boolean running = true;
 
     public static void main(String[] args) {
@@ -40,8 +42,10 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         Buzzer buzzer = new Buzzer(6);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
         buzzers.add(buzzer);
+        RGB rgb = new RGB(0, 0 , 0, 5, 4, 3);
         ArrayList<Led> leds = new ArrayList<>();
-        Notifications notifications = new Notifications(buzzers, leds);
+        leds.add(rgb);
+        notifications = new Notifications(buzzers, leds);
 
 
         updatables.add(infraredReceiver);
@@ -49,6 +53,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         updatables.add(collisionDetection);
         updatables.add(driveSystem);
         updatables.add(buzzer);
+        updatables.add(rgb);
 
         while (running) {
             for (Updatable u : updatables) {
@@ -91,5 +96,6 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
     @Override
     public void onCollisionDetection(int distance) {
         driveSystem.emergencyStop(distance);
+        notifications.emergencyNotification();
     }
 }

@@ -1,30 +1,28 @@
 package Hardware;
 
 import TI.BoeBot;
+import TI.PWM;
+import TI.Timer;
+import Utils.Led;
 
-public class RGB extends Led{
+public class RGB implements Led {
     private int red;
     private int green;
     private int blue;
     private int pinRed;
     private int pinGreen;
     private int pinBlue;
+    private boolean isOn;
+    private Timer blinkingTimer;
+    private int interval;
 
-    public RGB(int pinId, int red, int green, int blue, int pinRed, int pinGreen, int pinBlue) {
-        super(pinId);
+    public RGB(int red, int green, int blue, int pinRed, int pinGreen, int pinBlue) {
         this.red = red;
         this.green = green;
         this.blue = blue;
         this.pinRed = pinRed;
         this.pinGreen = pinGreen;
         this.pinBlue = pinBlue;
-    }
-
-    public RGB(int pinId, int red, int green, int blue) {
-        super(pinId);
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
     }
 
     /**
@@ -42,17 +40,42 @@ public class RGB extends Led{
 
     @Override
     public void on() {
-        super.on();
+        this.isOn = true;
+        setColor(true, true, true);
     }
 
     @Override
     public void off() {
-        super.off();
+        this.isOn = false;
+        setColor(false, false, false);
     }
 
     @Override
     public boolean getIsOn() {
-        return super.getIsOn();
+        return this.isOn;
+    }
+
+    @Override
+    public void fade(int fade) {
+        PWM pwmRed = new PWM(this.pinRed, fade);
+        PWM pwmGreen = new PWM(this.pinGreen, fade);
+        PWM pwmBlue = new PWM(this.pinBlue, fade);
+        pwmRed.update(fade);
+        pwmGreen.update(fade);
+        pwmBlue.update(fade);
+    }
+
+    @Override
+    public void blink(int interval) {
+        this.interval = interval;
+        if (interval > 0) {
+            this.blinkingTimer = new Timer(interval);
+        }
+        if (getIsOn()) {
+            off();
+        } else {
+            on();
+        }
     }
 
     public int getBlue() {
@@ -65,5 +88,13 @@ public class RGB extends Led{
 
     public int getRed() {
         return this.red;
+    }
+
+    @Override
+    public void update() {
+        if (this.blinkingTimer.timeout()) {
+            blink(this.interval);
+            this.blinkingTimer.mark();
+        }
     }
 }

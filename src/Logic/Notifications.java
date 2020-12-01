@@ -1,9 +1,9 @@
 package Logic;
 
 import Hardware.Buzzer;
-import Hardware.Led;
 import Hardware.RGB;
 import TI.Timer;
+import Utils.Led;
 import Utils.Updatable;
 
 import java.util.ArrayList;
