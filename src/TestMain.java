@@ -7,13 +7,13 @@ public class TestMain {
     private ArrayList<Updatable> updatables = new ArrayList<>();
 
     public void Run() {
-        Hardware.Motors motors = new Hardware.Motors();
+/*        Hardware.Motors motors = new Hardware.Motors();
         motors.drive(1300);
         updatables.add(motors);
         BoeBot.wait(1000);
         motors.goToSpeedRight(1700, 100);
         BoeBot.wait(1000);
-        motors.goToSpeedLeft(1700, 100);
+        motors.goToSpeedLeft(1700, 100);*/
 
         while (true) {
             for (Updatable u : updatables) {
