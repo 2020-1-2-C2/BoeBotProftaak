@@ -17,12 +17,18 @@ public class DriveSystem implements Updatable {
 
     public void addForwardSpeed(){
         int newSpeed = ((motor.getSpeedLeft() + motor.getSpeedRight()) / 2) + MAX_SPEED/STEPS;
-        motor.goToSpeed(MAX_SPEED, ACCELERATION_TIME);
+        System.out.println(motor.getSpeedLeft());
+        System.out.println(motor.getSpeedRight());
+        System.out.println(MAX_SPEED/STEPS);
+        motor.goToSpeed(newSpeed, ACCELERATION_TIME);
     }
 
     public void addBackwardSpeed(){
         int newSpeed = ((motor.getSpeedLeft() + motor.getSpeedRight()) / 2) - MAX_SPEED/STEPS;
-        motor.goToSpeed(MAX_SPEED, ACCELERATION_TIME);
+        System.out.println(motor.getSpeedLeft());
+        System.out.println(motor.getSpeedRight());
+        System.out.println(MAX_SPEED/STEPS);
+        motor.goToSpeed(newSpeed, ACCELERATION_TIME);
     }
 
     public void turnLeft() {
@@ -74,6 +80,7 @@ public class DriveSystem implements Updatable {
 
     public void stop(){
         motor.goToSpeed(0, this.ACCELERATION_TIME);
+        //motor.emergencyStop();
     }
 
     public void emergencyStop() {

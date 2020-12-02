@@ -23,7 +23,7 @@ public class ServoMotor implements Motor {
     private final int MAX_BACKWARD_SPEED = 1300;
     private final int STANDSTILL_SPEED = 1500;
 
-    public ServoMotor(Servo servoLeft, Servo servoRight) {
+    public ServoMotor(Servo servoRight, Servo servoLeft) {
         this.servoLeft = servoLeft;
         this.servoRight = servoRight;
         this.timerLeft = new Timer(1000);
@@ -41,6 +41,10 @@ public class ServoMotor implements Motor {
     }
 
     private int percentToValue(int percent) {
+        int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
+        return ((diff / 100) * percent) + STANDSTILL_SPEED;
+
+        /*
         //convert percentile to driving value
         if (percent > 0) {
             int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
@@ -49,9 +53,13 @@ public class ServoMotor implements Motor {
             int diff = MAX_BACKWARD_SPEED - STANDSTILL_SPEED;
             return ((diff / 100) * percent) + STANDSTILL_SPEED;
         }
+        */
     }
 
     private int valueToPercent(int value) {
+        int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
+        return -((value - STANDSTILL_SPEED) * 100) / diff;
+        /*
         if (value > STANDSTILL_SPEED) {
             int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
             return ((value - STANDSTILL_SPEED) * 100) / diff;
@@ -59,6 +67,7 @@ public class ServoMotor implements Motor {
             int diff = MAX_BACKWARD_SPEED - STANDSTILL_SPEED;
             return ((STANDSTILL_SPEED - value) * 100) / diff;
         }
+        */
     }
 
     @Override
@@ -69,6 +78,7 @@ public class ServoMotor implements Motor {
 
     @Override
     public void goToSpeedLeft(int speed, int time) {
+        System.out.println("speed %: " + speed);
 
         if (speed > 100) {
             System.out.println("Speed was higher than 100!");
@@ -78,8 +88,9 @@ public class ServoMotor implements Motor {
             speed = -100;
         }
 
-        this.wantedSpeedLeft = reverseValue(percentToValue(speed));
-        int diff = this.wantedSpeedLeft - STANDSTILL_SPEED;
+        this.wantedSpeedLeft = percentToValue(speed);
+        System.out.println("speed value: " + wantedSpeedLeft);
+        int diff = this.wantedSpeedLeft - servoLeft.getPulseWidth();
 
         int steps = diff / STEP_SIZE_LEFT;
 
@@ -87,13 +98,16 @@ public class ServoMotor implements Motor {
             time = steps;
         }
 
-        timerLeft.setInterval(time/steps);
-        timerIsEnabledLeft = true;
+        if (steps != 0 ) {
+            timerLeft.setInterval(time / steps);
+            timerIsEnabledLeft = true;
+        }
 
     }
 
     public void goToSpeedRight(int speed, int time) {
 
+        System.out.println("speed %: " + speed);
         if (speed > 100) {
             System.out.println("Speed was higher than 100!");
             speed = 100;
@@ -102,8 +116,9 @@ public class ServoMotor implements Motor {
             speed = -100;
         }
 
-        this.wantedSpeedRight = percentToValue(speed);
-        int diff = this.wantedSpeedRight - STANDSTILL_SPEED;
+        this.wantedSpeedRight = reverseValue(percentToValue(speed));
+        System.out.println("speed value: " + wantedSpeedRight);
+        int diff = this.wantedSpeedRight - servoRight.getPulseWidth();
 
         int steps = diff / STEP_SIZE_RIGHT;
 
@@ -111,13 +126,25 @@ public class ServoMotor implements Motor {
             time = steps;
         }
 
-        timerLeft.setInterval(time/steps);
-        timerIsEnabledRight = true;
+        if (steps != 0 ) {
+            timerRight.setInterval(time / steps);
+            timerIsEnabledRight = true;
+        }
 
     }
 
-    private void goToSpeedStep(Servo servo, int stepSize) {
-        int newSpeed = servo.getPulseWidth() + stepSize;
+    private void goToSpeedStep(Servo servo, int stepSize, int wantedSpeed) {
+
+        int step;
+        if (servo.getPulseWidth() > wantedSpeed) {
+            step = -stepSize;
+        } else {
+            step = stepSize;
+        }
+
+        //System.out.println(wantedSpeed);
+
+        int newSpeed = servo.getPulseWidth() + step;
         if (newSpeed > MAX_FORWARD_SPEED) {
             newSpeed = MAX_FORWARD_SPEED;
         } else if (newSpeed < MAX_BACKWARD_SPEED){
@@ -128,7 +155,8 @@ public class ServoMotor implements Motor {
 
     @Override
     public void emergencyStop() {
-
+        servoRight.update(STANDSTILL_SPEED);
+        servoLeft.update(STANDSTILL_SPEED);
     }
 
     @Override
@@ -145,7 +173,7 @@ public class ServoMotor implements Motor {
     public void update() {
         if (timerIsEnabledRight && timerRight.timeout()) {
             if (this.servoRight.getPulseWidth() != wantedSpeedRight) {
-                goToSpeedStep(servoRight, STEP_SIZE_RIGHT);
+                goToSpeedStep(servoRight, STEP_SIZE_RIGHT, wantedSpeedRight);
             } else {
                 timerIsEnabledRight = false;
             }
@@ -153,7 +181,7 @@ public class ServoMotor implements Motor {
         }
         if (timerIsEnabledLeft && timerLeft.timeout()) {
             if (this.servoLeft.getPulseWidth() != wantedSpeedLeft) {
-                goToSpeedStep(servoLeft, STEP_SIZE_LEFT);
+                goToSpeedStep(servoLeft, STEP_SIZE_LEFT, wantedSpeedLeft);
             } else {
                 timerIsEnabledLeft = false;
             }
