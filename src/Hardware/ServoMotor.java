@@ -2,7 +2,109 @@ package Hardware;
 
 import TI.Servo;
 import TI.Timer;
-import Utils.Updatable;
+import Utils.Motor;
+
+//TODO make interface "Motors" and refactor this to "Servos" implementing "Motors"
+public class ServoMotor implements Motor {
+    private Servo servoLeft;
+    private Servo servoRight;
+    private Timer timerLeft;
+    private Timer timerRight;
+    private boolean timerIsEnabledLeft;
+    private boolean timerIsEnabledRight;
+
+    private final int MAX_FORWARD_SPEED = 1700;
+    private final int MAX_BACKWARD_SPEED = 1300;
+    private final int STANDSTILL_SPEED = 1500;
+
+    public ServoMotor(Servo servoLeft, Servo servoRight) {
+        this.servoLeft = servoLeft;
+        this.servoRight = servoRight;
+        this.timerLeft = new Timer(1000);
+        this.timerRight = new Timer(1000);
+        timerIsEnabledLeft = false;
+        timerIsEnabledRight = false;
+    }
+
+    public ServoMotor() {
+        this(new Servo(12), new Servo(13));
+    }
+
+    private int reverseValue(int value) {
+        return ((value - STANDSTILL_SPEED) * -1) + STANDSTILL_SPEED;
+    }
+
+    private int percentToValue(int percent) {
+        //convert percentile to driving value
+        if (percent > 0) {
+            int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
+            return ((diff / 100) * percent) + STANDSTILL_SPEED;
+        } else {
+            int diff = MAX_BACKWARD_SPEED - STANDSTILL_SPEED;
+            return ((diff / 100) * percent) + STANDSTILL_SPEED;
+        }
+    }
+
+    private int valueToPercent(int value) {
+        if (value > STANDSTILL_SPEED) {
+            int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
+            return ((value - STANDSTILL_SPEED) * 100) / diff;
+        } else {
+            int diff = MAX_BACKWARD_SPEED - STANDSTILL_SPEED;
+            return ((STANDSTILL_SPEED - value) * 100) / diff;
+        }
+    }
+
+    @Override
+    public void goToSpeed(int speed, int time) {
+
+    }
+
+    @Override
+    public void goToSpeedLeft(int speed, int time) {
+
+    }
+
+    @Override
+    public void goToSpeedRight(int speed, int time) {
+
+    }
+
+    @Override
+    public void emergencyStop() {
+
+    }
+
+    @Override
+    public int getSpeedLeft() {
+        return valueToPercent(reverseValue(servoLeft.getPulseWidth()));
+    }
+
+    @Override
+    public int getSpeedRight() {
+        return valueToPercent(servoRight.getPulseWidth());
+    }
+
+    @Override
+    public void update() {
+        if (timerIsEnabledRight && timerRight.timeout()) {
+
+        }
+        if (timerIsEnabledLeft && timerLeft.timeout()) {
+
+        }
+    }
+}
+
+
+
+
+/*
+package Hardware;
+
+        import TI.Servo;
+        import TI.Timer;
+        import Utils.Updatable;
 //TODO make interface "Motors" and refactor this to "Servos" implementing "Motors"
 public class Motors implements Updatable {
     private Servo servoLeft;
@@ -35,10 +137,12 @@ public class Motors implements Updatable {
         drive(1500);
     }
 
-    /**
+    */
+/**
      * Goes to the desired speed instantly.
      * @param speed speed witch the boebot wil drive at
-     */
+     *//*
+
     public void drive(int speed) {
         driveLeft(speed);
         driveRight(speed);
@@ -57,12 +161,14 @@ public class Motors implements Updatable {
         this.acceleratingRight = false;
     }
 
-    /**
+    */
+/**
      * Changes the speed one step closer to the wanted speed.
      * @param speed speed the boebot wants to drive at
      * @param servo servo witch speed wil be changed
      * @return boolean if the current speed is the wanted speed
-     */
+     *//*
+
     private boolean goToSpeedOneStep(int speed,Servo servo) {
         int currentSpeed = servo.getPulseWidth();
         if (currentSpeed > speed - this.stepSize && currentSpeed < speed + this.stepSize){
@@ -82,11 +188,13 @@ public class Motors implements Updatable {
         return true;
     }
 
-    /**
+    */
+/**
      * Repeats the goToSpeedOneStep until the speed is correct.
      * @param speed speed the boebot wants to drive at
      * @param timeBetweenSteps time taken between every increase of speed
-     */
+     *//*
+
     public void goToSpeed(int speed, int timeBetweenSteps) {
         if (speed >= 1300 && speed <= 1700) {
             boolean leftIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoLeft);
@@ -109,11 +217,13 @@ public class Motors implements Updatable {
         }
     }
 
-    /**
+    */
+/**
      * The same as goToSpeed, but only for the left servo.
      * @param speed speed the boebot wants to drive at
      * @param timeBetweenSteps time taken between every increase of speed
-     */
+     *//*
+
     public void goToSpeedLeft (int speed, int timeBetweenSteps) {
         if (speed >= 1300 && speed <= 1700) {
             boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoLeft);
@@ -131,11 +241,13 @@ public class Motors implements Updatable {
         }
     }
 
-    /**
+    */
+/**
      * The same as goToSpeed, but only for the right servo.
      * @param speed speed the boebot wants to drive at
      * @param timeBetweenSteps time taken between every increase of speed
-     */
+     *//*
+
     public void goToSpeedRight (int speed, int timeBetweenSteps) {
         if (speed >= 1300 && speed <= 1700) {
             boolean isSpeed = goToSpeedOneStep(speed, this.servoRight);
@@ -183,3 +295,5 @@ public class Motors implements Updatable {
         }
     }
 }
+
+*/
