@@ -40,24 +40,20 @@ public class Motors implements Updatable {
      * @param speed speed witch the boebot wil drive at
      */
     public void drive(int speed) {
-        this.servoLeft.update(speed);
-        this.servoRight.update(((speed - 1500) * -1) + 1500);
-        this.speedLeft = speed;
-        this.speedRight = ((speed - 1500) * -1) + 1500;
-        this.acceleratingLeft = false;
-        this.acceleratingRight = false;
+        driveLeft(speed);
+        driveRight(speed);
     }
 
 
     public void driveLeft(int speed) {
-        this.servoLeft.update(speed);
-        this.speedLeft = speed;
+        this.servoLeft.update(((speed - 1500) * -1) + 1500);
+        this.speedLeft = ((speed - 1500) * -1) + 1500;
         this.acceleratingLeft = false;
     }
 
     public void driveRight(int speed) {
-        this.servoRight.update(((speed - 1500) * -1) + 1500);
-        this.speedRight = ((speed - 1500) * -1) + 1500;
+        this.servoRight.update(speed);
+        this.speedRight = speed;
         this.acceleratingRight = false;
     }
 
@@ -93,8 +89,8 @@ public class Motors implements Updatable {
      */
     public void goToSpeed(int speed, int timeBetweenSteps) {
         if (speed >= 1300 && speed <= 1700) {
-            boolean leftIsSpeed = goToSpeedOneStep(speed, this.servoLeft);
-            boolean rightIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+            boolean leftIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoLeft);
+            boolean rightIsSpeed = goToSpeedOneStep(speed, this.servoRight);
             if (!(leftIsSpeed && rightIsSpeed)) {
                 this.servoTimer.setInterval(timeBetweenSteps);
                 this.speedLeft = speed;
@@ -120,7 +116,7 @@ public class Motors implements Updatable {
      */
     public void goToSpeedLeft (int speed, int timeBetweenSteps) {
         if (speed >= 1300 && speed <= 1700) {
-            boolean isSpeed = goToSpeedOneStep(speed, this.servoLeft);
+            boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoLeft);
             if (!isSpeed) {
                 this.servoTimer.setInterval(timeBetweenSteps);
                 this.speedLeft = speed;
@@ -142,7 +138,7 @@ public class Motors implements Updatable {
      */
     public void goToSpeedRight (int speed, int timeBetweenSteps) {
         if (speed >= 1300 && speed <= 1700) {
-            boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoRight);
+            boolean isSpeed = goToSpeedOneStep(speed, this.servoRight);
             if (!isSpeed) {
                 this.servoTimer.setInterval(timeBetweenSteps);
                 this.speedRight = speed;
