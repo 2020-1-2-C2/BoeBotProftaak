@@ -1,36 +1,28 @@
 package Logic;
 
-import Hardware.Motors;
+import Utils.Motor;
 import Utils.Updatable;
 
 public class DriveSystem implements Updatable {
-    private Motors motors;
-    private static final int STOP_SPEED = 1500;
-    private static final int MAX_FORWARD_SPEED = 1700;
-    private static final int MAX_BACKWARD_SPEED = 1300;
-    private static final int STEPS = 10;
+    private Motor motor;
+    private final int STEPS = 10;
+    private final int MAX_SPEED = 100;
+    // time in ms
+    private final int ACCELERATION_TIME = 500;
     private int currentSpeed;
 
-    public DriveSystem(Motors motors) {
-        this.motors = motors;
+    public DriveSystem(Motor motors) {
+        this.motor = motors;
     }
 
     public void addForwardSpeed(){
-        int speedStep = (MAX_FORWARD_SPEED - STOP_SPEED) / STEPS;
-        currentSpeed = ((motors.getSpeedLeft() + motors.getSpeedRight()) / 2) + speedStep;
-        if (currentSpeed > MAX_FORWARD_SPEED){
-            currentSpeed = MAX_FORWARD_SPEED;
-        }
-        motors.goToSpeed(currentSpeed, 5);
+        int newSpeed = ((motor.getSpeedLeft() + motor.getSpeedRight()) / 2) + MAX_SPEED/STEPS;
+        motor.goToSpeed(MAX_SPEED, ACCELERATION_TIME);
     }
 
     public void addBackwardSpeed(){
-        int speedStep = (MAX_BACKWARD_SPEED - STOP_SPEED) / STEPS;
-        currentSpeed = ((motors.getSpeedLeft() + motors.getSpeedRight()) / 2) - speedStep;
-        if (currentSpeed > MAX_BACKWARD_SPEED){
-            currentSpeed = MAX_BACKWARD_SPEED;
-        }
-        motors.goToSpeed(currentSpeed, 5);
+        int newSpeed = ((motor.getSpeedLeft() + motor.getSpeedRight()) / 2) - MAX_SPEED/STEPS;
+        motor.goToSpeed(MAX_SPEED, ACCELERATION_TIME);
     }
 
     public void turnLeft() {
@@ -46,6 +38,7 @@ public class DriveSystem implements Updatable {
      * @param direction true = right, false = left
      */
     private void turn(boolean direction) {
+        /*
         stop();
         int speedStep = (MAX_FORWARD_SPEED - STOP_SPEED) / STEPS;
         int maxSpeedRight;
@@ -74,19 +67,17 @@ public class DriveSystem implements Updatable {
 
         motors.goToSpeedRight(currentRightSpeed, 5);
         motors.goToSpeedLeft(currentLeftSpeed, 5);
+        */
 
 
     }
 
     public void stop(){
-        motors.goToSpeed(STOP_SPEED, 5);
+        motor.goToSpeed(0, this.ACCELERATION_TIME);
     }
 
-    public void emergencyStop(int distance) {
-
-        //TODO use speed and distance to calculate time for stopping
-        motors.emergencyBrake();
-
+    public void emergencyStop() {
+        motor.emergencyStop();
     }
 
     @Override
