@@ -1,7 +1,7 @@
 package Logic;
 
 import Hardware.Buzzer;
-import Hardware.RGB;
+import Hardware.RGBLed;
 import TI.Timer;
 import Utils.Led;
 import Utils.Updatable;
@@ -71,8 +71,8 @@ public class Notifications implements Updatable {
         if (ledTimer.timeout() && timerIsEnabled){
             for (Led led : leds) {
                 if (!ledState){
-                    if (led instanceof RGB) {
-                        ((RGB) led).setColor(ledColor);
+                    if (led instanceof RGBLed) {
+                        ((RGBLed) led).setColor(ledColor);
                     }
                     else{
                         led.on();

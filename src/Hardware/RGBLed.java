@@ -7,19 +7,20 @@ import Utils.Led;
 
 import java.awt.*;
 
-public class RGB implements Led {
+public class RGBLed implements Led {
     private int pinRed;
     private int pinGreen;
     private int pinBlue;
     private boolean isOn;
     private Timer blinkingTimer;
     private int interval;
+    private boolean timerIsEnabled = false;
     private PWM pwmRed;
     private PWM pwmGreen;
     private PWM pwmBlue;
     private Color color;
 
-    public RGB(int pinRed, int pinGreen, int pinBlue, Color color) {
+    public RGBLed(int pinRed, int pinGreen, int pinBlue, Color color) {
         this.pinRed = pinRed;
         this.pinGreen = pinGreen;
         this.pinBlue = pinBlue;
@@ -27,6 +28,7 @@ public class RGB implements Led {
         pwmRed = new PWM(this.pinRed, color.getRed());
         pwmGreen = new PWM(this.pinGreen, color.getGreen());
         pwmBlue = new PWM(this.pinBlue, color.getBlue());
+        this.blinkingTimer = new Timer(1000);
     }
 
     /**
@@ -70,7 +72,10 @@ public class RGB implements Led {
     public void blink(int interval) {
         this.interval = interval;
         if (interval > 0) {
-            this.blinkingTimer = new Timer(interval);
+            this.timerIsEnabled = true;
+            this.blinkingTimer.setInterval(interval);
+        } else {
+            this.timerIsEnabled = false;
         }
         if (getIsOn()) {
             off();
@@ -93,7 +98,7 @@ public class RGB implements Led {
 
     @Override
     public void update() {
-        if (this.blinkingTimer.timeout()) {
+        if (this.blinkingTimer.timeout() && this.timerIsEnabled) {
             blink(this.interval);
             this.blinkingTimer.mark();
         }

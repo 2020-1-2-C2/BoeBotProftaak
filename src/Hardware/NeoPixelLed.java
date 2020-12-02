@@ -1,52 +1,50 @@
 package Hardware;
 
 import TI.BoeBot;
-import TI.PWM;
 import TI.Timer;
 import Utils.Led;
 
-public class DefaultLed implements Led {
-    private int pinId;
-    private boolean isOn;
+import java.awt.*;
+
+public class NeoPixelLed implements Led {
+    private int id;
     private Timer blinkingTimer;
     private int interval;
     private boolean timerIsEnabled = false;
+    private boolean isOn;
+    private Color color;
 
-    /**
-     * Constructor for Hardware.DefaultLed class
-     * @param pinId the pin where the LED is attached.
-     */
-    public DefaultLed(int pinId) {
-        this.pinId = pinId;
+    public NeoPixelLed(int id) {
+        this.id = id;
         this.blinkingTimer = new Timer(1000);
     }
 
     @Override
     public void on() {
+        BoeBot.setStatusLed(true);
         this.isOn = true;
-        BoeBot.digitalWrite(this.pinId, false);
     }
 
     @Override
     public void off() {
+        BoeBot.setStatusLed(false);
         this.isOn = false;
-        BoeBot.digitalWrite(this.pinId, true);
     }
 
-    /**
-     * Fade the LED
-     * @param fade fades the LED. (Value: 0-100, 0 is full brightness, 100 is off.
-     */
+    public void setColor(Color color) {
+        this.color = color;
+        if (color.getRed() == 0 || color.getGreen() == 0 || color.getBlue() == 0) {
+            off();
+        } else {
+            BoeBot.rgbSet(id, color);
+        }
+    }
+
     @Override
     public void fade(int fade) {
-        PWM pwm = new PWM(this.pinId, fade);
-        pwm.update(fade);
+        BoeBot.rgbSet(id, fade, fade, fade);
     }
 
-    /**
-     * Blink the LED
-     * @param interval is the interval between each blink.
-     */
     @Override
     public void blink(int interval) {
         this.interval = interval;
@@ -68,9 +66,19 @@ public class DefaultLed implements Led {
         return this.isOn;
     }
 
-    /**
-     * Updates the blinker
-     */
+    public int getBlue() {
+        return this.color.getBlue();
+    }
+
+    public int getGreen() {
+        return this.color.getGreen();
+    }
+
+    public int getRed() {
+        return this.color.getRed();
+    }
+
+
     @Override
     public void update() {
         if (this.blinkingTimer.timeout() && this.timerIsEnabled) {
