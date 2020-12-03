@@ -4,15 +4,20 @@ import TI.Servo;
 import TI.Timer;
 import Utils.Motor;
 
+import java.util.ArrayList;
+
 //TODO make interface "Motors" and refactor this to "Servos" implementing "Motors"
 public class ServoMotor implements Motor {
     private Servo servoLeft;
     private Servo servoRight;
+    private Timer timerBoth;
     private Timer timerLeft;
     private Timer timerRight;
+    private boolean timerIsEnabledBoth;
     private boolean timerIsEnabledLeft;
     private boolean timerIsEnabledRight;
 
+    private final int STEP_SIZE_BOTH = 2;
     private int wantedSpeedLeft;
     private final int STEP_SIZE_LEFT = 2;
     private int wantedSpeedRight;
@@ -28,8 +33,10 @@ public class ServoMotor implements Motor {
         this.servoRight = servoRight;
         this.timerLeft = new Timer(1000);
         this.timerRight = new Timer(1000);
+        this.timerBoth = new Timer(1000);
         timerIsEnabledLeft = false;
         timerIsEnabledRight = false;
+        timerIsEnabledBoth = false;
     }
 
     public ServoMotor() {
@@ -44,42 +51,36 @@ public class ServoMotor implements Motor {
         int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
         return ((diff / 100) * percent) + STANDSTILL_SPEED;
 
-        /*
-        //convert percentile to driving value
-        if (percent > 0) {
-            int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
-            return ((diff / 100) * percent) + STANDSTILL_SPEED;
-        } else {
-            int diff = MAX_BACKWARD_SPEED - STANDSTILL_SPEED;
-            return ((diff / 100) * percent) + STANDSTILL_SPEED;
-        }
-        */
     }
 
     private int valueToPercent(int value) {
         int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
         return -((value - STANDSTILL_SPEED) * 100) / diff;
-        /*
-        if (value > STANDSTILL_SPEED) {
-            int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
-            return ((value - STANDSTILL_SPEED) * 100) / diff;
-        } else {
-            int diff = MAX_BACKWARD_SPEED - STANDSTILL_SPEED;
-            return ((STANDSTILL_SPEED - value) * 100) / diff;
-        }
-        */
     }
 
     @Override
     public void goToSpeed(int speed, int time) {
-        goToSpeedLeft(speed, time);
-        goToSpeedRight(speed, time);
+        speed = validateSpeed(speed);
+        this.wantedSpeedLeft = percentToValue(speed);
+        this.wantedSpeedRight = reverseValue(percentToValue(speed));
+        int diffRight = this.wantedSpeedRight - servoRight.getPulseWidth();
+        int diffLeft = this.wantedSpeedLeft - servoLeft.getPulseWidth();
+        int diff = diffRight > diffLeft ? diffRight : diffLeft;
+
+        int steps = diff / STEP_SIZE_BOTH;
+
+        if (time < steps) {
+            time = steps;
+        }
+
+        if (steps != 0) {
+            timerBoth.setInterval(time);
+            timerIsEnabledBoth = true;
+        }
+
     }
 
-    @Override
-    public void goToSpeedLeft(int speed, int time) {
-        System.out.println("speed %: " + speed);
-
+    private int validateSpeed(int speed) {
         if (speed > 100) {
             System.out.println("Speed was higher than 100!");
             speed = 100;
@@ -87,6 +88,16 @@ public class ServoMotor implements Motor {
             System.out.println("Speed was lower than -100!");
             speed = -100;
         }
+
+        return speed;
+
+    }
+
+    @Override
+    public void goToSpeedLeft(int speed, int time) {
+        System.out.println("speed %: " + speed);
+
+        speed = validateSpeed(speed);
 
         this.wantedSpeedLeft = percentToValue(speed);
         System.out.println("speed value: " + wantedSpeedLeft);
@@ -108,13 +119,7 @@ public class ServoMotor implements Motor {
     public void goToSpeedRight(int speed, int time) {
 
         System.out.println("speed %: " + speed);
-        if (speed > 100) {
-            System.out.println("Speed was higher than 100!");
-            speed = 100;
-        } else if (speed < -100) {
-            System.out.println("Speed was lower than -100!");
-            speed = -100;
-        }
+        speed = validateSpeed(speed);
 
         this.wantedSpeedRight = reverseValue(percentToValue(speed));
         System.out.println("speed value: " + wantedSpeedRight);
@@ -133,28 +138,33 @@ public class ServoMotor implements Motor {
 
     }
 
-    private void goToSpeedStep(Servo servo, int stepSize, int wantedSpeed) {
-
-        int step;
-        if (servo.getPulseWidth() > wantedSpeed) {
-            step = -stepSize;
-        } else {
-            step = stepSize;
+    private void goToSpeedStep(ArrayList<Servo> servos, int stepSize, ArrayList<Integer> wantedSpeeds) {
+        if (servos.size() != wantedSpeeds.size()) {
+            return;
         }
 
-        //System.out.println(wantedSpeed);
+        for (int i = 0; i < servos.size(); i++) {
+            int step;
+            if (servos.get(i).getPulseWidth() > wantedSpeeds.get(i)) {
+                step = -stepSize;
+            } else {
+                step = stepSize;
+            }
 
-        int newSpeed = servo.getPulseWidth() + step;
-        if (newSpeed > MAX_FORWARD_SPEED) {
-            newSpeed = MAX_FORWARD_SPEED;
-        } else if (newSpeed < MAX_BACKWARD_SPEED){
-            newSpeed = MAX_BACKWARD_SPEED;
+            int newSpeed = servos.get(i).getPulseWidth() + step;
+            if (newSpeed > MAX_FORWARD_SPEED) {
+                newSpeed = MAX_FORWARD_SPEED;
+            } else if (newSpeed < MAX_BACKWARD_SPEED) {
+                newSpeed = MAX_BACKWARD_SPEED;
+            }
+            servos.get(i).update(newSpeed);
         }
-        servo.update(newSpeed);
     }
 
     @Override
     public void emergencyStop() {
+        this.timerIsEnabledRight = false;
+        this.timerIsEnabledLeft = false;
         servoRight.update(STANDSTILL_SPEED);
         servoLeft.update(STANDSTILL_SPEED);
     }
@@ -171,9 +181,26 @@ public class ServoMotor implements Motor {
 
     @Override
     public void update() {
+        if (timerIsEnabledBoth && timerBoth.timeout()) {
+            if (this.servoRight.getPulseWidth() != wantedSpeedRight || this.servoLeft.getPulseWidth() != wantedSpeedLeft) {
+                ArrayList<Servo> servos = new ArrayList<>();
+                servos.add(servoRight);
+                servos.add(servoLeft);
+                ArrayList<Integer> wantedSpeeds = new ArrayList<>();
+                wantedSpeeds.add(wantedSpeedRight);
+                wantedSpeeds.add(wantedSpeedLeft);
+                goToSpeedStep(servos, STEP_SIZE_BOTH, wantedSpeeds);
+            } else {
+                timerIsEnabledBoth = false;
+            }
+        }
         if (timerIsEnabledRight && timerRight.timeout()) {
             if (this.servoRight.getPulseWidth() != wantedSpeedRight) {
-                goToSpeedStep(servoRight, STEP_SIZE_RIGHT, wantedSpeedRight);
+                ArrayList<Servo> servos = new ArrayList<>();
+                servos.add(servoRight);
+                ArrayList<Integer> wantedspeeds = new ArrayList<>();
+                wantedspeeds.add(wantedSpeedRight);
+                goToSpeedStep(servos, STEP_SIZE_RIGHT, wantedspeeds);
             } else {
                 timerIsEnabledRight = false;
             }
@@ -181,7 +208,11 @@ public class ServoMotor implements Motor {
         }
         if (timerIsEnabledLeft && timerLeft.timeout()) {
             if (this.servoLeft.getPulseWidth() != wantedSpeedLeft) {
-                goToSpeedStep(servoLeft, STEP_SIZE_LEFT, wantedSpeedLeft);
+                ArrayList<Servo> servos = new ArrayList<>();
+                servos.add(servoLeft);
+                ArrayList<Integer> wantedSpeeds = new ArrayList<>();
+                wantedSpeeds.add(wantedSpeedLeft);
+                goToSpeedStep(servos, STEP_SIZE_LEFT, wantedSpeeds);
             } else {
                 timerIsEnabledLeft = false;
             }
@@ -189,205 +220,3 @@ public class ServoMotor implements Motor {
         }
     }
 }
-
-
-
-
-/*
-package Hardware;
-
-        import TI.Servo;
-        import TI.Timer;
-        import Utils.Updatable;
-//TODO make interface "Motors" and refactor this to "Servos" implementing "Motors"
-public class Motors implements Updatable {
-    private Servo servoLeft;
-    private Servo servoRight;
-    private int stepSize;
-    private Timer servoTimer;
-    private boolean acceleratingLeft;
-    private boolean acceleratingRight;
-    private int speedLeft;
-    private int speedRight;
-    private int timeBetweenSteps;
-
-    public Motors(int stepSize) {
-        this.servoLeft = new Servo(12);
-        this.servoRight = new Servo(13);
-        this.stepSize = stepSize;
-        this.servoTimer = new Timer(0);
-        this.acceleratingLeft = false;
-        this.acceleratingRight = false;
-        this.speedLeft = 1500;
-        this.speedRight = 1500;
-        this.timeBetweenSteps = 10;
-    }
-
-    public Motors() {
-        this(5);
-    }
-
-    public void emergencyBrake() {
-        drive(1500);
-    }
-
-    */
-/**
-     * Goes to the desired speed instantly.
-     * @param speed speed witch the boebot wil drive at
-     *//*
-
-    public void drive(int speed) {
-        driveLeft(speed);
-        driveRight(speed);
-    }
-
-
-    public void driveLeft(int speed) {
-        this.servoLeft.update(((speed - 1500) * -1) + 1500);
-        this.speedLeft = ((speed - 1500) * -1) + 1500;
-        this.acceleratingLeft = false;
-    }
-
-    public void driveRight(int speed) {
-        this.servoRight.update(speed);
-        this.speedRight = speed;
-        this.acceleratingRight = false;
-    }
-
-    */
-/**
-     * Changes the speed one step closer to the wanted speed.
-     * @param speed speed the boebot wants to drive at
-     * @param servo servo witch speed wil be changed
-     * @return boolean if the current speed is the wanted speed
-     *//*
-
-    private boolean goToSpeedOneStep(int speed,Servo servo) {
-        int currentSpeed = servo.getPulseWidth();
-        if (currentSpeed > speed - this.stepSize && currentSpeed < speed + this.stepSize){
-            servo.update(speed);
-            return true;
-        } else if (currentSpeed < speed) {
-            currentSpeed += this.stepSize;
-            servo.update(currentSpeed);
-            System.out.println(servo.getPulseWidth());
-            return false;
-        } else if (currentSpeed > speed) {
-            currentSpeed -= this.stepSize;
-            servo.update(currentSpeed);
-            System.out.println(servo.getPulseWidth());
-            return false;
-        }
-        return true;
-    }
-
-    */
-/**
-     * Repeats the goToSpeedOneStep until the speed is correct.
-     * @param speed speed the boebot wants to drive at
-     * @param timeBetweenSteps time taken between every increase of speed
-     *//*
-
-    public void goToSpeed(int speed, int timeBetweenSteps) {
-        if (speed >= 1300 && speed <= 1700) {
-            boolean leftIsSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoLeft);
-            boolean rightIsSpeed = goToSpeedOneStep(speed, this.servoRight);
-            if (!(leftIsSpeed && rightIsSpeed)) {
-                this.servoTimer.setInterval(timeBetweenSteps);
-                this.speedLeft = speed;
-                this.speedRight = speed;
-                this.acceleratingLeft = true;
-                this.acceleratingRight = true;
-                this.timeBetweenSteps = timeBetweenSteps;
-            } else {
-                this.acceleratingLeft = false;
-                this.acceleratingRight = false;
-            }
-        } else {
-            this.acceleratingLeft = false;
-            this.acceleratingRight = false;
-            System.out.println("impossible speed");
-        }
-    }
-
-    */
-/**
-     * The same as goToSpeed, but only for the left servo.
-     * @param speed speed the boebot wants to drive at
-     * @param timeBetweenSteps time taken between every increase of speed
-     *//*
-
-    public void goToSpeedLeft (int speed, int timeBetweenSteps) {
-        if (speed >= 1300 && speed <= 1700) {
-            boolean isSpeed = goToSpeedOneStep(((speed - 1500) * -1) + 1500, this.servoLeft);
-            if (!isSpeed) {
-                this.servoTimer.setInterval(timeBetweenSteps);
-                this.speedLeft = speed;
-                this.acceleratingLeft = true;
-                this.timeBetweenSteps = timeBetweenSteps;
-            } else {
-                this.acceleratingLeft = false;
-            }
-        } else {
-            this.acceleratingLeft = false;
-            System.out.println("impossible speed");
-        }
-    }
-
-    */
-/**
-     * The same as goToSpeed, but only for the right servo.
-     * @param speed speed the boebot wants to drive at
-     * @param timeBetweenSteps time taken between every increase of speed
-     *//*
-
-    public void goToSpeedRight (int speed, int timeBetweenSteps) {
-        if (speed >= 1300 && speed <= 1700) {
-            boolean isSpeed = goToSpeedOneStep(speed, this.servoRight);
-            if (!isSpeed) {
-                this.servoTimer.setInterval(timeBetweenSteps);
-                this.speedRight = speed;
-                this.acceleratingRight = true;
-                this.timeBetweenSteps = timeBetweenSteps;
-            } else {
-                this.acceleratingRight = false;
-            }
-        } else {
-            this.acceleratingRight = false;
-            System.out.println("inpossible speed");
-        }
-    }
-
-    public int getSpeedLeft() {
-        return this.speedLeft;
-    }
-
-    public int getSpeedRight() {
-        return this.speedRight;
-    }
-
-    public int getStepSize() {
-        return this.stepSize;
-    }
-
-    public void setStepSize(int stepSize) {
-        this.stepSize = stepSize;
-    }
-
-    @Override
-    public void update() {
-        if (this.servoTimer.timeout()) {
-            if (this.acceleratingLeft && this.acceleratingRight) {
-                goToSpeed(this.speedLeft, this.timeBetweenSteps);
-            } else if (this.acceleratingLeft) {
-                goToSpeedLeft(this.speedLeft, this.timeBetweenSteps);
-            } else if (this.acceleratingRight) {
-                goToSpeedRight(this.speedRight, this.timeBetweenSteps);
-            }
-            this.servoTimer.mark();
-        }
-    }
-}
-
-*/
