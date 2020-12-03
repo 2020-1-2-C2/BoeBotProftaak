@@ -134,11 +134,17 @@ public class DriveSystem implements Updatable {
     }
 
     public void stop(){
+        currentSpeed = 0;
+        currentSpeedLeft = currentSpeed;
+        currentSpeedRight = currentSpeed;
         motor.goToSpeed(0, this.ACCELERATION_TIME);
         //motor.emergencyStop();
     }
 
     public void emergencyStop() {
+        currentSpeed = 0;
+        currentSpeedLeft = currentSpeed;
+        currentSpeedRight = currentSpeed;
         motor.emergencyStop();
     }
 

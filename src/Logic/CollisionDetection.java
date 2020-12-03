@@ -7,7 +7,7 @@ import Utils.Updatable;
 public class CollisionDetection implements Updatable, UltraSonicCallback {
     private CollisionDetectionCallback collisionDetectionCallback;
 
-    private static final int STOPPING_DISTANCE = 10000;
+    private static final int STOPPING_DISTANCE = 20;
     private int stopCounter = 0;
     private int continueCounter = 0;
 
@@ -28,6 +28,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
         if (distance == null){
             distance = 0;
         }
+
         if (distance < STOPPING_DISTANCE) {
             stopCounter++;
         } else {
@@ -37,8 +38,11 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
         if (stopCounter + continueCounter > 10) {
             if (stopCounter > continueCounter) {
 
+                System.out.println("distance: " + distance);
                 collisionDetectionCallback.onCollisionDetection(distance);
             }
+            stopCounter = 0;
+            continueCounter = 0;
         }
     }
 
