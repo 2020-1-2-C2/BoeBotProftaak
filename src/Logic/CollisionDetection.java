@@ -38,7 +38,6 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
         if (stopCounter + continueCounter > 10) {
             if (stopCounter > continueCounter) {
 
-                System.out.println("distance: " + distance);
                 collisionDetectionCallback.onCollisionDetection(distance);
             }
             stopCounter = 0;

@@ -75,7 +75,6 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
             switch (button) {
                 case "power":
                     driveSystem.stop();
-                    running = false;
                     break;
                 case "ch+":
                     driveSystem.addForwardSpeed();
@@ -89,6 +88,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
                 case "vol-":
                     driveSystem.turnLeft();
                     break;
+                case "1":
+                    break;
             }
         }
         System.out.println(button);
@@ -96,7 +97,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     @Override
     public void onCollisionDetection(int distance) {
-        //driveSystem.emergencyStop(distance);
+        driveSystem.emergencyStop();
         //notifications.emergencyNotification();
     }
 }
