@@ -35,7 +35,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         CollisionDetection collisionDetection = new CollisionDetection(this);
         UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
 
-        Motor servoMotor = new ServoMotor(new Servo(12), new Servo(13));
+        Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         driveSystem = new DriveSystem(servoMotor);
 
         Buzzer buzzer = new Buzzer(6);
