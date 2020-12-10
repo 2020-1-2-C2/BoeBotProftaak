@@ -3,6 +3,8 @@ package Logic;
 import Utils.Motor;
 import Utils.Updatable;
 
+import java.lang.reflect.AccessibleObject;
+
 public class DriveSystem implements Updatable {
     private Motor motor;
     private final int STEPS = 10;
@@ -12,10 +14,43 @@ public class DriveSystem implements Updatable {
     private int currentSpeed = 0;
     private int currentSpeedRight = 0;
     private int currentSpeedLeft = 0;
+    private int direction = 1;
 
     public DriveSystem(Motor motors) {
         this.motor = motors;
     }
+
+    /**
+     *
+     * @param speed value between 0 and 100
+     */
+    public void setSpeed(int speed) {
+
+        if (speed > 100) {
+            speed = 100;
+        } else if (speed < 0) {
+            speed = 0;
+        }
+        speed = speed * direction;
+        currentSpeed = speed;
+        currentSpeedLeft = currentSpeed;
+        currentSpeedRight = currentSpeed;
+
+        motor.goToSpeed(speed, ACCELERATION_TIME);
+    }
+
+    /**
+     *
+     * @param direction 1 is forward, -1 is backward
+     */
+    public void setDirection(int direction) {
+        if (direction != this.direction && (direction == 1 || direction == -1)) {
+            this.direction = direction;
+            setSpeed(MAX_SPEED/STEPS);
+        }
+    }
+
+
 
     public void addForwardSpeed(){
         addSpeed(true);
@@ -67,69 +102,28 @@ public class DriveSystem implements Updatable {
      * @param direction true = right, false = left
      */
     private void turn(boolean direction) {
+
         int diff = MAX_SPEED/STEPS;
-        int newSpeedRight;
-        int newSpeedLeft;
+
 
         if (direction) {
-            currentSpeedRight = currentSpeedRight - diff;
-            currentSpeedLeft = currentSpeedLeft + diff;
+            currentSpeedRight = currentSpeed - diff;
+            currentSpeedLeft = currentSpeed + diff;
             if (currentSpeedLeft > 100) {
                 currentSpeedLeft = 100;
                 currentSpeedRight = 80;
-            } else if (currentSpeedLeft < -100) {
-                currentSpeedLeft = -100;
-                currentSpeedRight = -80;
             }
         } else {
-            currentSpeedRight = currentSpeedRight + diff;
-            currentSpeedLeft = currentSpeedLeft - diff;
+            currentSpeedRight = currentSpeed + diff;
+            currentSpeedLeft = currentSpeed - diff;
             if (currentSpeedRight > 100) {
                 currentSpeedRight = 100;
                 currentSpeedLeft = 80;
-            } else if (currentSpeedRight < -100) {
-                currentSpeedRight = -100;
-                currentSpeedLeft = -80;
             }
         }
-        currentSpeed = (currentSpeedLeft + currentSpeedRight) / 2;
 
-        motor.goToSpeedRight(currentSpeedRight, ACCELERATION_TIME);
-        motor.goToSpeedLeft(currentSpeedLeft, ACCELERATION_TIME);
-
-
-
-        /*
-        stop();
-        int speedStep = (MAX_FORWARD_SPEED - STOP_SPEED) / STEPS;
-        int maxSpeedRight;
-        int maxSpeedLeft;
-        int currentRightSpeed;
-        int currentLeftSpeed;
-
-        if (direction) {
-            currentRightSpeed = motors.getSpeedRight() - speedStep;
-            currentLeftSpeed = motors.getSpeedLeft() + speedStep;
-            maxSpeedRight = MAX_BACKWARD_SPEED;
-            maxSpeedLeft = MAX_FORWARD_SPEED;
-        } else {
-            currentRightSpeed = motors.getSpeedRight() + speedStep;
-            currentLeftSpeed = motors.getSpeedLeft() - speedStep;
-            maxSpeedRight = MAX_FORWARD_SPEED;
-            maxSpeedLeft = MAX_BACKWARD_SPEED;
-        }
-
-        if (currentRightSpeed > maxSpeedRight) {
-            currentRightSpeed = maxSpeedRight;
-        }
-        if (currentLeftSpeed > maxSpeedLeft) {
-            currentLeftSpeed = maxSpeedLeft;
-        }
-
-        motors.goToSpeedRight(currentRightSpeed, 5);
-        motors.goToSpeedLeft(currentLeftSpeed, 5);
-        */
-
+        motor.goToSpeedRight(currentSpeedRight * this.direction, ACCELERATION_TIME);
+        motor.goToSpeedLeft(currentSpeedLeft * this.direction, ACCELERATION_TIME);
 
     }
 

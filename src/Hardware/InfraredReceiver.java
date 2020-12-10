@@ -38,6 +38,13 @@ public class InfraredReceiver implements Updatable {
         this.remoteButtons.put(0b000010000000, "1");
         this.remoteButtons.put(0b000010000001, "2");
         this.remoteButtons.put(0b000010000010, "3");
+        this.remoteButtons.put(0b000010000011, "4");
+        this.remoteButtons.put(0b000010000100, "5");
+        this.remoteButtons.put(0b000010000101, "6");
+        this.remoteButtons.put(0b000010000110, "7");
+        this.remoteButtons.put(0b000010000111, "8");
+        this.remoteButtons.put(0b000010001000, "9");
+        this.remoteButtons.put(0b000010001001, "0");
         this.remoteButtons.put(0b000010010101, "power");
     }
 

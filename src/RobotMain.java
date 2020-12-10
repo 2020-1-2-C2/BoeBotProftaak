@@ -77,10 +77,10 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
                     driveSystem.stop();
                     break;
                 case "ch+":
-                    driveSystem.addForwardSpeed();
+                    driveSystem.setDirection(1);
                     break;
                 case "ch-":
-                    driveSystem.addBackwardSpeed();
+                    driveSystem.setDirection(-1);
                     break;
                 case "vol+":
                     driveSystem.turnRight();
@@ -89,6 +89,34 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
                     driveSystem.turnLeft();
                     break;
                 case "1":
+                    driveSystem.setSpeed(10);
+                    break;
+                case "2":
+                    driveSystem.setSpeed(20);
+                    break;
+                case "3":
+                    driveSystem.setSpeed(30);
+                    break;
+                case "4":
+                    driveSystem.setSpeed(40);
+                    break;
+                case "5":
+                    driveSystem.setSpeed(50);
+                    break;
+                case "6":
+                    driveSystem.setSpeed(60);
+                    break;
+                case "7":
+                    driveSystem.setSpeed(70);
+                    break;
+                case "8":
+                    driveSystem.setSpeed(80);
+                    break;
+                case "9":
+                    driveSystem.setSpeed(90);
+                    break;
+                case "0":
+                    driveSystem.setSpeed(100);
                     break;
             }
         }
@@ -97,7 +125,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     @Override
     public void onCollisionDetection(int distance) {
-        driveSystem.emergencyStop();
+        //driveSystem.emergencyStop();
         //notifications.emergencyNotification();
     }
 }
