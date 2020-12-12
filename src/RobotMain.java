@@ -125,7 +125,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     @Override
     public void onCollisionDetection(int distance) {
-        //driveSystem.emergencyStop();
+        driveSystem.emergencyStop();
         //notifications.emergencyNotification();
     }
 }

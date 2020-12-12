@@ -85,6 +85,7 @@ public class InfraredReceiver implements Updatable {
                 bitSignalBinary = bitSignalBinary << 1;
             }
         }
+        System.out.println(Integer.toBinaryString(bitSignalBinary));
         return bitSignalBinary;
     }
 
