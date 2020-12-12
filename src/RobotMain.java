@@ -41,10 +41,13 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         Buzzer buzzer = new Buzzer(6);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
         buzzers.add(buzzer);
-        RGBLed rgbLed = new RGBLed(5, 4, 3, Color.black);
-        ArrayList<Led> leds = new ArrayList<>();
-        leds.add(rgbLed);
-        notifications = new Notifications(buzzers, leds);
+//        RGBLed rgbLed = new RGBLed(5, 4, 3, Color.black);
+//        ArrayList<Led> leds = new ArrayList<>();
+//        leds.add(rgbLed);
+        NeoPixelLed neoPixelLed = new NeoPixelLed(0);
+        ArrayList<NeoPixelLed> neoPixelLeds = new ArrayList<>();
+        neoPixelLeds.add(neoPixelLed);
+        notifications = new Notifications(buzzers, neoPixelLeds);
 
 
         updatables.add(infraredReceiver);
@@ -52,8 +55,10 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         updatables.add(collisionDetection);
         updatables.add(driveSystem);
         updatables.add(buzzer);
-        updatables.add(rgbLed);
+        updatables.add(neoPixelLed);
         updatables.add(servoMotor);
+
+        testSong();
 
         while (running) {
             for (Updatable u : updatables) {
@@ -69,7 +74,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
      * @param button received button pressed on the infrared remote.
      */
     @Override
-    public void OnInfraredButton(String button) {
+    public void onInfraredButton(String button) {
         if (button != null) {
             notifications.remoteNotification();
             switch (button) {
@@ -125,7 +130,13 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
     @Override
     public void onCollisionDetection(int distance) {
-        //driveSystem.emergencyStop();
-        //notifications.emergencyNotification();
+        driveSystem.emergencyStop();
+        notifications.emergencyNotification();
     }
+
+    //TODO: Add functional note playback
+    public void testSong(){
+        Buzzer buzzer = new Buzzer(6);
+    }
+
 }
