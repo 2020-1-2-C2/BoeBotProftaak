@@ -104,7 +104,7 @@ public class InfraredReceiver implements Updatable {
     @Override
     public void update() {
         if (listenForStartSignal()){
-            this.infraredCallback.OnInfraredButton(getPressedremoteButtons());
+            this.infraredCallback.onInfraredButton(getPressedremoteButtons());
         }
     }
 }
