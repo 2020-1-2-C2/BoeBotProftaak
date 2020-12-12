@@ -68,7 +68,9 @@ public class UltraSonicReceiver implements Updatable {
      */
     @Override
     public void update() {
+//        System.out.println("Ultrasound timeout check");
         if (this.ultraSonicPulseTimer.timeout()) {
+//            System.out.println("Ultrasound pulse");
             this.ultraSonicCallback.onUltraSonicPulse(distance());
         }
     }

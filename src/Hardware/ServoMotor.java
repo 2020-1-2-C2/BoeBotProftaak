@@ -21,7 +21,6 @@ public class ServoMotor implements Motor {
     private int wantedSpeedRight;
     private final int STEP_SIZE_RIGHT = 2;
 
-
     private final int MAX_FORWARD_SPEED = 1700;
     private final int MAX_BACKWARD_SPEED = 1300;
     private final int STANDSTILL_SPEED = 1500;
