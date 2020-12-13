@@ -1,5 +1,5 @@
 package Utils;
 
 public interface InfraredCallback {
-    void OnInfraredButton(String button);
+    void onInfraredButton(String button);
 }
