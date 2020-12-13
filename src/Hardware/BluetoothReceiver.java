@@ -8,34 +8,26 @@ public class BluetoothReceiver implements Updatable {
     private SerialConnection serialConnection;
     private BluetoothCallback bluetoothCallback;
 
+    /**
+     * Enums for the bluetooth communication.
+     */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT;
-
-/*        public int getCommandValue() {
-            switch(this) {
-                case FORWARD:
-                    return 1;
-                case REVERSE:
-                    return 2;
-                case LEFT:
-                    return 3;
-                case RIGHT:
-                    return 4;
-                case STOP:
-                    return 5;
-                case DEFAULT:
-                    return -1;
-                default:
-                    return -1;
-            }
-        }*/
     }
 
+    /**
+     * Constructor for the BluetoothReceiver class.
+     * @param bluetoothCallback BluetoothCallBack object.
+     */
     public BluetoothReceiver(BluetoothCallback bluetoothCallback) {
         this.serialConnection = new SerialConnection(115200);
         this.bluetoothCallback = bluetoothCallback;
     }
 
+    /**
+     * Will listen for input.
+     * @return Commands
+     */
     public Commands listenForSignal() {
         if (this.serialConnection.available() > 0) {
             int data = this.serialConnection.readByte();
@@ -59,10 +51,17 @@ public class BluetoothReceiver implements Updatable {
         return Commands.DEFAULT;
     }
 
+    /**
+     * Allows for external use of the connection. MIGHT GET REMOVED IF PROVEN UNNECESSARY!
+     * @return Serialconnection object
+     */
     public SerialConnection getSerialConnection() {
         return serialConnection;
     }
 
+    /**
+     * Update method.
+     */
     @Override
     public void update() {
         this.bluetoothCallback.onBluetoothReceive(listenForSignal());

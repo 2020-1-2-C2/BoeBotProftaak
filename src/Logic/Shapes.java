@@ -6,84 +6,101 @@ import Utils.Updatable;
 public class Shapes implements Updatable {
     private DriveSystem driveSystem;
     private Timer circleTimer;
-    private Timer triangleStraightTimer;
-    private Timer triangleCornerTimer;
-    private boolean timerEnabled;
+    private Timer triangleTimer;
+    private boolean circleTimerEnabled;
+    private boolean triangleTimerEnabled;
     private int triangleCounter;
+    private boolean triangleSegmentBoolean;
 
+    /**
+     * Enums to define which shape to drive.
+     */
     public enum Shape {
         CIRCLE, TRIANGLE
     }
 
+    /**
+     * Constructor for Shapes class.
+     * @param driveSystem DriveSystem object.
+     */
     public Shapes(DriveSystem driveSystem) {
         this.driveSystem = driveSystem;
         this.circleTimer = new Timer(1000);
-        this.triangleCornerTimer = new Timer(1000);
-        this.triangleStraightTimer = new Timer(1000);
-        this.timerEnabled = false;
+        this.triangleTimer = new Timer(1000);
+        this.circleTimerEnabled = false;
         this.triangleCounter = 0;
+        this.triangleSegmentBoolean = false;
     }
 
+    /**
+     * This method is a setup for the shape.
+     * @param shape Shape enum/object
+     */
     public void beginShape(Shape shape) {
         this.driveSystem.stop();
+        this.driveSystem.setDirection(1);
         this.driveSystem.setSpeed(20);
         if (shape.equals(Shape.CIRCLE)) {
-            this.timerEnabled = true;
+            this.circleTimerEnabled = true;
             //TODO: Time needs to be adjusted!
             this.circleTimer.setInterval(11000);
             circle();
         } else if (shape.equals(Shape.TRIANGLE)) {
-            this.timerEnabled = true;
             triangle();
+            this.triangleTimerEnabled = true;
         }
     }
 
+    /**
+     * Drive in a circle
+     */
     public void circle() {
-        if (this.timerEnabled) {
+        if (this.circleTimerEnabled) {
             this.driveSystem.turnLeft();
         } else {
             this.driveSystem.stop();
         }
     }
 
+    /**
+     * Drive in a triangle
+     * TODO: Adjust timers
+     */
     public void triangle() {
-        this.triangleCounter = 0;
-        if (this.timerEnabled && this.triangleCounter % 2 == 0) {
+        if (this.triangleCounter < 3) {
+            if (this.triangleSegmentBoolean) {
+                //If true, corner
+                this.triangleTimer.setInterval(3000);
+                this.triangleSegmentBoolean = false;
+                this.driveSystem.turnLeft();
+                this.triangleCounter++;
+            } else {
+                //If false, straight
+                this.triangleTimer.setInterval(2000);
+                this.triangleSegmentBoolean = true;
+                this.driveSystem.setSpeed(20);
+            }
+        } else if (this.triangleCounter >= 3) {
+            this.triangleTimerEnabled = false;
+            this.triangleCounter = 0;
             this.driveSystem.stop();
-            System.out.println("Stop");
-            this.driveSystem.setSpeed(10);
-            System.out.println("Set speed");
-            this.triangleStraightTimer.setInterval(5000);
-            System.out.println("Set interval");
-        } else if (this.timerEnabled && this.triangleCounter % 2 != 0) {
-            this.driveSystem.stop();
-            System.out.println("Stop");
-            this.driveSystem.turnLeft();
-            System.out.println("Turn");
-            this.triangleCornerTimer.setInterval(2000);
-            System.out.println("Set interval");
         }
     }
 
+    /**
+     * Update method
+     */
     @Override
     public void update() {
-        if (this.timerEnabled && this.circleTimer.timeout()) {
-            this.timerEnabled = false;
+        if (this.circleTimerEnabled && this.circleTimer.timeout()) {
+            this.circleTimerEnabled = false;
             circle();
-        } else if (this.timerEnabled && this.triangleStraightTimer.timeout()) {
+        }
+
+        if (this.triangleTimerEnabled && this.triangleTimer.timeout()) {
+            //If true, corner
+            this.triangleTimer.mark();
             triangle();
-            this.triangleCounter++;
-            this.triangleCornerTimer.mark();
-            if (this.triangleCounter == 5) {
-                this.timerEnabled = false;
-            }
-        } else if (this.timerEnabled && this.triangleCornerTimer.timeout()) {
-            triangle();
-            this.triangleCounter++;
-            this.triangleStraightTimer.mark();
-            if (this.triangleCounter == 5) {
-                this.timerEnabled = false;
-            }
         }
     }
 }
