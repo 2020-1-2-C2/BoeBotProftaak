@@ -8,10 +8,9 @@ import TI.PinMode;
 import TI.Servo;
 import Utils.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 
-public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
+public class RobotMain implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
 
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
@@ -33,6 +32,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
     public void run() {
         BoeBot.setMode(0, PinMode.Input);
         InfraredReceiver infraredReceiver = new InfraredReceiver(0, this);
+        BluetoothReceiver bluetoothReceiver = new BluetoothReceiver(this);
 
         CollisionDetection collisionDetection = new CollisionDetection(this);
         UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
@@ -61,6 +61,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         updatables.add(neoPixelLed);
         updatables.add(servoMotor);
         updatables.add(this.shapes);
+        updatables.add(bluetoothReceiver);
 
         testSong();
 
@@ -136,6 +137,30 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
             }
         }
         System.out.println(button);
+    }
+
+    @Override
+    public void onBluetoothReceive(BluetoothReceiver.Commands command) {
+        if (!command.equals(BluetoothReceiver.Commands.DEFAULT)) {
+            switch (command) {
+                case FORWARD:
+                    driveSystem.setDirection(1);
+                    driveSystem.setSpeed(10);
+                    break;
+                case REVERSE:
+                    driveSystem.setDirection(-1);
+                    break;
+                case LEFT:
+                    driveSystem.turnLeft();
+                    break;
+                case RIGHT:
+                    driveSystem.turnRight();
+                    break;
+                case DEFAULT:
+                    break;
+            }
+            System.out.println(command);
+        }
     }
 
     @Override
