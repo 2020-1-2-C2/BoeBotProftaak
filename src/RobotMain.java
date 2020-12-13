@@ -2,6 +2,7 @@ import Hardware.*;
 import Logic.CollisionDetection;
 import Logic.DriveSystem;
 import Logic.Notifications;
+import Logic.Shapes;
 import TI.BoeBot;
 import TI.PinMode;
 import TI.Servo;
@@ -16,6 +17,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
     private DriveSystem driveSystem;
     private Notifications notifications;
     private boolean running = true;
+    private Shapes shapes;
 
     public static void main(String[] args) {
 
@@ -37,6 +39,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
 
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         driveSystem = new DriveSystem(servoMotor);
+        this.shapes = new Shapes(this.driveSystem);
 
         Buzzer buzzer = new Buzzer(6);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
@@ -54,6 +57,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
         updatables.add(buzzer);
         updatables.add(rgbLed);
         updatables.add(servoMotor);
+        updatables.add(this.shapes);
 
         while (running) {
             for (Updatable u : updatables) {
@@ -117,6 +121,12 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback {
                     break;
                 case "0":
                     driveSystem.setSpeed(100);
+                    break;
+                case "triangle":
+                    this.shapes.beginShape(Shapes.Shape.TRIANGLE);
+                    break;
+                case "tvvcr":
+                    this.shapes.beginShape(Shapes.Shape.CIRCLE);
                     break;
             }
         }

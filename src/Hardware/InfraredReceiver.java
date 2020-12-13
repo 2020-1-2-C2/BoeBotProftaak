@@ -46,6 +46,10 @@ public class InfraredReceiver implements Updatable {
         this.remoteButtons.put(0b000010001000, "9");
         this.remoteButtons.put(0b000010001001, "0");
         this.remoteButtons.put(0b000010010101, "power");
+        //'Square' button is underneath the 'vol-' button.
+        this.remoteButtons.put(0b000111001000, "triangle");
+        //'tvvcr' button is underneath the 'vol+' button.
+        this.remoteButtons.put(0b000010100101, "tvvcr");
     }
 
     /**
