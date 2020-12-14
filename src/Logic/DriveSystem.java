@@ -146,4 +146,12 @@ public class DriveSystem implements Updatable {
     public void update() {
 
     }
+
+    /**
+     * Auto-generated getter for the variable direction
+     * @return An int representing the direction the bot is heading to
+     */
+    public int getDirection() {
+        return direction;
+    }
 }

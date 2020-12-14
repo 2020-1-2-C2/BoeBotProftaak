@@ -1,8 +1,5 @@
 import Hardware.*;
-import Logic.CollisionDetection;
-import Logic.DriveSystem;
-import Logic.Notifications;
-import Logic.Shapes;
+import Logic.*;
 import TI.BoeBot;
 import TI.PinMode;
 import TI.Servo;
@@ -44,26 +41,39 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         Buzzer buzzer = new Buzzer(6);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
         buzzers.add(buzzer);
-//        RGBLed rgbLed = new RGBLed(5, 4, 3, Color.black);
-//        ArrayList<Led> leds = new ArrayList<>();
-//        leds.add(rgbLed);
-        NeoPixelLed neoPixelLed = new NeoPixelLed(0);
+
+        NeoPixelLed neoPixelLed0 = new NeoPixelLed(0);
+        NeoPixelLed neoPixelLed1 = new NeoPixelLed(1);
+        NeoPixelLed neoPixelLed2 = new NeoPixelLed(2);
+        NeoPixelLed neoPixelLed3 = new NeoPixelLed(3);
+        NeoPixelLed neoPixelLed4 = new NeoPixelLed(4);
+        NeoPixelLed neoPixelLed5 = new NeoPixelLed(5);
+
+        //Adds all the NeoPixelLeds to an arraylist.
         ArrayList<NeoPixelLed> neoPixelLeds = new ArrayList<>();
-        neoPixelLeds.add(neoPixelLed);
+        neoPixelLeds.add(neoPixelLed0);
+        neoPixelLeds.add(neoPixelLed1);
+        neoPixelLeds.add(neoPixelLed2);
+        neoPixelLeds.add(neoPixelLed3);
+        neoPixelLeds.add(neoPixelLed4);
+        neoPixelLeds.add(neoPixelLed5);
         notifications = new Notifications(buzzers, neoPixelLeds);
 
-
+        //Adds all the updatables to an arraylist.
         updatables.add(infraredReceiver);
         updatables.add(ultraSonicReceiver);
         updatables.add(collisionDetection);
         updatables.add(driveSystem);
         updatables.add(buzzer);
-        updatables.add(neoPixelLed);
         updatables.add(servoMotor);
         updatables.add(this.shapes);
         updatables.add(bluetoothReceiver);
+        for (NeoPixelLed neoPixelLed : neoPixelLeds){
+            updatables.add(neoPixelLed);
+        }
 
-        testSong();
+
+        testSong(); //TODO: Delete this after testing
 
         while (running) {
             for (Updatable u : updatables) {
@@ -145,7 +155,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             switch (command) {
                 case FORWARD:
                     driveSystem.setDirection(1);
-                    driveSystem.setSpeed(10);
+                    driveSystem.setSpeed(10); //TODO: Check why we change the speed here, but not in other cases?
                     break;
                 case REVERSE:
                     driveSystem.setDirection(-1);
@@ -169,9 +179,33 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         notifications.emergencyNotification();
     }
 
-    //TODO: Add functional note playback
+    //Plays the first part of the melody of Somebody that I used to know by Gotye
     public void testSong(){
         Buzzer buzzer = new Buzzer(6);
+
+        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
+        NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
+        AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
+
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("F", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("F", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("G", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("G", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A#", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("C", 6)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getHalfNote(), notePitchGenerator.playNote("G", 5)));
+
+        buzzer.playSong(audioPlaySystem);
     }
+
+    //TODO: Decide where to update this
+    public void update(){
+        if (driveSystem.getDirection() == -1){
+            notifications.drivingBackwardsNotification();
+        }
+    }
+
 
 }
