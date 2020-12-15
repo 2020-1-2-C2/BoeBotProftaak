@@ -68,6 +68,7 @@ public class Notifications implements Updatable {
         this.repeat = true;
         this.neoPixelLedColorA = Color.red;
         this.lightColorPattern = "AAAAAA";
+        this.neoPixelLedState = true;
 
         buzzerTimer.setInterval(this.buzzerInterval);
         neoPixelLedTimer.setInterval(this.neoPixelLedInterval);
