@@ -39,6 +39,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         this.shapes = new Shapes(this.driveSystem);
 
         Buzzer buzzer = new Buzzer(6);
+        BoeBot.setMode(6, PinMode.Output);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
         buzzers.add(buzzer);
 
@@ -59,21 +60,18 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         neoPixelLeds.add(neoPixelLed5);
         notifications = new Notifications(buzzers, neoPixelLeds);
 
-        //Adds all the updatables to an arraylist.
-//        updatables.add(infraredReceiver);
-//        updatables.add(ultraSonicReceiver);
-//        updatables.add(collisionDetection);
-//        updatables.add(driveSystem);
+//        Adds all the updatables to an arraylist.
+        updatables.add(infraredReceiver);
+        updatables.add(ultraSonicReceiver);
+        updatables.add(collisionDetection);
+        updatables.add(driveSystem);
         updatables.add(buzzer);
-//        updatables.add(servoMotor);
-//        updatables.add(this.shapes);
-//        updatables.add(bluetoothReceiver);
-//        for (NeoPixelLed neoPixelLed : neoPixelLeds){
-//            updatables.add(neoPixelLed);
-//        }
-
-
-        testSong(); //TODO: Delete this after testing
+        updatables.add(servoMotor);
+        updatables.add(this.shapes);
+        updatables.add(bluetoothReceiver);
+        for (NeoPixelLed neoPixelLed : neoPixelLeds){
+            updatables.add(neoPixelLed);
+        }
 
         while (running) {
             for (Updatable u : updatables) {
@@ -207,10 +205,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     }
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
-    public void testSong(){
-        Buzzer buzzer = new Buzzer(6);
-        BoeBot.setMode(6, PinMode.Output);
-
+    public void testSong(Buzzer buzzer){
         System.out.println("Entered testsong");
 
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);

@@ -4,7 +4,7 @@ public class NotePitchGenerator {
 
     public int playNote(String note, int octave){
         double noteFrequency;
-        int noteOctave = octave + 1;
+        int noteOctave = octave + 10;
 
         if (note.contains("C")){
             noteFrequency = 16.35 * noteOctave;
