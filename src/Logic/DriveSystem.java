@@ -8,7 +8,6 @@ import Utils.Updatable;
 //TODO: Remove unnecessary comments & code
 //TODO: Update documentation
 
-public class DriveSystem implements Updatable {
 public class DriveSystem implements Updatable, LineFollowCallback {
     private Motor motor;
     private final int STEPS = 10;
@@ -27,7 +26,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     *
      * @param speed value between 0 and 100
      */
     public void setSpeed(int speed) {
@@ -46,36 +44,33 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     *
      * @param direction 1 is forward, -1 is backward
      */
     public void setDirection(int direction) {
         if (direction != this.direction && (direction == 1 || direction == -1)) {
             this.direction = direction;
-            setSpeed(MAX_SPEED/STEPS);
+            setSpeed(MAX_SPEED / STEPS);
         }
     }
 
 
-
-    public void addForwardSpeed(){
+    public void addForwardSpeed() {
         addSpeed(true);
     }
 
-    public void addBackwardSpeed(){
+    public void addBackwardSpeed() {
         addSpeed(false);
     }
 
     /**
-     *
      * @param direction true = forwards, false = backwards
      */
     public void addSpeed(boolean direction) {
         int speedDiff;
         if (direction) {
-            speedDiff = MAX_SPEED/STEPS;
+            speedDiff = MAX_SPEED / STEPS;
         } else {
-            speedDiff = - MAX_SPEED/STEPS;
+            speedDiff = -MAX_SPEED / STEPS;
         }
         currentSpeed = currentSpeed + speedDiff;
 
@@ -90,7 +85,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
         System.out.println(motor.getSpeedLeft());
         System.out.println(motor.getSpeedRight());
-        System.out.println(MAX_SPEED/STEPS);
+        System.out.println(MAX_SPEED / STEPS);
         motor.goToSpeed(currentSpeed, ACCELERATION_TIME);
 
     }
@@ -104,12 +99,11 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     *
      * @param direction true = right, false = left
      */
     private void turn(boolean direction) {
 
-        int diff = MAX_SPEED/STEPS;
+        int diff = MAX_SPEED / STEPS;
 
 
         if (direction) {
@@ -133,7 +127,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     }
 
-    public void stop(){
+    public void stop() {
         currentSpeed = 0;
         currentSpeedLeft = currentSpeed;
         currentSpeedRight = currentSpeed;
@@ -164,6 +158,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     /**
      * Auto-generated getter for the variable direction
+     *
      * @return An int representing the direction the bot is heading to
      */
     public int getDirection() {
