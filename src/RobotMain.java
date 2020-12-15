@@ -14,6 +14,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     private boolean running = true;
     private Shapes shapes;
 
+    private Jingle jingle = new Jingle();
+
     public static void main(String[] args) {
 
         RobotMain main = new RobotMain();
@@ -71,6 +73,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         for (NeoPixelLed neoPixelLed : neoPixelLeds){
             updatables.add(neoPixelLed);
         }
+
+        testSong(buzzer);
 
         while (running) {
             for (Updatable u : updatables) {
@@ -208,23 +212,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
     public void testSong(Buzzer buzzer){
-        System.out.println("Entered testsong");
-
-        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
-        NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
-        AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
-
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A#", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("C", 6)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getHalfNote(), notePitchGenerator.playNote("G", 5)));
-
-        buzzer.playSong(audioPlaySystem);
+        System.out.println("Entered Somebody that I used to know by Gotye");
+        buzzer.playSong(jingle.somebodyThatIUsedToKnow());
     }
 
     //TODO: Decide where to update this
