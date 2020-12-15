@@ -156,6 +156,9 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 case REVERSE:
                     driveSystem.setDirection(-1);
                     break;
+                case STOP:
+                    driveSystem.stop();
+                    break;
                 case LEFT:
                     driveSystem.turnLeft();
                     break;
