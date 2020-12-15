@@ -60,17 +60,17 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         notifications = new Notifications(buzzers, neoPixelLeds);
 
         //Adds all the updatables to an arraylist.
-        updatables.add(infraredReceiver);
-        updatables.add(ultraSonicReceiver);
-        updatables.add(collisionDetection);
-        updatables.add(driveSystem);
+//        updatables.add(infraredReceiver);
+//        updatables.add(ultraSonicReceiver);
+//        updatables.add(collisionDetection);
+//        updatables.add(driveSystem);
         updatables.add(buzzer);
-        updatables.add(servoMotor);
-        updatables.add(this.shapes);
-        updatables.add(bluetoothReceiver);
-        for (NeoPixelLed neoPixelLed : neoPixelLeds){
-            updatables.add(neoPixelLed);
-        }
+//        updatables.add(servoMotor);
+//        updatables.add(this.shapes);
+//        updatables.add(bluetoothReceiver);
+//        for (NeoPixelLed neoPixelLed : neoPixelLeds){
+//            updatables.add(neoPixelLed);
+//        }
 
 
         testSong(); //TODO: Delete this after testing
@@ -182,6 +182,9 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
     public void testSong(){
         Buzzer buzzer = new Buzzer(6);
+        BoeBot.setMode(6, PinMode.Output);
+
+        System.out.println("Entered testsong");
 
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
         NotePitchGenerator notePitchGenerator = new NotePitchGenerator();

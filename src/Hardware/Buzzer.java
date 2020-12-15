@@ -96,11 +96,13 @@ public class Buzzer implements Updatable {
     }
 
     public void playSong(AudioPlaySystem audioPlaySystem){
+        System.out.println("Playing song");
         for (MusicNote musicNote : audioPlaySystem.getNotesToPlay()){
             Timer timer = new Timer(musicNote.getWhenToPlayInMS());
-            if (timer.timeout()){
+            BoeBot.wait(musicNote.getWhenToPlayInMS());
+//            if (timer.timeout()){
                 buzz(musicNote.getNoteLengthInMS(), musicNote.getNotePitch());
-            }
+//            }
         }
     }
 
