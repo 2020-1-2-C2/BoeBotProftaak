@@ -23,6 +23,10 @@ public class NoteLengthGenerator {
     //NOTE: 60 BPM is one beat per second.
     //NOTE: quarternotes (60.00) are 1/4 of a bar, which is 240.00
 
+    /**
+     * Constructor for the NoteLengthGenerator class. It is used as an instance for other classes to generate timing for all notes.
+     * @param BPM Beats-Per-Minute. This is used to calculate the timing for all notes.
+     */
     public NoteLengthGenerator(double BPM){
         this.halfNote = 120.00 / BPM;
         this.quarterNote = 60.00 / BPM;

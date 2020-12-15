@@ -2,8 +2,6 @@ package Logic;
 
 public class MusicNote {
 
-    //TODO: Combine the Buzzer getNote() method with methods in this class by inserting the getNote() method here.
-    //TODO: Delete the noteLength presets in AudioPlaySystem.java or in MusicNote.java
     //TODO: Fix all typos.
     //TODO: Change whenToPlay into waitAmountForStart where appropriate.
     //TODO: Update all the documentation.
@@ -13,12 +11,13 @@ public class MusicNote {
     private double whenToPlay;
 
     //TODO: Specify which unit the attributes are measured in.
+    //TODO: Rename whenToPlay to noteDelay;
 
     /**
      * Constructor that created an object of this class.
-     * @param noteLength Length of the note
-     * @param notePitch Pitch of the note (for example: C4, A#6)
-     * @param whenToPlay Timing; the time specifying when the note should play
+     * @param noteLength Length of the note (Should be an attribute of an instance of NoteLengthGenerator.java)
+     * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with NotePitchGenerator.java)
+     * @param whenToPlay Timing; this is the time it waits after the note before this note is done playing.
      */
     public MusicNote(double noteLength, int notePitch, double whenToPlay) {
         this.noteLength = noteLength;
@@ -26,15 +25,14 @@ public class MusicNote {
         this.whenToPlay = whenToPlay;
     }
 
+    /**
+     * Constructor that created an object of this class.
+     * @param noteLength Length of the note (Should be an attribute of an instance of NoteLengthGenerator.java)
+     * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with NotePitchGenerator.java)
+     */
     public MusicNote(double noteLength, int notePitch) {
         this.noteLength = noteLength;
         this.notePitch = notePitch;
-    }
-
-    public MusicNote(double noteLength, String note, int octave) {
-        this.noteLength = noteLength;
-        this.notePitch = notePitch;
-        this.whenToPlay = 0.00;
     }
 
     /**
@@ -61,6 +59,10 @@ public class MusicNote {
         return whenToPlay;
     }
 
+    /**
+     * Getter for the whenToPlay attribute in MS, used by the Buzzer.
+     * @return whenToPlay * 1000 as an integer.
+     */
     public int getWhenToPlayInMS() {
         return ((int)(whenToPlay * 1000));
     }
