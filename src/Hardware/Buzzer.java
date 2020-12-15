@@ -11,7 +11,7 @@ public class Buzzer implements Updatable {
     private int pinId;
     private boolean isOn;
 
-    private NotePitchGenerator notePitchGenerator;
+    private NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
 
     /**
      *
