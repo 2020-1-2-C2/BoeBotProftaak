@@ -12,7 +12,8 @@ public class BluetoothReceiver implements Updatable {
      * Enums for the bluetooth communication.
      */
     public enum Commands {
-        FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT;
+        FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
+        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN
     }
 
     /**
@@ -28,7 +29,7 @@ public class BluetoothReceiver implements Updatable {
      * Will listen for input.
      * @return Commands
      */
-    public Commands listenForSignal() {
+    private Commands listenForSignal() {
         if (this.serialConnection.available() > 0) {
             int data = this.serialConnection.readByte();
             this.serialConnection.writeByte(data);
@@ -44,6 +45,26 @@ public class BluetoothReceiver implements Updatable {
                     return Commands.RIGHT;
                 case 16:
                     return Commands.STOP;
+                case 1:
+                    return Commands.ONE;
+                case 2:
+                    return Commands.TWO;
+                case 3:
+                    return Commands.THREE;
+                case 4:
+                    return Commands.FOUR;
+                case 5:
+                    return Commands.FIVE;
+                case 6:
+                    return Commands.SIX;
+                case 7:
+                    return Commands.SEVEN;
+                case 8:
+                    return Commands.EIGHT;
+                case 9:
+                    return Commands.NINE;
+                case 10:
+                    return Commands.TEN;
                 default:
                     return Commands.DEFAULT;
             }
