@@ -5,7 +5,6 @@ import Logic.MusicNote;
 import Logic.NoteLengthGenerator;
 import Logic.NotePitchGenerator;
 import TI.BoeBot;
-import TI.Timer;
 import Utils.Updatable;
 
 //TODO: Fix, add and update documentation.

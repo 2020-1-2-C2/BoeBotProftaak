@@ -2,7 +2,6 @@ import Hardware.*;
 import Logic.*;
 import TI.BoeBot;
 import TI.PinMode;
-import TI.Servo;
 import Utils.*;
 
 import java.util.ArrayList;
