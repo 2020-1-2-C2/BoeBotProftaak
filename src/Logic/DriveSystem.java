@@ -90,35 +90,52 @@ public class DriveSystem implements Updatable {
     }
 
     public void turnLeft() {
-        turn(false);
+        turn(false, MAX_SPEED/STEPS);
     }
 
     public void turnRight() {
-        turn(true);
+        turn(true, MAX_SPEED/STEPS);
     }
 
     /**
      *
-     * @param direction true = right, false = left
+     * @param speed
      */
-    private void turn(boolean direction) {
+    public void turnLeft(int speed) {
+        turn(false, speed);
+    }
 
-        int diff = MAX_SPEED/STEPS;
+    /**
+     *
+     * @param speed
+     */
+    public void turnRight(int speed) {
+        turn(true, speed);
+    }
+
+
+    /**
+     *
+     * @param direction true = right, false = left
+     * @param speed
+     */
+    private void turn(boolean direction, int speed) {
+
 
 
         if (direction) {
-            currentSpeedRight = currentSpeed - diff;
-            currentSpeedLeft = currentSpeed + diff;
+            currentSpeedRight = currentSpeed - speed;
+            currentSpeedLeft = currentSpeed + speed;
             if (currentSpeedLeft > 100) {
                 currentSpeedLeft = 100;
-                currentSpeedRight = 80;
+                currentSpeedRight = 100 - speed*2;
             }
         } else {
-            currentSpeedRight = currentSpeed + diff;
-            currentSpeedLeft = currentSpeed - diff;
+            currentSpeedRight = currentSpeed + speed;
+            currentSpeedLeft = currentSpeed - speed;
             if (currentSpeedRight > 100) {
                 currentSpeedRight = 100;
-                currentSpeedLeft = 80;
+                currentSpeedLeft = 100 - speed*2;
             }
         }
 
