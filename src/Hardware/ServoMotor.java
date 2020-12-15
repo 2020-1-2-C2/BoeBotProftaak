@@ -140,6 +140,10 @@ public class ServoMotor implements Motor {
     public void emergencyStop() {
         servoRight.update(STANDSTILL_SPEED);
         servoLeft.update(STANDSTILL_SPEED);
+
+        // resetting the internal speed within the software to match the emergency stop
+        wantedSpeedLeft = percentToValue(0);
+        wantedSpeedRight = percentToValue(0);
     }
 
     @Override
