@@ -13,7 +13,6 @@ public class BluetoothReceiver implements Updatable {
      */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
-        //Different setSpeed values
         ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN
     }
 
@@ -30,7 +29,7 @@ public class BluetoothReceiver implements Updatable {
      * Will listen for input.
      * @return Commands
      */
-    public Commands listenForSignal() {
+    private Commands listenForSignal() {
         if (this.serialConnection.available() > 0) {
             int data = this.serialConnection.readByte();
             this.serialConnection.writeByte(data);
@@ -88,4 +87,5 @@ public class BluetoothReceiver implements Updatable {
     public void update() {
         this.bluetoothCallback.onBluetoothReceive(listenForSignal());
     }
+
 }

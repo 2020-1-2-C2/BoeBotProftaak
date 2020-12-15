@@ -1,15 +1,23 @@
 package Hardware;
 
+import Logic.AudioPlaySystem;
+import Logic.MusicNote;
+import Logic.NotePitchGenerator;
 import TI.BoeBot;
 import Utils.Updatable;
 
+/**
+ * Buzzer class, from which all buzzer sensors should have its own instance. The methods are used to play sounds on the Buzzer.
+ */
 public class Buzzer implements Updatable {
     private int pinId;
     private boolean isOn;
 
+    private NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
+
     /**
-     *
-     * @param pinId is the pin where the buzzer is connected to.
+     * Constructor for the buzzer sensor, deriving from the Buzzer.java class.
+     * @param pinId An integer representing the pin whom the buzzer is connected to.
      */
     public Buzzer(int pinId) {
         this.pinId = pinId;
@@ -72,7 +80,6 @@ public class Buzzer implements Updatable {
 
     @Override
     public void update() {
-
     }
 
     /**
@@ -82,38 +89,22 @@ public class Buzzer implements Updatable {
      * @return A rounded number containing the hz of the given musical note.
      */
     public int getNote(String note, int octave){
-        double noteFrequency;
-        int noteOctave = octave + 1;
-
-        if (note.contains("C")){
-            noteFrequency = 16.35 * noteOctave;
-        } else if (note.contains("C#")){
-            noteFrequency = 17.32 * noteOctave;
-        } else if (note.contains("D")){
-            noteFrequency = 18.35 * noteOctave;
-        } else if (note.contains("D#")){
-            noteFrequency = 19.44 * noteOctave;
-        } else if (note.contains("E")){
-            noteFrequency = 20.60 * noteOctave;
-        } else if (note.contains("F")){
-            noteFrequency = 21.82 * noteOctave;
-        } else if (note.contains("F#")){
-            noteFrequency = 23.12 * noteOctave;
-        } else if (note.contains("G")){
-            noteFrequency = 24.49 * noteOctave;
-        } else if (note.contains("G#")){
-            noteFrequency = 25.95 * noteOctave;
-        } else if (note.contains("A")){
-            noteFrequency = 27.50 * noteOctave;
-        } else if (note.contains("A#")){
-            noteFrequency = 29.13 * noteOctave;
-        } else if (note.contains("B")){
-            noteFrequency = 30.86 * noteOctave;
-        } else {
-            noteFrequency = 440.0;
-        }
-
-        return Math.round((float)noteFrequency);
+        return notePitchGenerator.getNote(note, octave);
     }
+
+    /**
+     * Plays the song in the audioPlaySystem given as a parameter.
+     * @param audioPlaySystem
+     */
+    public void playSong(AudioPlaySystem audioPlaySystem){
+        System.out.println("Playing song");
+        for (MusicNote musicNote : audioPlaySystem.getNotesToPlay()){
+            BoeBot.wait(musicNote.getNoteDelayInMS());
+            System.out.println(musicNote.getNoteDelayInMS());
+                buzz(musicNote.getNoteLengthInMS(), musicNote.getNotePitch());
+        }
+    }
+
+
 
 }

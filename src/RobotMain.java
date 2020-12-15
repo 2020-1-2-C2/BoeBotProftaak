@@ -1,11 +1,7 @@
 import Hardware.*;
-import Logic.CollisionDetection;
-import Logic.DriveSystem;
-import Logic.Notifications;
-import Logic.Shapes;
+import Logic.*;
 import TI.BoeBot;
 import TI.PinMode;
-import TI.Servo;
 import Utils.*;
 
 import java.util.ArrayList;
@@ -17,6 +13,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     private Notifications notifications;
     private boolean running = true;
     private Shapes shapes;
+
+    private Jingle jingle = new Jingle();
 
     public static void main(String[] args) {
 
@@ -40,30 +38,45 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
+        LineFollower lineFollower = new LineFollower(8, 9, driveSystem);
+
 
         Buzzer buzzer = new Buzzer(6);
+        BoeBot.setMode(6, PinMode.Output);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
         buzzers.add(buzzer);
-//        RGBLed rgbLed = new RGBLed(5, 4, 3, Color.black);
-//        ArrayList<Led> leds = new ArrayList<>();
-//        leds.add(rgbLed);
-        NeoPixelLed neoPixelLed = new NeoPixelLed(0);
+
+        NeoPixelLed neoPixelLed0 = new NeoPixelLed(0);
+        NeoPixelLed neoPixelLed1 = new NeoPixelLed(1);
+        NeoPixelLed neoPixelLed2 = new NeoPixelLed(2);
+        NeoPixelLed neoPixelLed3 = new NeoPixelLed(3);
+        NeoPixelLed neoPixelLed4 = new NeoPixelLed(4);
+        NeoPixelLed neoPixelLed5 = new NeoPixelLed(5);
+
+        //Adds all the NeoPixelLeds to an arraylist.
         ArrayList<NeoPixelLed> neoPixelLeds = new ArrayList<>();
-        neoPixelLeds.add(neoPixelLed);
+        neoPixelLeds.add(neoPixelLed0);
+        neoPixelLeds.add(neoPixelLed1);
+        neoPixelLeds.add(neoPixelLed2);
+        neoPixelLeds.add(neoPixelLed3);
+        neoPixelLeds.add(neoPixelLed4);
+        neoPixelLeds.add(neoPixelLed5);
         notifications = new Notifications(buzzers, neoPixelLeds);
 
-
+//        Adds all the updatables to an arraylist.
         updatables.add(infraredReceiver);
         updatables.add(ultraSonicReceiver);
         updatables.add(collisionDetection);
         updatables.add(driveSystem);
         updatables.add(buzzer);
-        updatables.add(neoPixelLed);
         updatables.add(servoMotor);
         updatables.add(this.shapes);
         updatables.add(bluetoothReceiver);
+        for (NeoPixelLed neoPixelLed : neoPixelLeds){
+            updatables.add(neoPixelLed);
+        }
 
-        testSong();
+        testSong(buzzer);
 
         while (running) {
             for (Updatable u : updatables) {
@@ -149,14 +162,14 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 case REVERSE:
                     driveSystem.setDirection(-1);
                     break;
+                case STOP:
+                    driveSystem.stop();
+                    break;
                 case LEFT:
                     driveSystem.turnLeft();
                     break;
                 case RIGHT:
                     driveSystem.turnRight();
-                    break;
-                case STOP:
-                    driveSystem.stop();
                     break;
                 case ONE:
                     driveSystem.setSpeed(10);
@@ -188,8 +201,6 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 case TEN:
                     driveSystem.setSpeed(100);
                     break;
-                case DEFAULT:
-                    break;
             }
             System.out.println(command);
         }
@@ -201,9 +212,18 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         notifications.emergencyNotification();
     }
 
-    //TODO: Add functional note playback
-    public void testSong(){
-        Buzzer buzzer = new Buzzer(6);
+    //Plays the first part of the melody of Somebody that I used to know by Gotye
+    public void testSong(Buzzer buzzer){
+        System.out.println("Entered Somebody that I used to know by Gotye");
+        buzzer.playSong(jingle.somebodyThatIUsedToKnow());
     }
+
+    //TODO: Decide where to update this
+    public void update(){
+        if (driveSystem.getDirection() == -1){
+            notifications.drivingBackwardsNotification();
+        }
+    }
+
 
 }

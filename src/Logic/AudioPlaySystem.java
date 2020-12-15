@@ -2,83 +2,67 @@ package Logic;
 
 import java.util.ArrayList;
 
+//TODO: Check the styling guide and use it as a reference.
+
+/**
+ * Instances made from this class are made in Jingle.java for sounds relying on pitch & rhythm (songs). This class contains methods to add notes with the right timings.
+ */
 public class AudioPlaySystem {
 
-    //TODO: Delete the noteLength presets in AudioPlaySystem.java or in MusicNote.java
-    //TODO: Fix all typos.
-
-    //Source of information: https://musescore.org/en/node/22609
-
-    private double BPM;
     private ArrayList<MusicNote> notesToPlay = new ArrayList();
 
-    //All attributes related to the timing based off the BPM.
-    private double halfNote;
-    private double quarterNote;
-    private double eightNote;
-    private double sixteenthNote;
-    private double dottedQuarterNote;
-    private double dottedEightNote;
-    private double dottedSixteenthNote;
-    private double tripletQuarterNote;
-    private double tripletEightNote;
-    private double tripletSixteenthNote;
-
-    public AudioPlaySystem(double BPM){
-        this.BPM = BPM;
+    /**
+     * Constructor that creates a new instance of AudioPlaySystem.
+     */
+    public AudioPlaySystem(){
         this.notesToPlay = new ArrayList<>();
-
-        //All attributes related to the timing based off the BPM.
-        this.halfNote = 120.00 / this.BPM;
-        this.quarterNote = 60.00 / this.BPM;
-        this.eightNote = 30.00 / this.BPM;
-        this.sixteenthNote = 15.00 / this.BPM;
-        this.dottedQuarterNote = 90.00 / this.BPM;
-        this.dottedEightNote = 45.00 / this.BPM;
-        this.dottedSixteenthNote = 22.50 / this.BPM;
-        this.tripletQuarterNote = 40.00 / this.BPM;
-        this.tripletEightNote = 20.00 / this.BPM;
-        this.tripletSixteenthNote = 10.00 / this.BPM;
     }
 
-    public AudioPlaySystem(double BPM, ArrayList<MusicNote> notesToPlay){
-        this.BPM = BPM;
+    /**
+     * Constructor able to create a new instance from already correctly setup MusicNote objects.
+     * @param notesToPlay
+     */
+    public AudioPlaySystem(ArrayList<MusicNote> notesToPlay){
         this.notesToPlay = notesToPlay;
-
-        //All attributes related to the timing based off the BPM.
-        //NOTE: 60 BPM is one second.
-        //NOTE: quarternotes (60.00) are 1/4 of a bar, which is 240.00
-        this.halfNote = 120.00 / this.BPM;
-        this.quarterNote = 60.00 / this.BPM;
-        this.eightNote = 30.00 / this.BPM;
-        this.sixteenthNote = 15.00 / this.BPM;
-        this.dottedQuarterNote = 90.00 / this.BPM;
-        this.dottedEightNote = 45.00 / this.BPM;
-        this.dottedSixteenthNote = 22.50 / this.BPM;
-        this.tripletQuarterNote = 40.00 / this.BPM;
-        this.tripletEightNote = 20.00 / this.BPM;
-        this.tripletSixteenthNote = 10.00 / this.BPM;
     }
 
+    /**
+     * Method that clears the entire notesToPlay list of this object.
+     */
+    public void clearNotes(){
+        this.notesToPlay.clear();
+    }
 
+    /**
+     * Adds the MusicNote to the list and edits the timing to fit the whole jingle.
+     * @param musicNote Adds this note to this.notesToPlay.
+     */
     public void addNote(MusicNote musicNote){
         if (!this.notesToPlay.isEmpty()){
-            this.notesToPlay.add(new MusicNote(musicNote.getNoteLength(), musicNote.getNotePitch(), this.notesToPlay.get(this.notesToPlay.size() - 1).getWhenToPlay() + this.notesToPlay.get(this.notesToPlay.size() - 1).getNoteLength() + musicNote.getWhenToPlay()));
+            this.notesToPlay.add(new MusicNote(musicNote.getNoteLength(), musicNote.getNotePitch(),
+                            + this.notesToPlay.get(this.notesToPlay.size() - 1).getNoteLength()
+                            + musicNote.getNoteDelay()
+            ));
         } else {
-            this.notesToPlay.add(new MusicNote(musicNote.getNoteLength(), musicNote.getNotePitch(), 0));
+            this.notesToPlay.add(musicNote);
         }
     }
 
+    /**
+     * Method used to add a list of objects of the MusicNote class to this.notesToPlay. It does this by iterating through all MusicNote objects and using them as a parameter in the addNote(MusicNote musicNote) function.
+     * @param musicNotes Adds the list to this.notesToPlay.
+     */
     public void addNotes(ArrayList<MusicNote> musicNotes){
-        this.notesToPlay.addAll(musicNotes);
+        for (MusicNote musicNote : musicNotes){
+            addNote(musicNote);
+        }
     }
 
-    public void addNote(String noteLength, double BPM, double notePitch, double whenToPlay){
-        addNote(new MusicNote(noteLength, BPM, notePitch, whenToPlay));
+    /**
+     * Auto-generated getter for the notesToPlay attribute
+     * @return
+     */
+    public ArrayList<MusicNote> getNotesToPlay() {
+        return notesToPlay;
     }
-
-    public void addNote(double noteLength, double notePitch){
-        addNote(new MusicNote(noteLength, notePitch));
-    }
-
 }

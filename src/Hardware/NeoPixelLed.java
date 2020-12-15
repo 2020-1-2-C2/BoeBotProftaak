@@ -16,7 +16,7 @@ public class NeoPixelLed implements Led {
 
     public NeoPixelLed(int id) {
         this.id = id;
-        this.blinkingTimer = new Timer(1000);
+        this.blinkingTimer = new Timer(1000); //TODO: Check why we use a timer like this & Check whether a constructor with a customizable timer would be beneficial
     }
 
     @Override
@@ -66,6 +66,7 @@ public class NeoPixelLed implements Led {
         return this.isOn;
     }
 
+    //TODO: Remove getBlue(), getGreen() & getRed().
     public int getBlue() {
         return this.color.getBlue();
     }
