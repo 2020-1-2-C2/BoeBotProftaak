@@ -43,11 +43,12 @@ public class Shapes implements Updatable {
         if (shape.equals(Shape.CIRCLE)) {
             this.circleTimerEnabled = true;
             //TODO: Time needs to be adjusted!
-            this.circleTimer.setInterval(11000);
+            this.circleTimer.setInterval(10000);
             circle();
         } else if (shape.equals(Shape.TRIANGLE)) {
-            triangle();
             this.triangleTimerEnabled = true;
+            this.triangleSegmentBoolean = false;
+            triangle();
         }
     }
 
@@ -70,15 +71,16 @@ public class Shapes implements Updatable {
         if (this.triangleCounter < 3) {
             if (this.triangleSegmentBoolean) {
                 //If true, corner
-                this.triangleTimer.setInterval(3000);
+                this.driveSystem.stop();
+                this.triangleTimer.setInterval(4500);
                 this.triangleSegmentBoolean = false;
                 this.driveSystem.turnLeft();
                 this.triangleCounter++;
             } else {
                 //If false, straight
+                this.driveSystem.setSpeed(20);
                 this.triangleTimer.setInterval(2000);
                 this.triangleSegmentBoolean = true;
-                this.driveSystem.setSpeed(20);
             }
         } else if (this.triangleCounter >= 3) {
             this.triangleTimerEnabled = false;
