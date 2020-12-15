@@ -90,11 +90,11 @@ public class DriveSystem implements Updatable {
     }
 
     public void turnLeft() {
-        turn(false, MAX_SPEED/STEPS);
+        turn(false, MAX_SPEED/STEPS*2);
     }
 
     public void turnRight() {
-        turn(true, MAX_SPEED/STEPS);
+        turn(true, MAX_SPEED/STEPS*2);
     }
 
     /**
@@ -124,18 +124,18 @@ public class DriveSystem implements Updatable {
 
 
         if (direction) {
-            currentSpeedRight = currentSpeed - speed;
-            currentSpeedLeft = currentSpeed + speed;
+            currentSpeedRight = currentSpeed - speed/2;
+            currentSpeedLeft = currentSpeed + speed/2;
             if (currentSpeedLeft > 100) {
                 currentSpeedLeft = 100;
-                currentSpeedRight = 100 - speed*2;
+                currentSpeedRight = 100 - speed;
             }
         } else {
-            currentSpeedRight = currentSpeed + speed;
-            currentSpeedLeft = currentSpeed - speed;
+            currentSpeedRight = currentSpeed + speed/2;
+            currentSpeedLeft = currentSpeed - speed/2;
             if (currentSpeedRight > 100) {
                 currentSpeedRight = 100;
-                currentSpeedLeft = 100 - speed*2;
+                currentSpeedLeft = 100 - speed;
             }
         }
 
