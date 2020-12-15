@@ -2,7 +2,13 @@ package Logic;
 
 public class NotePitchGenerator {
 
-    public int playNote(String note, int octave){
+    /**
+     * Method that returns an integer resembling the pitch (Hz).
+     * @param note String containing info about the pitch. It represents a note WITHOUT info about the octave (for example: G#, A, C).
+     * @param octave Integer containing info about the pitch. It represents the octave the note should be played at. (for example: 4, 5, 6).
+     * @return A rounded frequency (Hz) as an integer, representing a note in music.
+     */
+    public int getNote(String note, int octave){
         double noteFrequency;
         int noteOctave = octave + 10;
 

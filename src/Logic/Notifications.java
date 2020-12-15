@@ -13,6 +13,11 @@ import java.util.ArrayList;
 //TODO: Optimize code
 //TODO: Check styling guide and use it as reference
 //TODO: Check documentation and explain methods better
+//TODO: Remove unnecessary comments.
+
+/**
+ * This class contains all notifications used by the BoeBot. These notifications use the buzzer to play sounds and the NeoPixelLeds to emit light.
+ */
 public class Notifications implements Updatable {
 
     private ArrayList<Buzzer> buzzers;
@@ -197,13 +202,13 @@ public class Notifications implements Updatable {
             int i = 0;
             for (NeoPixelLed neoPixelLed : neoPixelLeds) {
                 if (!neoPixelLedState){
-                    if (neoPixelLed instanceof NeoPixelLed) { //TODO: Check why this was done in an earlier version to understand the code
+                    if (neoPixelLed instanceof NeoPixelLed) { //TODO: Remove this check.
                         if (this.lightColorPattern.charAt(i) == 'A'){
                             neoPixelLed.setColor(neoPixelLedColorA);
                         } else if (this.lightColorPattern.charAt(i) == 'B'){
                             neoPixelLed.setColor(neoPixelLedColorB);
-                        } else if (this.lightColorPattern.charAt(i) == 'X'){ //TODO: Check whether this messes with the other on/off code
-                            if (neoPixelLed.getIsOn()){ //TODO: Check whether this is optional
+                        } else if (this.lightColorPattern.charAt(i) == 'X'){ //TODO: Check whether this messes with the other on/off code.
+                            if (neoPixelLed.getIsOn()){ //TODO: Check whether this is optional.
                                 neoPixelLed.off();
                             }
                         }
