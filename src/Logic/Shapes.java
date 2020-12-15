@@ -47,6 +47,7 @@ public class Shapes implements Updatable {
             circle();
         } else if (shape.equals(Shape.TRIANGLE)) {
             this.triangleTimerEnabled = true;
+            this.triangleSegmentBoolean = false;
             triangle();
         }
     }
@@ -71,8 +72,8 @@ public class Shapes implements Updatable {
             if (this.triangleSegmentBoolean) {
                 //If true, corner
                 this.driveSystem.stop();
-                this.triangleSegmentBoolean = false;
                 this.triangleTimer.setInterval(4500);
+                this.triangleSegmentBoolean = false;
                 this.driveSystem.turnLeft();
                 this.triangleCounter++;
             } else {
