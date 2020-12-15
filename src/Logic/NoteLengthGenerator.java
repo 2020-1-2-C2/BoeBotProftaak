@@ -8,7 +8,7 @@ public class NoteLengthGenerator {
 
     //Source of information: https://musescore.org/en/node/22609
 
-    //All attributes related to the timing based off the BPM
+    //All attributes related to the timing are based on the BPM. You can see this in the constructor.
     private double halfNote;
     private double quarterNote;
     private double eightNote;
@@ -20,8 +20,7 @@ public class NoteLengthGenerator {
     private double tripletEightNote;
     private double tripletSixteenthNote;
 
-    //All attributes related to the timing based off the BPM.
-    //NOTE: 60 BPM is one second.
+    //NOTE: 60 BPM is one beat per second.
     //NOTE: quarternotes (60.00) are 1/4 of a bar, which is 240.00
 
     public NoteLengthGenerator(double BPM){
@@ -37,42 +36,82 @@ public class NoteLengthGenerator {
         this.tripletSixteenthNote = 10.00 / BPM;
     }
 
+    /**
+     * Auto-generated getter for the halfNote veriable
+     * @return halfnote
+     */
     public double getHalfNote() {
         return halfNote;
     }
 
+    /**
+     * Auto-generated getter for the quarterNote veriable
+     * @return quarterNote
+     */
     public double getQuarterNote() {
         return quarterNote;
     }
 
+    /**
+     * Auto-generated getter for the eightNote veriable
+     * @return eightNote
+     */
     public double getEightNote() {
         return eightNote;
     }
 
+    /**
+     * Auto-generated getter for the sixteenthNote veriable
+     * @return sixteenthNote
+     */
     public double getSixteenthNote() {
         return sixteenthNote;
     }
 
+    /**
+     * Auto-generated getter for the dottedQuarterNote veriable
+     * @return dottedQuarterNote
+     */
     public double getDottedQuarterNote() {
         return dottedQuarterNote;
     }
 
+    /**
+     * Auto-generated getter for the dottedEightNote veriable
+     * @return dottedEightNote
+     */
     public double getDottedEightNote() {
         return dottedEightNote;
     }
 
+    /**
+     * Auto-generated getter for the dottedSixteenthNote veriable
+     * @return dottedSixteenthNote
+     */
     public double getDottedSixteenthNote() {
         return dottedSixteenthNote;
     }
 
+    /**
+     * Auto-generated getter for the tripletQuarterNote veriable
+     * @return tripletQuarterNote
+     */
     public double getTripletQuarterNote() {
         return tripletQuarterNote;
     }
 
+    /**
+     * Auto-generated getter for the tripletEightNote veriable
+     * @return tripletEightNote
+     */
     public double getTripletEightNote() {
         return tripletEightNote;
     }
 
+    /**
+     * Auto-generated getter for the tripletSixteenthNote veriable
+     * @return tripletSixteenthNote
+     */
     public double getTripletSixteenthNote() {
         return tripletSixteenthNote;
     }

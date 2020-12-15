@@ -35,6 +35,10 @@ public class AudioPlaySystem {
         }
     }
 
+    /**
+     * Auto-generated getter for the notesToPlay attribute
+     * @return
+     */
     public ArrayList<MusicNote> getNotesToPlay() {
         return notesToPlay;
     }
