@@ -15,6 +15,8 @@ import java.util.ArrayList;
 //TODO: Check documentation and explain methods better
 //TODO: Remove unnecessary comments.
 
+//TODO: Remove useSpecificFrequency and call the frequency directly from an instance of NotePitchGenerator.
+
 /**
  * This class contains all notifications used by the BoeBot. These notifications use the buzzer to play sounds and the NeoPixelLeds to emit light.
  */
@@ -41,8 +43,8 @@ public class Notifications implements Updatable {
 
     /**
      * Constructor for notifications.
-     * @param buzzers Takes an arraylist of Buzzers
-     * @param neoPixelLeds Takes an arraylist of NeoPixelLeds
+     * @param buzzers Takes an arraylist of Buzzers.
+     * @param neoPixelLeds Takes an arraylist of NeoPixelLeds.
      */
     public Notifications(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
         this.buzzers = buzzers;
@@ -52,7 +54,7 @@ public class Notifications implements Updatable {
     }
 
     /**
-     * Method called in case of an emergency break in RobotMain.java onCollisionDetection()
+     * Method called in case of an emergency break in RobotMain.java onCollisionDetection().
      */
     public void emergencyNotification() {
         //this.buzzerFrequency = 400;
@@ -73,7 +75,7 @@ public class Notifications implements Updatable {
 
 
     /**
-     * Method called everytime a button is pressed on the remote in RobotMain.java OnInfraredButton()
+     * Method called everytime a button is pressed on the remote in RobotMain.java OnInfraredButton().
      */
     //TODO: Decide whether to use C5 or B4 (C5 is being used for the connection notification)
     public void remoteNotification(){

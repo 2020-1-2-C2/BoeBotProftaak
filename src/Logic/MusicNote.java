@@ -8,7 +8,7 @@ public class MusicNote {
 
     private double noteLength;
     private int notePitch;
-    private double whenToPlay;
+    private double noteDelay;
 
     //TODO: Specify which unit the attributes are measured in.
     //TODO: Rename whenToPlay to noteDelay;
@@ -17,12 +17,12 @@ public class MusicNote {
      * Constructor that created an object of this class.
      * @param noteLength Length of the note (Should be an attribute of an instance of NoteLengthGenerator.java)
      * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with NotePitchGenerator.java)
-     * @param whenToPlay Timing; this is the time it waits after the note before this note is done playing.
+     * @param noteDelay Timing; this is the time it waits after the note before this note is done playing.
      */
-    public MusicNote(double noteLength, int notePitch, double whenToPlay) {
+    public MusicNote(double noteLength, int notePitch, double noteDelay) {
         this.noteLength = noteLength;
         this.notePitch = notePitch;
-        this.whenToPlay = whenToPlay;
+        this.noteDelay = noteDelay;
     }
 
     /**
@@ -55,24 +55,24 @@ public class MusicNote {
      * Auto-generated getter for the whenToPlay attribute.
      * @return whenToPlay
      */
-    public double getWhenToPlay() {
-        return whenToPlay;
+    public double getNoteDelay() {
+        return noteDelay;
     }
 
     /**
      * Getter for the whenToPlay attribute in MS, used by the Buzzer.
      * @return whenToPlay * 1000 as an integer.
      */
-    public int getWhenToPlayInMS() {
-        return ((int)(whenToPlay * 1000));
+    public int getNoteDelayInMS() {
+        return ((int)(noteDelay * 1000));
     }
 
     /**
      * Auto-generated setter for the whenToPlay attribute.
      * @param whenToPlay Replaces the current whenToPlay value.
      */
-    public void setWhenToPlay(double whenToPlay) {
-        this.whenToPlay = whenToPlay;
+    public void setNoteDelay(double whenToPlay) {
+        this.noteDelay = whenToPlay;
     }
 
     /**

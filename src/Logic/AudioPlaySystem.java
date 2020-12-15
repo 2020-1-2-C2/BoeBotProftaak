@@ -41,7 +41,7 @@ public class AudioPlaySystem {
         if (!this.notesToPlay.isEmpty()){
             this.notesToPlay.add(new MusicNote(musicNote.getNoteLength(), musicNote.getNotePitch(),
                             + this.notesToPlay.get(this.notesToPlay.size() - 1).getNoteLength()
-                            + musicNote.getWhenToPlay()
+                            + musicNote.getNoteDelay()
             ));
         } else {
             this.notesToPlay.add(musicNote);
