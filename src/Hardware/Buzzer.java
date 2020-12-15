@@ -7,14 +7,11 @@ import Logic.NotePitchGenerator;
 import TI.BoeBot;
 import Utils.Updatable;
 
-//TODO: Fix, add and update documentation.
-
 public class Buzzer implements Updatable {
     private int pinId;
     private boolean isOn;
 
     private NotePitchGenerator notePitchGenerator;
-    private NoteLengthGenerator noteLengthGenerator;
 
     /**
      *
@@ -94,6 +91,10 @@ public class Buzzer implements Updatable {
         return notePitchGenerator.playNote(note, octave);
     }
 
+    /**
+     * Plays the song in the audioPlaySystem given as a parameter.
+     * @param audioPlaySystem
+     */
     public void playSong(AudioPlaySystem audioPlaySystem){
         System.out.println("Playing song");
         for (MusicNote musicNote : audioPlaySystem.getNotesToPlay()){
