@@ -21,9 +21,9 @@ public class AudioPlaySystem {
     public void addNote(MusicNote musicNote){
         if (!this.notesToPlay.isEmpty()){
             this.notesToPlay.add(new MusicNote(musicNote.getNoteLength(), musicNote.getNotePitch(),
-                    this.notesToPlay.get(this.notesToPlay.size() - 1).getWhenToPlay()
                             + this.notesToPlay.get(this.notesToPlay.size() - 1).getNoteLength()
-                            + musicNote.getWhenToPlay()));
+                            + musicNote.getWhenToPlay()
+            ));
         } else {
             this.notesToPlay.add(musicNote);
         }
