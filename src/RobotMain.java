@@ -155,7 +155,6 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             switch (command) {
                 case FORWARD:
                     driveSystem.setDirection(1);
-                    driveSystem.setSpeed(10); //TODO: Check why we change the speed here, but not in other cases?
                     break;
                 case REVERSE:
                     driveSystem.setDirection(-1);
@@ -166,7 +165,35 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 case RIGHT:
                     driveSystem.turnRight();
                     break;
-                case DEFAULT:
+                case ONE:
+                    driveSystem.setSpeed(10);
+                    break;
+                case TWO:
+                    driveSystem.setSpeed(20);
+                    break;
+                case THREE:
+                    driveSystem.setSpeed(30);
+                    break;
+                case FOUR:
+                    driveSystem.setSpeed(40);
+                    break;
+                case FIVE:
+                    driveSystem.setSpeed(50);
+                    break;
+                case SIX:
+                    driveSystem.setSpeed(60);
+                    break;
+                case SEVEN:
+                    driveSystem.setSpeed(70);
+                    break;
+                case EIGHT:
+                    driveSystem.setSpeed(80);
+                    break;
+                case NINE:
+                    driveSystem.setSpeed(90);
+                    break;
+                case TEN:
+                    driveSystem.setSpeed(100);
                     break;
             }
             System.out.println(command);
