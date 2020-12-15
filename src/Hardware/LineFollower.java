@@ -1,70 +1,78 @@
 package Hardware;
 
 import TI.BoeBot;
-import TI.Servo;
+import Utils.LineFollowCallback;
+import Utils.Motor;
 import Utils.Updatable;
 
 public class LineFollower implements Updatable {
 
-    private int leftServoPin;
-    private int rightServoPin;
+    public enum LinePosition {
+        LEFT_OF_LINE,
+        JUST_LEFT_OF_LINE,
+        RIGHT_OF_LINE,
+        JUST_RIGHT_OF_LINE,
+        ON_LINE,
+        CROSSING
+
+    }
+
+    private boolean follow;
+    private LineFollowCallback lineFollowCallback;
 
     private int leftLineSensorPin;
     private int rightLineSensorPin;
     private int centralLineSensorPin;
+    private LinePosition callBack;
+    private int speedDefault;
 
-    private final int servoSpeedDefault = 100;
-    private final int servoZeroSpeed = 1500;
-    private final int turningSpeed = 100;
-    private final int turningTweak = 50;
     private final int sensorTweak = 1200;
     private boolean turning = false;
 
-    private Servo servoRechts;
-    private Servo servoLinks;
 
-    public LineFollower(int leftServoPin, int rightServoPin, int leftLineSensorPin, int rightLineSensorPin) {
-        this.leftServoPin = leftServoPin;
-        this.rightServoPin = rightServoPin;
+    public LineFollower(int leftLineSensorPin, int rightLineSensorPin, LineFollowCallback lineFollowCallback) {
+        this.lineFollowCallback = lineFollowCallback;
         this.leftLineSensorPin = leftLineSensorPin;
         this.rightLineSensorPin = rightLineSensorPin;
 
         this.centralLineSensorPin = -1;
 
-        servoRechts = new Servo(rightServoPin);
-        servoRechts.update(servoSpeedDefault);
-        servoLinks = new Servo(leftServoPin);
-        servoLinks.update(servoSpeedDefault);
     }
 
-    public LineFollower(int leftServoPin, int rightServoPin, int leftLineSensorPin, int rightLineSensorPin, int centralLineSensorPin) {
-        this(leftServoPin, rightServoPin, leftLineSensorPin, rightLineSensorPin);
+    public LineFollower(int leftLineSensorPin, int rightLineSensorPin, int centralLineSensorPin, LineFollowCallback lineFollowCallback) {
+        this(leftLineSensorPin, rightLineSensorPin, lineFollowCallback);
         this.centralLineSensorPin = centralLineSensorPin;
     }
 
-    private void straightAhead() {
-        servoLinks.update(servoZeroSpeed - servoSpeedDefault);
-        servoRechts.update(servoZeroSpeed + servoSpeedDefault);
+    /*private void straightAhead() {
+        servoLeft.update(STANDSTILL_SPEED - servoSpeedDefault);
+        servoRight.update(STANDSTILL_SPEED + servoSpeedDefault );
     }
 
     private void turnFullRight() {
-        servoRechts.update(servoRechts.getPulseWidth() + turningSpeed);
-        servoLinks.update(servoLinks.getPulseWidth() + turningSpeed + turningTweak);
+        servoRight.update(servoRight.getPulseWidth() + turningSpeed);
+        servoLeft.update(servoLeft.getPulseWidth() + turningSpeed + turningTweak);
     }
 
     private void turnSlightRight() {
-        servoRechts.update(servoRechts.getPulseWidth() + (turningSpeed / 3));
-        servoLinks.update(servoZeroSpeed);
+        servoRight.update(servoRight.getPulseWidth() + (turningSpeed / 3));
+        servoLeft.update(STANDSTILL_SPEED);
     }
 
     private void turnFullLeft() {
-        servoLinks.update(servoLinks.getPulseWidth() - turningSpeed);
-        servoRechts.update(servoRechts.getPulseWidth() - turningSpeed - turningTweak);
+        servoLeft.update(servoLeft.getPulseWidth() - turningSpeed);
+        servoRight.update(servoRight.getPulseWidth() - turningSpeed - turningTweak);
     }
 
     private void turnSlightLeft() {
-        servoRechts.update(servoRechts.getPulseWidth() - (turningSpeed / 3));
-        servoLinks.update(servoZeroSpeed);
+        servoRight.update(servoRight.getPulseWidth() - (turningSpeed / 3));
+        servoLeft.update(STANDSTILL_SPEED);
+    }*/
+
+    public void followLine(boolean follow, int speed){
+        this.speedDefault = speed;
+        this.follow = follow;
+
     }
 
     private boolean leftSeesBlack() {
@@ -96,26 +104,19 @@ public class LineFollower implements Updatable {
         //System.out.println(BoeBot.analogRead(1) + " Left");
         //System.out.println(BoeBot.analogRead(0) + " Right");
         if (!this.leftSeesBlack() && !this.rightSeesBlack()) {
-            turning = false;
-            System.out.println("On line");
-            this.straightAhead();
+            this.callBack = LinePosition.ON_LINE;
 
         } else if (this.rightSeesBlack() && !this.leftSeesBlack()) {
             System.out.println("Left of line");
-            if (!turning) {
-                this.turnFullRight();
-                turning = true;
-            }
+            this.callBack = LinePosition.LEFT_OF_LINE;
 
         } else if (this.leftSeesBlack() && !this.rightSeesBlack()) {
             System.out.println("Right of line");
-            if (!turning) {
-                this.turnFullLeft();
-                turning = true;
-            }
+            this.callBack = LinePosition.RIGHT_OF_LINE;
 
         } else {
             System.out.println("kruispunt");
+            this.callBack = LinePosition.CROSSING;
         }
     }
 
@@ -123,44 +124,36 @@ public class LineFollower implements Updatable {
     private void detectLine3Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack() && this.centerSeesBlack()) {
             System.out.println("on line");
-            turning = false;
-            this.straightAhead();
+            this.callBack = LinePosition.ON_LINE;
         } else if (this.leftSeesBlack() && this.centerSeesBlack() && !this.rightSeesBlack()) {
             System.out.println("Slightly right of line");
-            if (!turning) {
-                this.turnSlightLeft();
-                turning = true;
-            }
+            this.callBack = LinePosition.JUST_RIGHT_OF_LINE;
         } else if (this.rightSeesBlack() && this.centerSeesBlack() && !this.leftSeesBlack()) {
             System.out.println("Slightly left of line");
-            if (!turning) {
-                this.turnSlightRight();
-                turning = true;
-            }
+            this.callBack = LinePosition.JUST_LEFT_OF_LINE;
         } else if (this.leftSeesBlack() && !this.centerSeesBlack() && !this.rightSeesBlack()) {
             System.out.println("Right of Line");
-            if (!turning) {
-                this.turnFullLeft();
-                turning = true;
-            }
+            this.callBack = LinePosition.RIGHT_OF_LINE;
         } else if (this.rightSeesBlack() && !this.centerSeesBlack() && !this.leftSeesBlack()) {
             System.out.println("Left of line");
-            if (!turning) {
-                this.turnFullRight();
-                turning = true;
-            }
+            this.callBack = LinePosition.LEFT_OF_LINE;
         } else {
             System.out.println("Kruispunt");
+            this.callBack = LinePosition.CROSSING;
         }
     }
 
     @Override
     public void update(){
+
         if (this.centralLineSensorPin == -1) {
             this.detectLine2Sensors();
         } else {
             this.detectLine3Sensors();
         }
+
+        this.lineFollowCallback.onLineFollow(this.callBack);
+
 
     }
 }

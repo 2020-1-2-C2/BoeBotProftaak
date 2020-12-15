@@ -1,10 +1,11 @@
 package Logic;
 
+import Hardware.LineFollower;
+import Utils.LineFollowCallback;
 import Utils.Motor;
 import Utils.Updatable;
 
-
-public class DriveSystem implements Updatable {
+public class DriveSystem implements Updatable, LineFollowCallback {
     private Motor motor;
     private final int STEPS = 10;
     private final int MAX_SPEED = 100;
@@ -14,6 +15,8 @@ public class DriveSystem implements Updatable {
     private int currentSpeedRight = 0;
     private int currentSpeedLeft = 0;
     private int direction = 1;
+    private boolean followLine = false;
+    private int followSpeed;
 
     public DriveSystem(Motor motors) {
         this.motor = motors;
@@ -141,6 +144,15 @@ public class DriveSystem implements Updatable {
         motor.emergencyStop();
     }
 
+    public void followLine(boolean follow) {
+        followLine(follow, 50);
+    }
+    
+    public void followLine(boolean follow, int followSpeed) {
+        this.followLine = follow;
+        this.followSpeed = followSpeed;
+    }
+
     @Override
     public void update() {
 
@@ -152,5 +164,32 @@ public class DriveSystem implements Updatable {
      */
     public int getDirection() {
         return direction;
+    }
+
+    @Override
+    public void onLineFollow(LineFollower.LinePosition linePosition) {
+        if (this.followLine) {
+            switch (linePosition) {
+                case ON_LINE:
+                    this.setSpeed(followSpeed);
+                    break;
+                case LEFT_OF_LINE:
+                    this.stop();
+                    this.turnRight();
+                    break;
+                case RIGHT_OF_LINE:
+                    this.stop();
+                    this.turnLeft();
+                    break;
+                case JUST_LEFT_OF_LINE:
+                    this.turnRight();
+                    break;
+                case JUST_RIGHT_OF_LINE:
+                    this.turnLeft();
+                    break;
+                case CROSSING:
+                    this.stop();
+            }
+        }
     }
 }
