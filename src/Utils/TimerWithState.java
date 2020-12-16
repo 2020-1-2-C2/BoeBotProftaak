@@ -8,15 +8,28 @@ public class TimerWithState extends TI.Timer {
 
     private boolean isOn;
 
-    public TimerWithState(int i) {
-        super(i);
+    /**
+     * Use the super constructor and set isOn to be true
+     *
+     * @param interval timer interval
+     */
+    public TimerWithState(int interval) {
+        super(interval);
         this.isOn = true;
     }
 
+    /**
+     * Standard getter
+     * @return the value of isON
+     */
     public boolean isOn() {
         return this.isOn;
     }
 
+    /**
+     * Standard setter
+     * @param on set the value of isOn
+     */
     public void setOn(boolean on) {
         isOn = on;
     }
