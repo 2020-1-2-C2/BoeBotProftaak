@@ -83,7 +83,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     /**
      * @param direction true = right, false = left
-     * @param speed speed in percent
+     * @param speed     speed in percent
      */
     private void turn(boolean direction, int speed) {
         if (direction) {
@@ -127,19 +127,32 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         motor.emergencyStop();
     }
 
+    /**
+     * @param follow if true the BoeBot will start line following functionality
+     */
     public void followLine(boolean follow) {
         followLine(follow, 50);
     }
 
+    /**
+     * @param follow      if true the BoeBot will start line following functionality
+     * @param followSpeed the speed of the BoeBot while following the line.
+     */
     public void followLine(boolean follow, int followSpeed) {
         this.followLine = follow;
         this.followSpeed = followSpeed;
     }
 
+    /**
+     * @return current maximum speed.
+     */
     public int getCurrentMaxSpeed() {
         return currentMaxSpeed;
     }
 
+    /**
+     * @param currentMaxSpeed new maximum speed
+     */
     public void setCurrentMaxSpeed(int currentMaxSpeed) {
         if (currentMaxSpeed > MAX_SPEED) {
             currentMaxSpeed = MAX_SPEED;
@@ -147,6 +160,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.currentMaxSpeed = currentMaxSpeed;
     }
 
+    /**
+     * @return current speed
+     */
     public int getCurrentSpeed() {
         return currentSpeed;
     }

@@ -20,6 +20,7 @@ public class TimerWithState extends TI.Timer {
 
     /**
      * Standard getter
+     *
      * @return the value of isON
      */
     public boolean isOn() {
@@ -28,6 +29,7 @@ public class TimerWithState extends TI.Timer {
 
     /**
      * Standard setter
+     *
      * @param on set the value of isOn
      */
     public void setOn(boolean on) {

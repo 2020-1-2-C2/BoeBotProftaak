@@ -69,7 +69,7 @@ public class LineFollower implements Updatable {
         servoLeft.update(STANDSTILL_SPEED);
     }*/
 
-    public void followLine(boolean follow, int speed){
+    public void followLine(boolean follow, int speed) {
         this.speedDefault = speed;
         this.follow = follow;
 
@@ -144,7 +144,7 @@ public class LineFollower implements Updatable {
     }
 
     @Override
-    public void update(){
+    public void update() {
 
         if (this.centralLineSensorPin == -1) {
             this.detectLine2Sensors();

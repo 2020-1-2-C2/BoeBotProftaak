@@ -14,6 +14,7 @@ public class DefaultLed implements Led {
 
     /**
      * Constructor for Hardware.DefaultLed class
+     *
      * @param pinId the pin where the LED is attached.
      */
     public DefaultLed(int pinId) {
@@ -35,6 +36,7 @@ public class DefaultLed implements Led {
 
     /**
      * Fade the LED
+     *
      * @param fade fades the LED. (Value: 0-100, 0 is full brightness, 100 is off.
      */
     @Override
@@ -45,6 +47,7 @@ public class DefaultLed implements Led {
 
     /**
      * Blink the LED
+     *
      * @param interval is the interval between each blink.
      */
     @Override

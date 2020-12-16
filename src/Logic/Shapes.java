@@ -24,6 +24,7 @@ public class Shapes implements Updatable {
 
     /**
      * Constructor for Shapes class.
+     *
      * @param driveSystem DriveSystem object.
      */
     public Shapes(DriveSystem driveSystem) {
@@ -37,6 +38,7 @@ public class Shapes implements Updatable {
 
     /**
      * This method is a setup for the shape.
+     *
      * @param shape Shape enum/object
      */
     public void beginShape(Shape shape) {

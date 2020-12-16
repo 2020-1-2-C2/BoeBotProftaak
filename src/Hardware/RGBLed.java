@@ -32,6 +32,7 @@ public class RGBLed implements Led {
 
     /**
      * Mixes the colors
+     *
      * @param color
      */
     //TODO convert to PWM

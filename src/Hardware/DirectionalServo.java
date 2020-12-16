@@ -8,7 +8,7 @@ public class DirectionalServo extends TI.Servo {
     private int orientation;
 
     /**
-     * @param pin pinId
+     * @param pin         pinId
      * @param orientation 1 is a right servo, -1 is a left servo
      */
     public DirectionalServo(int pin, int orientation) {
