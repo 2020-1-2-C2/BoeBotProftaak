@@ -2,9 +2,9 @@ import Hardware.*;
 import Logic.*;
 import TI.BoeBot;
 import TI.PinMode;
-import TI.Servo;
 import Utils.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class RobotMain implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
@@ -14,6 +14,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     private Notifications notifications;
     private boolean running = true;
     private Shapes shapes;
+
+    private Jingle jingle = new Jingle();
 
     public static void main(String[] args) {
 
@@ -37,6 +39,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
+        LineFollower lineFollower = new LineFollower(8, 9, driveSystem);
+
 
         Buzzer buzzer = new Buzzer(6);
         BoeBot.setMode(6, PinMode.Output);
@@ -58,6 +62,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         neoPixelLeds.add(neoPixelLed3);
         neoPixelLeds.add(neoPixelLed4);
         neoPixelLeds.add(neoPixelLed5);
+
+        BoeBot.rgbShow();
         notifications = new Notifications(buzzers, neoPixelLeds);
 
 //        Adds all the updatables to an arraylist.
@@ -69,15 +75,18 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         updatables.add(servoMotor);
         updatables.add(this.shapes);
         updatables.add(bluetoothReceiver);
+        updatables.add(notifications);
         for (NeoPixelLed neoPixelLed : neoPixelLeds){
             updatables.add(neoPixelLed);
         }
+
+//        testSong(buzzer);
 
         while (running) {
             for (Updatable u : updatables) {
                 u.update();
             }
-            BoeBot.wait(10);
+            BoeBot.wait(1);
         }
     }
 
@@ -153,10 +162,12 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             switch (command) {
                 case FORWARD:
                     driveSystem.setDirection(1);
-                    driveSystem.setSpeed(10); //TODO: Check why we change the speed here, but not in other cases?
                     break;
                 case REVERSE:
                     driveSystem.setDirection(-1);
+                    break;
+                case STOP:
+                    driveSystem.stop();
                     break;
                 case LEFT:
                     driveSystem.turnLeft();
@@ -164,7 +175,35 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 case RIGHT:
                     driveSystem.turnRight();
                     break;
-                case DEFAULT:
+                case ONE:
+                    driveSystem.setSpeed(10);
+                    break;
+                case TWO:
+                    driveSystem.setSpeed(20);
+                    break;
+                case THREE:
+                    driveSystem.setSpeed(30);
+                    break;
+                case FOUR:
+                    driveSystem.setSpeed(40);
+                    break;
+                case FIVE:
+                    driveSystem.setSpeed(50);
+                    break;
+                case SIX:
+                    driveSystem.setSpeed(60);
+                    break;
+                case SEVEN:
+                    driveSystem.setSpeed(70);
+                    break;
+                case EIGHT:
+                    driveSystem.setSpeed(80);
+                    break;
+                case NINE:
+                    driveSystem.setSpeed(90);
+                    break;
+                case TEN:
+                    driveSystem.setSpeed(100);
                     break;
             }
             System.out.println(command);
@@ -175,27 +214,13 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     public void onCollisionDetection(int distance) {
         driveSystem.emergencyStop();
         notifications.emergencyNotification();
+        System.out.println("Emergency stop");
     }
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
     public void testSong(Buzzer buzzer){
-        System.out.println("Entered testsong");
-
-        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
-        NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
-        AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
-
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.playNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A#", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("C", 6)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.playNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getHalfNote(), notePitchGenerator.playNote("G", 5)));
-
-        buzzer.playSong(audioPlaySystem);
+        System.out.println("Entered Somebody that I used to know by Gotye");
+        buzzer.playSong(jingle.somebodyThatIUsedToKnow());
     }
 
     //TODO: Decide where to update this

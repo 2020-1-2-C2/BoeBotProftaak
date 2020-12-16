@@ -27,6 +27,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     public void onUltraSonicPulse(Integer distance) {
         if (distance == null){
             distance = 0;
+            System.out.println("Distance null object");
         }
 
         if (distance < STOPPING_DISTANCE) {
@@ -39,6 +40,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
             if (stopCounter > continueCounter) {
 
                 collisionDetectionCallback.onCollisionDetection(distance);
+                System.out.println(distance);
             }
             stopCounter = 0;
             continueCounter = 0;

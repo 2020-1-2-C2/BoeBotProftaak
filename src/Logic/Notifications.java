@@ -2,9 +2,7 @@ package Logic;
 
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
-import Hardware.RGBLed;
 import TI.Timer;
-import Utils.Led;
 import Utils.Updatable;
 
 import java.awt.*;
@@ -15,6 +13,13 @@ import java.util.ArrayList;
 //TODO: Optimize code
 //TODO: Check styling guide and use it as reference
 //TODO: Check documentation and explain methods better
+//TODO: Remove unnecessary comments.
+
+//TODO: Remove useSpecificFrequency and call the frequency directly from an instance of NotePitchGenerator.
+
+/**
+ * This class contains all notifications used by the BoeBot. These notifications use the buzzer to play sounds and the NeoPixelLeds to emit light.
+ */
 public class Notifications implements Updatable {
 
     private ArrayList<Buzzer> buzzers;
@@ -38,8 +43,8 @@ public class Notifications implements Updatable {
 
     /**
      * Constructor for notifications.
-     * @param buzzers Takes an arraylist of Buzzers
-     * @param neoPixelLeds Takes an arraylist of NeoPixelLeds
+     * @param buzzers Takes an arraylist of Buzzers.
+     * @param neoPixelLeds Takes an arraylist of NeoPixelLeds.
      */
     public Notifications(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
         this.buzzers = buzzers;
@@ -49,12 +54,12 @@ public class Notifications implements Updatable {
     }
 
     /**
-     * Method called in case of an emergency break in RobotMain.java onCollisionDetection()
+     * Method called in case of an emergency break in RobotMain.java onCollisionDetection().
      */
     public void emergencyNotification() {
         //this.buzzerFrequency = 400;
         this.buzzerNote = "A";
-        this.buzzerOctave = 4;
+        this.buzzerOctave = 20;
         this.buzzerTime = 500;
         this.useSpecificFrequency = false;
         this.neoPixelLedInterval = 500;
@@ -63,6 +68,7 @@ public class Notifications implements Updatable {
         this.repeat = true;
         this.neoPixelLedColorA = Color.red;
         this.lightColorPattern = "AAAAAA";
+        this.neoPixelLedState = true;
 
         buzzerTimer.setInterval(this.buzzerInterval);
         neoPixelLedTimer.setInterval(this.neoPixelLedInterval);
@@ -70,7 +76,7 @@ public class Notifications implements Updatable {
 
 
     /**
-     * Method called everytime a button is pressed on the remote in RobotMain.java OnInfraredButton()
+     * Method called everytime a button is pressed on the remote in RobotMain.java OnInfraredButton().
      */
     //TODO: Decide whether to use C5 or B4 (C5 is being used for the connection notification)
     public void remoteNotification(){
@@ -174,41 +180,11 @@ public class Notifications implements Updatable {
 
         //NeoPixelLed old code
         //TODO: Delete this if the new code is functional
-//        if (neoPixelLedTimer.timeout() && timerIsEnabled){
-//            for (NeoPixelLed neoPixelLed : neoPixelLeds) {
-//                if (!neoPixelLedState){
-//                    if (neoPixelLed instanceof NeoPixelLed) {
-//                        neoPixelLed.setColor(neoPixelLedColorA);
-//                    } else {
-//                        neoPixelLed.on();
-//                    }
-//                    neoPixelLedState = true;
-//                } else {
-//                    neoPixelLed.off();
-//                    neoPixelLedState = false;
-//                    if (!repeat) {
-//                        timerIsEnabled = false;
-//                    }
-//                }
-//            }
-//        }
-
-        //New NeoPixelLed system
-        //TODO: Decide whether or not to use a for-loop instead of a for-each loop.
         if (neoPixelLedTimer.timeout() && timerIsEnabled){
-            int i = 0;
             for (NeoPixelLed neoPixelLed : neoPixelLeds) {
                 if (!neoPixelLedState){
-                    if (neoPixelLed instanceof NeoPixelLed) { //TODO: Check why this was done in an earlier version to understand the code
-                        if (this.lightColorPattern.charAt(i) == 'A'){
-                            neoPixelLed.setColor(neoPixelLedColorA);
-                        } else if (this.lightColorPattern.charAt(i) == 'B'){
-                            neoPixelLed.setColor(neoPixelLedColorB);
-                        } else if (this.lightColorPattern.charAt(i) == 'X'){ //TODO: Check whether this messes with the other on/off code
-                            if (neoPixelLed.getIsOn()){ //TODO: Check whether this is optional
-                                neoPixelLed.off();
-                            }
-                        }
+                    if (neoPixelLed instanceof NeoPixelLed) {
+                        neoPixelLed.setColor(neoPixelLedColorA);
                     } else {
                         neoPixelLed.on();
                     }
@@ -220,9 +196,39 @@ public class Notifications implements Updatable {
                         timerIsEnabled = false;
                     }
                 }
-                i++;
             }
         }
+
+        //New NeoPixelLed system
+        //TODO: Decide whether or not to use a for-loop instead of a for-each loop.
+//        if (neoPixelLedTimer.timeout() && timerIsEnabled){
+//            int i = 0;
+//            for (NeoPixelLed neoPixelLed : neoPixelLeds) {
+//                if (!neoPixelLedState){
+//                    if (neoPixelLed instanceof NeoPixelLed) { //TODO: Remove this check.
+//                        if (this.lightColorPattern.charAt(i) == 'A'){
+//                            neoPixelLed.setColor(neoPixelLedColorA);
+//                        } else if (this.lightColorPattern.charAt(i) == 'B'){
+//                            neoPixelLed.setColor(neoPixelLedColorB);
+//                        } else if (this.lightColorPattern.charAt(i) == 'X'){ //TODO: Check whether this messes with the other on/off code.
+//                            if (neoPixelLed.getIsOn()){ //TODO: Check whether this is optional.
+//                                neoPixelLed.off();
+//                            }
+//                        }
+//                    } else {
+//                        neoPixelLed.on();
+//                    }
+//                    neoPixelLedState = true;
+//                } else {
+//                    neoPixelLed.off();
+//                    neoPixelLedState = false;
+//                    if (!repeat) {
+//                        timerIsEnabled = false;
+//                    }
+//                }
+//                i++;
+//            }
+//        }
 
     }
 }

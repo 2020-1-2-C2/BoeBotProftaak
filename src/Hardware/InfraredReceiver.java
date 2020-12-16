@@ -7,6 +7,8 @@ import Utils.Updatable;
 
 import java.util.HashMap;
 
+//TODO: Fix documentation
+
 /**
  * Class for the hardware part infraredsensor, contains methods to receive and interprit the signal from the infraredsensor.
  */

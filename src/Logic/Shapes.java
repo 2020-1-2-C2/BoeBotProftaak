@@ -3,6 +3,9 @@ package Logic;
 import TI.Timer;
 import Utils.Updatable;
 
+/**
+ * Class containing the instructions for the BoeBot when it receives the command to drive in a shape defined in this class.
+ */
 public class Shapes implements Updatable {
     private DriveSystem driveSystem;
     private Timer circleTimer;

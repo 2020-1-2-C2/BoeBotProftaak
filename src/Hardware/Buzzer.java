@@ -2,24 +2,22 @@ package Hardware;
 
 import Logic.AudioPlaySystem;
 import Logic.MusicNote;
-import Logic.NoteLengthGenerator;
 import Logic.NotePitchGenerator;
 import TI.BoeBot;
-import TI.Timer;
 import Utils.Updatable;
 
-//TODO: Fix, add and update documentation.
-
+/**
+ * Buzzer class, from which all buzzer sensors should have its own instance. The methods are used to play sounds on the Buzzer.
+ */
 public class Buzzer implements Updatable {
     private int pinId;
     private boolean isOn;
 
-    private NotePitchGenerator notePitchGenerator;
-    private NoteLengthGenerator noteLengthGenerator;
+    private NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
 
     /**
-     *
-     * @param pinId is the pin where the buzzer is connected to.
+     * Constructor for the buzzer sensor, deriving from the Buzzer.java class.
+     * @param pinId An integer representing the pin whom the buzzer is connected to.
      */
     public Buzzer(int pinId) {
         this.pinId = pinId;
@@ -82,7 +80,6 @@ public class Buzzer implements Updatable {
 
     @Override
     public void update() {
-
     }
 
     /**
@@ -92,14 +89,18 @@ public class Buzzer implements Updatable {
      * @return A rounded number containing the hz of the given musical note.
      */
     public int getNote(String note, int octave){
-        return notePitchGenerator.playNote(note, octave);
+        return notePitchGenerator.getNote(note, octave);
     }
 
+    /**
+     * Plays the song in the audioPlaySystem given as a parameter.
+     * @param audioPlaySystem
+     */
     public void playSong(AudioPlaySystem audioPlaySystem){
         System.out.println("Playing song");
         for (MusicNote musicNote : audioPlaySystem.getNotesToPlay()){
-            BoeBot.wait(musicNote.getWhenToPlayInMS());
-            System.out.println(musicNote.getWhenToPlayInMS());
+            BoeBot.wait(musicNote.getNoteDelayInMS());
+            System.out.println(musicNote.getNoteDelayInMS());
                 buzz(musicNote.getNoteLengthInMS(), musicNote.getNotePitch());
         }
     }
