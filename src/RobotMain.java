@@ -17,18 +17,12 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     private Jingle jingle = new Jingle();
 
     public static void main(String[] args) {
-
         RobotMain main = new RobotMain();
         main.run();
-
     }
 
-
-    /**
-     * Main run method for the boebot logic.
-     */
-    public void run() {
-        BoeBot.setMode(0, PinMode.Input);
+    public void initialise() {
+        // creating all the different objects which will be used
         InfraredReceiver infraredReceiver = new InfraredReceiver(0, this);
         BluetoothReceiver bluetoothReceiver = new BluetoothReceiver(this);
 
@@ -40,9 +34,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         this.shapes = new Shapes(this.driveSystem);
         LineFollower lineFollower = new LineFollower(8, 9, driveSystem);
 
-
         Buzzer buzzer = new Buzzer(6);
-        BoeBot.setMode(6, PinMode.Output);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
         buzzers.add(buzzer);
 
@@ -78,9 +70,12 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         for (NeoPixelLed neoPixelLed : neoPixelLeds) {
             updatables.add(neoPixelLed);
         }
+    }
 
-//        testSong(buzzer);
-
+    /**
+     * Main run method for the boebot logic.
+     */
+    public void run() {
         while (running) {
             for (Updatable u : updatables) {
                 u.update();
