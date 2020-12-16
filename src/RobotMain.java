@@ -303,9 +303,9 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             driveSystem.setSpeed(driveSystem.getCurrentMaxSpeed());
         }
 
-        driveSystem.emergencyStop();
+        //driveSystem.emergencyStop();
         //emergencyBreakNotification.setNotificationActive(false);
-        System.out.println("Emergency stop");
+        //System.out.println("Emergency stop");
     }
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
