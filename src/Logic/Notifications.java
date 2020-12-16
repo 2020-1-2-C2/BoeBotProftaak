@@ -9,13 +9,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 
-//TODO: Test all functionality
-//TODO: Optimize code
-//TODO: Check styling guide and use it as reference
-//TODO: Check documentation and explain methods better
-//TODO: Remove unnecessary comments.
+//TODO: Remove class when development of the new NotificationsSystem is ocmpleted.
 
-//TODO: Remove useSpecificFrequency and call the frequency directly from an instance of NotePitchGenerator.
 
 /**
  * This class contains all notifications used by the BoeBot. These notifications use the buzzer to play sounds and the NeoPixelLeds to emit light.
@@ -185,6 +180,7 @@ public class Notifications implements Updatable {
                 if (!neoPixelLedState){
                     if (neoPixelLed instanceof NeoPixelLed) {
                         neoPixelLed.setColor(neoPixelLedColorA);
+                        neoPixelLed.on();
                     } else {
                         neoPixelLed.on();
                     }

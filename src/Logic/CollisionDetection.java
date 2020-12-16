@@ -32,7 +32,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
 
         if (distance == null) {
             distance = 0;
-            System.out.println("Distance null object");
+            //System.out.println("Distance null object");
         }
 
         if (counter < distances.length) {
