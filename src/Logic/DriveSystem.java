@@ -12,6 +12,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private Motor motor;
     private final int STEPS = 10;
     private final int MAX_SPEED = 100;
+    private int currentMaxSpeed = MAX_SPEED;
     // time in ms
     private final int ACCELERATION_TIME = 500;
     private int currentSpeed = 0;
@@ -20,6 +21,11 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private int direction = 1;
     private boolean followLine = false;
     private int followSpeed;
+
+    public static final int FORWARD = 1;
+    public static final int BACKWARD = -1;
+    private static final boolean RIGHT = true;
+    private static final boolean LEFT = false;
 
     public DriveSystem(Motor motors) {
         this.motor = motors;
@@ -30,8 +36,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void setSpeed(int speed) {
 
-        if (speed > 100) {
-            speed = 100;
+        if (speed > currentMaxSpeed) {
+            speed = currentMaxSpeed;
         } else if (speed < 0) {
             speed = 0;
         }
@@ -47,78 +53,52 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @param direction 1 is forward, -1 is backward
      */
     public void setDirection(int direction) {
-        if (direction != this.direction && (direction == 1 || direction == -1)) {
+        if (direction != this.direction && (direction == FORWARD || direction == BACKWARD)) {
             this.direction = direction;
             setSpeed(MAX_SPEED / STEPS);
         }
     }
 
-
-    public void addForwardSpeed() {
-        addSpeed(true);
-    }
-
-    public void addBackwardSpeed() {
-        addSpeed(false);
-    }
-
-    /**
-     * @param direction true = forwards, false = backwards
-     */
-    public void addSpeed(boolean direction) {
-        int speedDiff;
-        if (direction) {
-            speedDiff = MAX_SPEED / STEPS;
-        } else {
-            speedDiff = -MAX_SPEED / STEPS;
-        }
-        currentSpeed = currentSpeed + speedDiff;
-
-        if (currentSpeed > 100) {
-            currentSpeed = 100;
-        } else if (currentSpeed < -100) {
-            currentSpeed = -100;
-        }
-
-        currentSpeedRight = currentSpeed;
-        currentSpeedLeft = currentSpeed;
-
-        System.out.println(motor.getSpeedLeft());
-        System.out.println(motor.getSpeedRight());
-        System.out.println(MAX_SPEED / STEPS);
-        motor.goToSpeed(currentSpeed, ACCELERATION_TIME);
-
-    }
-
     public void turnLeft() {
-        turn(false);
+        turn(LEFT, MAX_SPEED / STEPS * 2);
     }
 
     public void turnRight() {
-        turn(true);
+        turn(RIGHT, MAX_SPEED / STEPS * 2);
+    }
+
+    /**
+     * @param speed speed in percent
+     */
+    public void turnLeft(int speed) {
+        turn(LEFT, speed);
+    }
+
+    /**
+     * @param speed speed in percent
+     */
+    public void turnRight(int speed) {
+        turn(RIGHT, speed);
     }
 
     /**
      * @param direction true = right, false = left
+     * @param speed     speed in percent
      */
-    private void turn(boolean direction) {
-
-        int diff = MAX_SPEED / STEPS;
-
-
+    private void turn(boolean direction, int speed) {
         if (direction) {
-            currentSpeedRight = currentSpeed - diff;
-            currentSpeedLeft = currentSpeed + diff;
+            currentSpeedRight = currentSpeed - speed / 2;
+            currentSpeedLeft = currentSpeed + speed / 2;
             if (currentSpeedLeft > 100) {
                 currentSpeedLeft = 100;
-                currentSpeedRight = 80;
+                currentSpeedRight = 100 - speed;
             }
         } else {
-            currentSpeedRight = currentSpeed + diff;
-            currentSpeedLeft = currentSpeed - diff;
+            currentSpeedRight = currentSpeed + speed / 2;
+            currentSpeedLeft = currentSpeed - speed / 2;
             if (currentSpeedRight > 100) {
                 currentSpeedRight = 100;
-                currentSpeedLeft = 80;
+                currentSpeedLeft = 100 - speed;
             }
         }
 
@@ -127,14 +107,19 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     }
 
+    /**
+     * Gradually stop BoeBot.
+     */
     public void stop() {
         currentSpeed = 0;
         currentSpeedLeft = currentSpeed;
         currentSpeedRight = currentSpeed;
         motor.goToSpeed(0, this.ACCELERATION_TIME);
-        //motor.emergencyStop();
     }
 
+    /**
+     * Immediately stop BoeBot
+     */
     public void emergencyStop() {
         currentSpeed = 0;
         currentSpeedLeft = currentSpeed;
@@ -142,13 +127,44 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         motor.emergencyStop();
     }
 
+    /**
+     * @param follow if true the BoeBot will start line following functionality
+     */
     public void followLine(boolean follow) {
         followLine(follow, 50);
     }
 
+    /**
+     * @param follow      if true the BoeBot will start line following functionality
+     * @param followSpeed the speed of the BoeBot while following the line.
+     */
     public void followLine(boolean follow, int followSpeed) {
         this.followLine = follow;
         this.followSpeed = followSpeed;
+    }
+
+    /**
+     * @return current maximum speed.
+     */
+    public int getCurrentMaxSpeed() {
+        return currentMaxSpeed;
+    }
+
+    /**
+     * @param currentMaxSpeed new maximum speed
+     */
+    public void setCurrentMaxSpeed(int currentMaxSpeed) {
+        if (currentMaxSpeed > MAX_SPEED) {
+            currentMaxSpeed = MAX_SPEED;
+        }
+        this.currentMaxSpeed = currentMaxSpeed;
+    }
+
+    /**
+     * @return current speed
+     */
+    public int getCurrentSpeed() {
+        return currentSpeed;
     }
 
     @Override

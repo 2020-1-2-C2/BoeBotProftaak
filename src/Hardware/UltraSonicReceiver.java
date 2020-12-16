@@ -1,4 +1,3 @@
-// TODO, no support for single pin ultrasonicsensor, if used, need to implement new methods/subclasses.
 package Hardware;
 
 import TI.BoeBot;
@@ -19,8 +18,9 @@ public class UltraSonicReceiver implements Updatable {
 
     /**
      * Constructor for the ultrasonicsensor.
-     * @param pinIdTrigger ultrasonicsensor trigger pin id.
-     * @param pinIdEcho ultrasonicsensor echo pin id.
+     *
+     * @param pinIdTrigger       ultrasonicsensor trigger pin id.
+     * @param pinIdEcho          ultrasonicsensor echo pin id.
      * @param ultraSonicCallback ultrasoniccallback object.
      */
     public UltraSonicReceiver(int pinIdTrigger, int pinIdEcho, UltraSonicCallback ultraSonicCallback) {
@@ -32,7 +32,9 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Measure the amount of time it takes to send and receive an ultrasonic pulse in microseconds.
+     * Send an ultrasonic pulse and measure the time it takes to receive the pulse back in microseconds
+     * If the pulse length is less than 0 a null object is returned
+     *
      * @return time in microseconds to send and receive back an ultrasonic pulse.
      */
     private Integer ultraSonicPulse() {
@@ -51,7 +53,9 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Calculate the distance of an ultrasonicpulse echo in cm.
+     * Using the pulse length in microseconds, alculate the distance of an ultrasonicpulse echo in cm.
+     * The pulse length can be a null object, in which case a null object is directly returned
+     *
      * @return the distance an ultrasonicpulse has traveled one way, in cm.
      */
     private Integer distance() {
@@ -68,9 +72,7 @@ public class UltraSonicReceiver implements Updatable {
      */
     @Override
     public void update() {
-//        System.out.println("Ultrasound timeout check");
         if (this.ultraSonicPulseTimer.timeout()) {
-//            System.out.println("Ultrasound pulse");
             this.ultraSonicCallback.onUltraSonicPulse(distance());
         }
     }
