@@ -213,10 +213,12 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     @Override
     public void onCollisionDetection(int distance) {
         if (distance < 20) {
-            driveSystem.setCurrentMaxSpeed(0);
-            driveSystem.emergencyStop();
-            notifications.emergencyNotification();
-            System.out.println("Emergency stop");
+            if (driveSystem.getCurrentSpeed() != 0 && driveSystem.getCurrentMaxSpeed() != 0) {
+                driveSystem.setCurrentMaxSpeed(0);
+                driveSystem.emergencyStop();
+                notifications.emergencyNotification();
+                System.out.println("Emergency stop");
+            }
         } else if (distance < 30) {
             driveSystem.setCurrentMaxSpeed(10);
         } else if (distance < 40) {
