@@ -39,7 +39,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
-        LineFollower lineFollower = new LineFollower(8, 9, driveSystem);
+        LineFollower lineFollower = new LineFollower(2, 3, driveSystem);
 
 
         Buzzer buzzer = new Buzzer(6);
@@ -145,7 +145,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 case "0":
                     driveSystem.setSpeed(100);
                     break;
-                case "triangle":
+                case "source":
                     this.shapes.beginShape(Shapes.Shape.TRIANGLE);
                     break;
                 case "tvvcr":
