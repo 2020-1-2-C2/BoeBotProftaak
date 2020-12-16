@@ -42,7 +42,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         this.driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
-        LineFollower lineFollower = new LineFollower(8, 9, driveSystem);
+        LineFollower lineFollower = new LineFollower(2, 1, driveSystem);
 
         Buzzer buzzer = new Buzzer(6);
         ArrayList<Buzzer> buzzers = new ArrayList<>();
@@ -64,15 +64,15 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         neoPixelLeds.add(neoPixelLed4);
         neoPixelLeds.add(neoPixelLed5);
 
-        Boebot.rgbShow()
+        BoeBot.rgbShow();
 
         notificationsSystem = new NotificationsSystem(buzzers, neoPixelLeds);
 
 
 //        Adds all the updatables to an arraylist.
         Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
-                this.driveSystem, buzzer, servoMotor, this.shapes, bluetoothReceiver, this.notifications,
-                neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5);
+                this.driveSystem, buzzer, servoMotor, this.shapes, bluetoothReceiver, lineFollower
+                /*neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5*/);
 
 
 //        updatables.add(infraredReceiver);
@@ -89,7 +89,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 //            updatables.add(neoPixelLed);
 //        }
     }
-        updatables.add(infraredReceiver);
+/*        updatables.add(infraredReceiver);
         updatables.add(ultraSonicReceiver);
         updatables.add(collisionDetection);
         updatables.add(driveSystem);
@@ -100,18 +100,18 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
         for (NeoPixelLed neoPixelLed : neoPixelLeds){
             updatables.add(neoPixelLed);
-        }
+        }*/
 
     /**
      * Main run method for the boebot logic.
      */
     public void run() {
         //TODO: Fix this system
-        this.notificationsSystem = new ConnectionSuccesNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+        //this.notificationsSystem = new ConnectionSuccesNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
 
-        updatables.add(this.notificationsSystem);
+       // updatables.add(this.notificationsSystem);
 
-        this.notificationsSystem.setNotificationActive(true);
+       // this.notificationsSystem.setNotificationActive(true);
         //this.notificationsSystem.setNotificationActive(false);
 
 
@@ -150,7 +150,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
      */
     @Override
     public void onInfraredButton(int button) {
-        notifications.remoteNotification();
+        //notifications.remoteNotification();
         switch (button) {
             case InfraredReceiver.POWER:
                 driveSystem.stop();
@@ -203,67 +203,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             case InfraredReceiver.TVVCR:
                 this.shapes.beginShape(Shapes.Shape.CIRCLE);
                 break;
-    public void onInfraredButton(String button) {
-        if (button != null) {
-            //notifications.remoteNotification(); //TODO: ADD NOTIFICATION.
-            switch (button) {
-                case "power":
-                    driveSystem.stop();
-                    break;
-                case "ch+":
-                    driveSystem.setDirection(1);
-                    this.notificationsSystem.setNotificationActive(true);
-                    break;
-                case "ch-":
-                    driveSystem.setDirection(-1);
-                    this.notificationsSystem.setNotificationActive(false);
-                    break;
-                case "vol+":
-                    driveSystem.turnRight();
-                    changeNotification(new EmergencyBreakNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds()));
-                    break;
-                case "vol-":
-                    driveSystem.turnLeft();
-                    break;
-                case "1":
-                    driveSystem.setSpeed(10);
-                    break;
-                case "2":
-                    driveSystem.setSpeed(20);
-                    break;
-                case "3":
-                    driveSystem.setSpeed(30);
-                    break;
-                case "4":
-                    driveSystem.setSpeed(40);
-                    break;
-                case "5":
-                    driveSystem.setSpeed(50);
-                    break;
-                case "6":
-                    driveSystem.setSpeed(60);
-                    break;
-                case "7":
-                    driveSystem.setSpeed(70);
-                    break;
-                case "8":
-                    driveSystem.setSpeed(80);
-                    break;
-                case "9":
-                    driveSystem.setSpeed(90);
-                    break;
-                case "0":
-                    driveSystem.setSpeed(100);
-                    break;
-                case "triangle":
-                    this.shapes.beginShape(Shapes.Shape.TRIANGLE);
-                    break;
-                case "tvvcr":
-                    this.shapes.beginShape(Shapes.Shape.CIRCLE);
-                    break;
-            }
         }
-        System.out.println(button);
     }
 
     @Override
@@ -333,7 +273,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 driveSystem.setCurrentMaxSpeed(0);
                 driveSystem.emergencyStop();
                 // TODO Disable emergency notification outside of emergency stop state.
-                notifications.emergencyNotification();
+                //notifications.emergencyNotification();
                 System.out.println("Emergency stop");
             }
         } else if (distance < 30) {
@@ -385,11 +325,11 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         int i = this.updatables.indexOf(this.notificationsSystem);
 
         this.updatables.remove(this.notificationsSystem);
-        this.notificationsSystem = changeToThisNotification;
+        //this.notificationsSystem = changeToThisNotification;
         this.updatables.add(this.notificationsSystem);
 
         if (changeToThisNotification instanceof EmergencyBreakNotification){
-            this.notificationsSystem = new EmergencyBreakNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+            //this.notificationsSystem = new EmergencyBreakNotification(this.notificationsSystem.getBuzzers());
             if (this.updatables.get(i) instanceof NotificationsSystem){
                 ((EmergencyBreakNotification) this.updatables.get(i)).setNotificationActive(true);
                 System.out.println("EmergencyBreakNotification");
@@ -397,10 +337,11 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         }
 
     //TODO: Decide where to update this
+/*
     public void update() {
-        if (driveSystem.getDirection() == DriveSystem.BACKWARD) {
-            notifications.drivingBackwardsNotification();
-        }
+        //if (driveSystem.getDirection() == DriveSystem.BACKWARD) {
+         //   notifications.drivingBackwardsNotification();
+        //}
     }
         if (changeToThisNotification instanceof ConnectionSuccesNotification){
             this.notificationsSystem = new ConnectionSuccesNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
@@ -432,7 +373,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 ((NeutralNotification) this.updatables.get(i)).setNotificationActive(true);
                 System.out.println("NeutralNotification");
             }
-        }
-    }
+      }*/
+}
+
 
 }

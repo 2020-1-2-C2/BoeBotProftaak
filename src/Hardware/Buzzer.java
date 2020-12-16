@@ -4,6 +4,7 @@ import Logic.AudioPlaySystem;
 import Logic.MusicNote;
 import Logic.NotePitchGenerator;
 import TI.BoeBot;
+import TI.PinMode;
 import Utils.Updatable;
 
 /**
