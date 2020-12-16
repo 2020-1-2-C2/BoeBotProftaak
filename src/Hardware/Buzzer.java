@@ -4,7 +4,6 @@ import Logic.AudioPlaySystem;
 import Logic.MusicNote;
 import Logic.NotePitchGenerator;
 import TI.BoeBot;
-import TI.PinMode;
 import Utils.Updatable;
 
 /**
@@ -104,13 +103,17 @@ public class Buzzer implements Updatable {
      *
      * @param audioPlaySystem
      */
-    public void playSong(AudioPlaySystem audioPlaySystem) {
-        System.out.println("Playing song");
-        for (MusicNote musicNote : audioPlaySystem.getNotesToPlay()) {
+    public void playSong(AudioPlaySystem audioPlaySystem){
+        System.out.println("Playing song: " + audioPlaySystem.getArtist() + " - " + audioPlaySystem.getTitle());
+        for (MusicNote musicNote : audioPlaySystem.getNotesToPlay()){
             BoeBot.wait(musicNote.getNoteDelayInMS());
             System.out.println(musicNote.getNoteDelayInMS());
             buzz(musicNote.getNoteLengthInMS(), musicNote.getNotePitch());
         }
+    }
+
+    public int getPinId() {
+        return pinId;
     }
 
 

@@ -1,9 +1,12 @@
 import Hardware.*;
 import Logic.*;
+import Logic.Notification.*;
 import TI.BoeBot;
 import TI.PinMode;
+import TI.Timer;
 import Utils.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -11,7 +14,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
-    private Notifications notifications;
+    private NotificationsSystem notificationsSystem;
+    private EmergencyBreakNotification emergencyBreakNotification;
     private boolean running = true;
     private Shapes shapes;
 
@@ -60,8 +64,10 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         neoPixelLeds.add(neoPixelLed4);
         neoPixelLeds.add(neoPixelLed5);
 
-        BoeBot.rgbShow();
-        notifications = new Notifications(buzzers, neoPixelLeds);
+        Boebot.rgbShow()
+
+        notificationsSystem = new NotificationsSystem(buzzers, neoPixelLeds);
+
 
 //        Adds all the updatables to an arraylist.
         Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
@@ -83,11 +89,52 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 //            updatables.add(neoPixelLed);
 //        }
     }
+        updatables.add(infraredReceiver);
+        updatables.add(ultraSonicReceiver);
+        updatables.add(collisionDetection);
+        updatables.add(driveSystem);
+        updatables.add(buzzer);
+        updatables.add(servoMotor);
+        updatables.add(this.shapes);
+        updatables.add(bluetoothReceiver);
+
+        for (NeoPixelLed neoPixelLed : neoPixelLeds){
+            updatables.add(neoPixelLed);
+        }
 
     /**
      * Main run method for the boebot logic.
      */
     public void run() {
+        //TODO: Fix this system
+        this.notificationsSystem = new ConnectionSuccesNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+
+        updatables.add(this.notificationsSystem);
+
+        this.notificationsSystem.setNotificationActive(true);
+        //this.notificationsSystem.setNotificationActive(false);
+
+
+        //this.notificationsSystem.setNotificationActive(false);
+
+//        Timer timer = new Timer(10);
+//        while (!timer.timeout()){
+//            BoeBot.wait(1000);
+//            System.out.println("Timer while loop");
+//        }
+//        if (timer.timeout()){
+//            if (this.updatables.get(15) instanceof NotificationsSystem){
+//                ((EmergencyBreakNotification) this.updatables.get(15)).setNotificationActive(true);
+//                System.out.println("Should be true!");
+//                System.out.println(((EmergencyBreakNotification) this.updatables.get(15)).isNotificationActive());
+//            }
+//        }
+
+        //TODO: Remove unnecessary comments
+        //testSong(buzzer);
+
+        //neoPixelLed5.setColor(Color.green);
+
         while (running) {
             for (Updatable u : updatables) {
                 u.update();
@@ -156,6 +203,65 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             case InfraredReceiver.TVVCR:
                 this.shapes.beginShape(Shapes.Shape.CIRCLE);
                 break;
+    public void onInfraredButton(String button) {
+        if (button != null) {
+            //notifications.remoteNotification(); //TODO: ADD NOTIFICATION.
+            switch (button) {
+                case "power":
+                    driveSystem.stop();
+                    break;
+                case "ch+":
+                    driveSystem.setDirection(1);
+                    this.notificationsSystem.setNotificationActive(true);
+                    break;
+                case "ch-":
+                    driveSystem.setDirection(-1);
+                    this.notificationsSystem.setNotificationActive(false);
+                    break;
+                case "vol+":
+                    driveSystem.turnRight();
+                    changeNotification(new EmergencyBreakNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds()));
+                    break;
+                case "vol-":
+                    driveSystem.turnLeft();
+                    break;
+                case "1":
+                    driveSystem.setSpeed(10);
+                    break;
+                case "2":
+                    driveSystem.setSpeed(20);
+                    break;
+                case "3":
+                    driveSystem.setSpeed(30);
+                    break;
+                case "4":
+                    driveSystem.setSpeed(40);
+                    break;
+                case "5":
+                    driveSystem.setSpeed(50);
+                    break;
+                case "6":
+                    driveSystem.setSpeed(60);
+                    break;
+                case "7":
+                    driveSystem.setSpeed(70);
+                    break;
+                case "8":
+                    driveSystem.setSpeed(80);
+                    break;
+                case "9":
+                    driveSystem.setSpeed(90);
+                    break;
+                case "0":
+                    driveSystem.setSpeed(100);
+                    break;
+                case "triangle":
+                    this.shapes.beginShape(Shapes.Shape.TRIANGLE);
+                    break;
+                case "tvvcr":
+                    this.shapes.beginShape(Shapes.Shape.CIRCLE);
+                    break;
+            }
         }
         System.out.println(button);
     }
@@ -257,6 +363,9 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             driveSystem.setSpeed(driveSystem.getCurrentMaxSpeed());
         }
 
+        driveSystem.emergencyStop();
+        //emergencyBreakNotification.setNotificationActive(false);
+        System.out.println("Emergency stop");
     }
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
@@ -265,12 +374,65 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         buzzer.playSong(jingle.somebodyThatIUsedToKnow());
     }
 
+    //TODO: Fix this system.
+    //TODO: Get the notificationsSystem out of the updatables Arraylist and change it from there.
+    public void changeNotification(NotificationInterface changeToThisNotification){
+        //this.notificationsSystem = new EmergencyBreakNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+        //this.notificationsSystem.setNotificationActive(true);
+        //this.notificationsSystem.setNotificationActive(false);
+        //updatables.add(this.notificationsSystem);
+
+        int i = this.updatables.indexOf(this.notificationsSystem);
+
+        this.updatables.remove(this.notificationsSystem);
+        this.notificationsSystem = changeToThisNotification;
+        this.updatables.add(this.notificationsSystem);
+
+        if (changeToThisNotification instanceof EmergencyBreakNotification){
+            this.notificationsSystem = new EmergencyBreakNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+            if (this.updatables.get(i) instanceof NotificationsSystem){
+                ((EmergencyBreakNotification) this.updatables.get(i)).setNotificationActive(true);
+                System.out.println("EmergencyBreakNotification");
+            }
+        }
+
     //TODO: Decide where to update this
     public void update() {
         if (driveSystem.getDirection() == DriveSystem.BACKWARD) {
             notifications.drivingBackwardsNotification();
         }
     }
+        if (changeToThisNotification instanceof ConnectionSuccesNotification){
+            this.notificationsSystem = new ConnectionSuccesNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+            if (this.updatables.get(i) instanceof NotificationsSystem){
+                ((ConnectionSuccesNotification) this.updatables.get(i)).setNotificationActive(true);
+                System.out.println("ConnectionSuccesNotification");
+            }
+        }
 
+        if (changeToThisNotification instanceof ConnectionLostNotification){
+            this.notificationsSystem = new ConnectionLostNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+            if (this.updatables.get(i) instanceof NotificationsSystem){
+                ((ConnectionLostNotification) this.updatables.get(i)).setNotificationActive(true);
+                System.out.println("ConnectionLostNotification");
+            }
+        }
+
+        if (changeToThisNotification instanceof DrivingBackwardsNotification){
+            this.notificationsSystem = new DrivingBackwardsNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+            if (this.updatables.get(i) instanceof NotificationsSystem){
+                ((DrivingBackwardsNotification) this.updatables.get(i)).setNotificationActive(true);
+                System.out.println("DrivingBackwardsNotification");
+            }
+        }
+
+        if (changeToThisNotification instanceof NeutralNotification){
+            this.notificationsSystem = new NeutralNotification(this.notificationsSystem.getBuzzers(), this.notificationsSystem.getNeoPixelLeds());
+            if (this.updatables.get(i) instanceof NotificationsSystem){
+                ((NeutralNotification) this.updatables.get(i)).setNotificationActive(true);
+                System.out.println("NeutralNotification");
+            }
+        }
+    }
 
 }

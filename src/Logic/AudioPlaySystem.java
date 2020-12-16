@@ -3,6 +3,7 @@ package Logic;
 import java.util.ArrayList;
 
 //TODO: Check the styling guide and use it as a reference.
+//TODO: Add documentation
 
 /**
  * Instances made from this class are made in Jingle.java for sounds relying on pitch & rhythm (songs). This class contains methods to add notes with the right timings.
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 public class AudioPlaySystem {
 
     private ArrayList<MusicNote> notesToPlay = new ArrayList();
+    private String artist;
+    private String title;
 
     /**
      * Constructor that creates a new instance of AudioPlaySystem.
@@ -60,9 +63,39 @@ public class AudioPlaySystem {
 
     /**
      * Auto-generated getter for the notesToPlay attribute
-     * @return
+     * @return notesToPlay
      */
     public ArrayList<MusicNote> getNotesToPlay() {
-        return notesToPlay;
+        return this.notesToPlay;
+    }
+
+    /**
+     * Auto-generated getter for the artist attribute.
+     * @return this.artist
+     */
+    public String getArtist() {
+        return this.artist;
+    }
+
+    /**
+     * Auto-generated setter for the artist attribute.
+     */
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    /**
+     * Auto-generated getter for the title attribute.
+     * @return this.title
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Auto-generated setter for the title attribute.
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

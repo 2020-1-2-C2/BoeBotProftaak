@@ -181,6 +181,9 @@ public class ServoMotor implements Motor {
         // resetting the internal speed within the software to match the emergency stop
         wantedSpeedLeft = percentToValue(0);
         wantedSpeedRight = percentToValue(0);
+
+
+
     }
 
     /**

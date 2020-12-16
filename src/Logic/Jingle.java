@@ -17,6 +17,8 @@ public class Jingle {
     public AudioPlaySystem somebodyThatIUsedToKnow(){
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
+        audioPlaySystem.setArtist("Gotye");
+        audioPlaySystem.setTitle("Somebody that I used to know");
 
         audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("F", 5)));
         audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("F", 5)));
@@ -36,14 +38,16 @@ public class Jingle {
      * @return audioPlaySystem
      */
     public AudioPlaySystem brotherJohn(){
-        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(106);
+        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(150);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
+        audioPlaySystem.setArtist("Unknown");
+        audioPlaySystem.setTitle("Brother John");
 
         for (int i = 0; i < 2; i++ ){ //First part of the melody repeats itself
             audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("G", 4)));
             audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("A", 4)));
             audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("B", 4)));
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("A", 4)));
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("G", 4)));
         }
         return audioPlaySystem;
     }
