@@ -33,7 +33,7 @@ public class NeoPixelLed implements Led {
 
     public void setColor(Color color) {
         this.color = color;
-        if (color.getRed() == 0 || color.getGreen() == 0 || color.getBlue() == 0) {
+        if (color.getRed() == 0 && color.getGreen() == 0 && color.getBlue() == 0) {
             off();
         } else {
             BoeBot.rgbSet(id, color);

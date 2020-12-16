@@ -59,7 +59,7 @@ public class Notifications implements Updatable {
     public void emergencyNotification() {
         //this.buzzerFrequency = 400;
         this.buzzerNote = "A";
-        this.buzzerOctave = 4;
+        this.buzzerOctave = 20;
         this.buzzerTime = 500;
         this.useSpecificFrequency = false;
         this.neoPixelLedInterval = 500;
@@ -68,6 +68,7 @@ public class Notifications implements Updatable {
         this.repeat = true;
         this.neoPixelLedColorA = Color.red;
         this.lightColorPattern = "AAAAAA";
+        this.neoPixelLedState = true;
 
         buzzerTimer.setInterval(this.buzzerInterval);
         neoPixelLedTimer.setInterval(this.neoPixelLedInterval);
@@ -179,41 +180,11 @@ public class Notifications implements Updatable {
 
         //NeoPixelLed old code
         //TODO: Delete this if the new code is functional
-//        if (neoPixelLedTimer.timeout() && timerIsEnabled){
-//            for (NeoPixelLed neoPixelLed : neoPixelLeds) {
-//                if (!neoPixelLedState){
-//                    if (neoPixelLed instanceof NeoPixelLed) {
-//                        neoPixelLed.setColor(neoPixelLedColorA);
-//                    } else {
-//                        neoPixelLed.on();
-//                    }
-//                    neoPixelLedState = true;
-//                } else {
-//                    neoPixelLed.off();
-//                    neoPixelLedState = false;
-//                    if (!repeat) {
-//                        timerIsEnabled = false;
-//                    }
-//                }
-//            }
-//        }
-
-        //New NeoPixelLed system
-        //TODO: Decide whether or not to use a for-loop instead of a for-each loop.
         if (neoPixelLedTimer.timeout() && timerIsEnabled){
-            int i = 0;
             for (NeoPixelLed neoPixelLed : neoPixelLeds) {
                 if (!neoPixelLedState){
-                    if (neoPixelLed instanceof NeoPixelLed) { //TODO: Remove this check.
-                        if (this.lightColorPattern.charAt(i) == 'A'){
-                            neoPixelLed.setColor(neoPixelLedColorA);
-                        } else if (this.lightColorPattern.charAt(i) == 'B'){
-                            neoPixelLed.setColor(neoPixelLedColorB);
-                        } else if (this.lightColorPattern.charAt(i) == 'X'){ //TODO: Check whether this messes with the other on/off code.
-                            if (neoPixelLed.getIsOn()){ //TODO: Check whether this is optional.
-                                neoPixelLed.off();
-                            }
-                        }
+                    if (neoPixelLed instanceof NeoPixelLed) {
+                        neoPixelLed.setColor(neoPixelLedColorA);
                     } else {
                         neoPixelLed.on();
                     }
@@ -225,9 +196,39 @@ public class Notifications implements Updatable {
                         timerIsEnabled = false;
                     }
                 }
-                i++;
             }
         }
+
+        //New NeoPixelLed system
+        //TODO: Decide whether or not to use a for-loop instead of a for-each loop.
+//        if (neoPixelLedTimer.timeout() && timerIsEnabled){
+//            int i = 0;
+//            for (NeoPixelLed neoPixelLed : neoPixelLeds) {
+//                if (!neoPixelLedState){
+//                    if (neoPixelLed instanceof NeoPixelLed) { //TODO: Remove this check.
+//                        if (this.lightColorPattern.charAt(i) == 'A'){
+//                            neoPixelLed.setColor(neoPixelLedColorA);
+//                        } else if (this.lightColorPattern.charAt(i) == 'B'){
+//                            neoPixelLed.setColor(neoPixelLedColorB);
+//                        } else if (this.lightColorPattern.charAt(i) == 'X'){ //TODO: Check whether this messes with the other on/off code.
+//                            if (neoPixelLed.getIsOn()){ //TODO: Check whether this is optional.
+//                                neoPixelLed.off();
+//                            }
+//                        }
+//                    } else {
+//                        neoPixelLed.on();
+//                    }
+//                    neoPixelLedState = true;
+//                } else {
+//                    neoPixelLed.off();
+//                    neoPixelLedState = false;
+//                    if (!repeat) {
+//                        timerIsEnabled = false;
+//                    }
+//                }
+//                i++;
+//            }
+//        }
 
     }
 }

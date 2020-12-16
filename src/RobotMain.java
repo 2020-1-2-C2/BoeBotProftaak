@@ -4,6 +4,7 @@ import TI.BoeBot;
 import TI.PinMode;
 import Utils.*;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class RobotMain implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
@@ -61,6 +62,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         neoPixelLeds.add(neoPixelLed3);
         neoPixelLeds.add(neoPixelLed4);
         neoPixelLeds.add(neoPixelLed5);
+
+        BoeBot.rgbShow();
         notifications = new Notifications(buzzers, neoPixelLeds);
 
 //        Adds all the updatables to an arraylist.
@@ -72,17 +75,18 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         updatables.add(servoMotor);
         updatables.add(this.shapes);
         updatables.add(bluetoothReceiver);
+        updatables.add(notifications);
         for (NeoPixelLed neoPixelLed : neoPixelLeds){
             updatables.add(neoPixelLed);
         }
 
-        testSong(buzzer);
+//        testSong(buzzer);
 
         while (running) {
             for (Updatable u : updatables) {
                 u.update();
             }
-            BoeBot.wait(10);
+            BoeBot.wait(1);
         }
     }
 
@@ -210,6 +214,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     public void onCollisionDetection(int distance) {
         driveSystem.emergencyStop();
         notifications.emergencyNotification();
+        System.out.println("Emergency stop");
     }
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
