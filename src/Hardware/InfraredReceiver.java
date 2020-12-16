@@ -5,8 +5,6 @@ import TI.PinMode;
 import Utils.InfraredCallback;
 import Utils.Updatable;
 
-import java.util.HashMap;
-
 //TODO: Fix documentation
 
 /**
@@ -17,8 +15,23 @@ public class InfraredReceiver implements Updatable {
     private int pinId;
     private InfraredCallback infraredCallback;
 
-    private HashMap<Integer, String> remoteButtons;
-
+    public static final int FORWARD  = 0b000010010000;
+    public static final int BACKWARD = 0b000010010001;
+    public static final int RIGHT    = 0b000010010010;
+    public static final int LEFT     = 0b000010010011;
+    public static final int ONE      = 0b000010000000;
+    public static final int TWO      = 0b000010000001;
+    public static final int THREE    = 0b000010000010;
+    public static final int FOUR     = 0b000010000011;
+    public static final int FIVE     = 0b000010000100;
+    public static final int SIX      = 0b000010000101;
+    public static final int SEVEN    = 0b000010000110;
+    public static final int EIGHT    = 0b000010000111;
+    public static final int NINE     = 0b000010001000;
+    public static final int ZERO     = 0b000010001001;
+    public static final int POWER    = 0b000010010101;
+    public static final int TRIANGLE = 0b000111001000;
+    public static final int TVVCR    = 0b000010100101;
 
     /**
      * Constructor for the infraredsensor
@@ -29,29 +42,6 @@ public class InfraredReceiver implements Updatable {
         this.pinId = pinId;
         BoeBot.setMode(this.pinId, PinMode.Input);
         this.infraredCallback = infraredCallback;
-        this.remoteButtons = new HashMap<>();
-
-        // Hashmap van de verschillende knoppen voor de infrarood afstandsbediening.
-        // De key is het bit signaal dat wordt gestuurd, de value is de bijbehorende knop in een String.
-        this.remoteButtons.put(0b000010010000, "ch+");
-        this.remoteButtons.put(0b000010010001, "ch-");
-        this.remoteButtons.put(0b000010010010, "vol+");
-        this.remoteButtons.put(0b000010010011, "vol-");
-        this.remoteButtons.put(0b000010000000, "1");
-        this.remoteButtons.put(0b000010000001, "2");
-        this.remoteButtons.put(0b000010000010, "3");
-        this.remoteButtons.put(0b000010000011, "4");
-        this.remoteButtons.put(0b000010000100, "5");
-        this.remoteButtons.put(0b000010000101, "6");
-        this.remoteButtons.put(0b000010000110, "7");
-        this.remoteButtons.put(0b000010000111, "8");
-        this.remoteButtons.put(0b000010001000, "9");
-        this.remoteButtons.put(0b000010001001, "0");
-        this.remoteButtons.put(0b000010010101, "power");
-        //'Square' button is underneath the 'vol-' button.
-        this.remoteButtons.put(0b000111001000, "triangle");
-        //'tvvcr' button is underneath the 'vol+' button.
-        this.remoteButtons.put(0b000010100101, "tvvcr");
     }
 
     /**
@@ -96,21 +86,12 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Interprits an infrareed signal in the form of a binary number and translates it to the String of the attached button on the infrared remote.
-     * @return String of infrared remote button corresponding to the found infrared signal, if no corresponding button exists then null is returned.
-     */
-    private String getPressedremoteButtons(){
-        int bitSignalBinary = convertBitSignalToBinary(listenForBitSignal());
-        return this.remoteButtons.getOrDefault(bitSignalBinary, null);
-    }
-
-    /**
      * If a startsignal is received, then a bit-signal is received and the corresponding infrared remote button is given to the callback object.
      */
     @Override
     public void update() {
         if (listenForStartSignal()){
-            this.infraredCallback.onInfraredButton(getPressedremoteButtons());
+            this.infraredCallback.onInfraredButton(convertBitSignalToBinary(listenForBitSignal()));
         }
     }
 }

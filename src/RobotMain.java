@@ -4,7 +4,6 @@ import TI.BoeBot;
 import TI.PinMode;
 import Utils.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class RobotMain implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
@@ -76,7 +75,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         updatables.add(this.shapes);
         updatables.add(bluetoothReceiver);
         updatables.add(notifications);
-        for (NeoPixelLed neoPixelLed : neoPixelLeds){
+        for (NeoPixelLed neoPixelLed : neoPixelLeds) {
             updatables.add(neoPixelLed);
         }
 
@@ -96,62 +95,60 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
      * @param button received button pressed on the infrared remote.
      */
     @Override
-    public void onInfraredButton(String button) {
-        if (button != null) {
-            notifications.remoteNotification();
-            switch (button) {
-                case "power":
-                    driveSystem.stop();
-                    break;
-                case "ch+":
-                    driveSystem.setDirection(1);
-                    break;
-                case "ch-":
-                    driveSystem.setDirection(-1);
-                    break;
-                case "vol+":
-                    driveSystem.turnRight();
-                    break;
-                case "vol-":
-                    driveSystem.turnLeft();
-                    break;
-                case "1":
-                    driveSystem.setSpeed(10);
-                    break;
-                case "2":
-                    driveSystem.setSpeed(20);
-                    break;
-                case "3":
-                    driveSystem.setSpeed(30);
-                    break;
-                case "4":
-                    driveSystem.setSpeed(40);
-                    break;
-                case "5":
-                    driveSystem.setSpeed(50);
-                    break;
-                case "6":
-                    driveSystem.setSpeed(60);
-                    break;
-                case "7":
-                    driveSystem.setSpeed(70);
-                    break;
-                case "8":
-                    driveSystem.setSpeed(80);
-                    break;
-                case "9":
-                    driveSystem.setSpeed(90);
-                    break;
-                case "0":
-                    driveSystem.setSpeed(100);
-                    break;
-                case "triangle":
-                    this.shapes.beginShape(Shapes.Shape.TRIANGLE);
-                    break;
-                case "tvvcr":
-                    this.shapes.beginShape(Shapes.Shape.CIRCLE);
-                    break;
-            }
+    public void onInfraredButton(int button) {
+        notifications.remoteNotification();
+        switch (button) {
+            case InfraredReceiver.POWER:
+                driveSystem.stop();
+                break;
+            case InfraredReceiver.FORWARD:
+                driveSystem.setDirection(DriveSystem.FORWARD);
+                break;
+            case InfraredReceiver.BACKWARD:
+                driveSystem.setDirection(DriveSystem.BACKWARD);
+                break;
+            case InfraredReceiver.RIGHT:
+                driveSystem.turnRight();
+                break;
+            case InfraredReceiver.LEFT:
+                driveSystem.turnLeft();
+                break;
+            case InfraredReceiver.ONE:
+                driveSystem.setSpeed(10);
+                break;
+            case InfraredReceiver.TWO:
+                driveSystem.setSpeed(20);
+                break;
+            case InfraredReceiver.THREE:
+                driveSystem.setSpeed(30);
+                break;
+            case InfraredReceiver.FOUR:
+                driveSystem.setSpeed(40);
+                break;
+            case InfraredReceiver.FIVE:
+                driveSystem.setSpeed(50);
+                break;
+            case InfraredReceiver.SIX:
+                driveSystem.setSpeed(60);
+                break;
+            case InfraredReceiver.SEVEN:
+                driveSystem.setSpeed(70);
+                break;
+            case InfraredReceiver.EIGHT:
+                driveSystem.setSpeed(80);
+                break;
+            case InfraredReceiver.NINE:
+                driveSystem.setSpeed(90);
+                break;
+            case InfraredReceiver.ZERO:
+                driveSystem.setSpeed(100);
+                break;
+            case InfraredReceiver.TRIANGLE:
+                this.shapes.beginShape(Shapes.Shape.TRIANGLE);
+                break;
+            case InfraredReceiver.TVVCR:
+                this.shapes.beginShape(Shapes.Shape.CIRCLE);
+                break;
         }
         System.out.println(button);
     }
@@ -248,14 +245,14 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     }
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye
-    public void testSong(Buzzer buzzer){
+    public void testSong(Buzzer buzzer) {
         System.out.println("Entered Somebody that I used to know by Gotye");
         buzzer.playSong(jingle.somebodyThatIUsedToKnow());
     }
 
     //TODO: Decide where to update this
-    public void update(){
-        if (driveSystem.getDirection() == -1){
+    public void update() {
+        if (driveSystem.getDirection() == -1) {
             notifications.drivingBackwardsNotification();
         }
     }

@@ -22,6 +22,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private boolean followLine = false;
     private int followSpeed;
 
+    public static final int FORWARD = 1;
+    public static final int BACKWARD = -1;
+
     public DriveSystem(Motor motors) {
         this.motor = motors;
     }
@@ -48,7 +51,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @param direction 1 is forward, -1 is backward
      */
     public void setDirection(int direction) {
-        if (direction != this.direction && (direction == 1 || direction == -1)) {
+        if (direction != this.direction && (direction == FORWARD || direction == BACKWARD)) {
             this.direction = direction;
             setSpeed(MAX_SPEED / STEPS);
         }
