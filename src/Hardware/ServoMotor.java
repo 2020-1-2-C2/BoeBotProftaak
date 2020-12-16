@@ -1,8 +1,8 @@
 package Hardware;
 
 import TI.Servo;
-import TI.Timer;
 import Utils.Motor;
+import Utils.TimerWithState;
 
 import java.util.ArrayList;
 import java.util.List;
