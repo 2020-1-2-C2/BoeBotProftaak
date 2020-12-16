@@ -12,6 +12,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private Motor motor;
     private final int STEPS = 10;
     private final int MAX_SPEED = 100;
+    private int currentMaxSpeed = MAX_SPEED;
     // time in ms
     private final int ACCELERATION_TIME = 500;
     private int currentSpeed = 0;
@@ -30,8 +31,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void setSpeed(int speed) {
 
-        if (speed > 100) {
-            speed = 100;
+        if (speed > currentMaxSpeed) {
+            speed = currentMaxSpeed;
         } else if (speed < 0) {
             speed = 0;
         }
@@ -51,43 +52,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             this.direction = direction;
             setSpeed(MAX_SPEED / STEPS);
         }
-    }
-
-
-    public void addForwardSpeed() {
-        addSpeed(true);
-    }
-
-    public void addBackwardSpeed() {
-        addSpeed(false);
-    }
-
-    /**
-     * @param direction true = forwards, false = backwards
-     */
-    public void addSpeed(boolean direction) {
-        int speedDiff;
-        if (direction) {
-            speedDiff = MAX_SPEED / STEPS;
-        } else {
-            speedDiff = -MAX_SPEED / STEPS;
-        }
-        currentSpeed = currentSpeed + speedDiff;
-
-        if (currentSpeed > 100) {
-            currentSpeed = 100;
-        } else if (currentSpeed < -100) {
-            currentSpeed = -100;
-        }
-
-        currentSpeedRight = currentSpeed;
-        currentSpeedLeft = currentSpeed;
-
-        System.out.println(motor.getSpeedLeft());
-        System.out.println(motor.getSpeedRight());
-        System.out.println(MAX_SPEED / STEPS);
-        motor.goToSpeed(currentSpeed, ACCELERATION_TIME);
-
     }
 
     public void turnLeft() {
@@ -163,6 +127,21 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void followLine(boolean follow, int followSpeed) {
         this.followLine = follow;
         this.followSpeed = followSpeed;
+    }
+
+    public int getCurrentMaxSpeed() {
+        return currentMaxSpeed;
+    }
+
+    public void setCurrentMaxSpeed(int currentMaxSpeed) {
+        if (currentMaxSpeed > MAX_SPEED) {
+            currentMaxSpeed = MAX_SPEED;
+        }
+        this.currentMaxSpeed = currentMaxSpeed;
+    }
+
+    public int getCurrentSpeed() {
+        return currentSpeed;
     }
 
     @Override

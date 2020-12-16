@@ -212,9 +212,37 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
     @Override
     public void onCollisionDetection(int distance) {
-        driveSystem.emergencyStop();
-        notifications.emergencyNotification();
-        System.out.println("Emergency stop");
+        if (distance < 20) {
+            driveSystem.setCurrentMaxSpeed(0);
+            driveSystem.emergencyStop();
+            notifications.emergencyNotification();
+            System.out.println("Emergency stop");
+        } else if (distance < 30) {
+            driveSystem.setCurrentMaxSpeed(10);
+        } else if (distance < 40) {
+            driveSystem.setCurrentMaxSpeed(20);
+        } else if (distance < 50) {
+            driveSystem.setCurrentMaxSpeed(30);
+        } else if (distance < 60) {
+            driveSystem.setCurrentMaxSpeed(40);
+        } else if (distance < 70) {
+            driveSystem.setCurrentMaxSpeed(50);
+        } else if (distance < 80) {
+            driveSystem.setCurrentMaxSpeed(60);
+        } else if (distance < 90) {
+            driveSystem.setCurrentMaxSpeed(70);
+        } else if (distance < 100) {
+            driveSystem.setCurrentMaxSpeed(80);
+        } else if (distance < 110) {
+            driveSystem.setCurrentMaxSpeed(90);
+        } else {
+            driveSystem.setCurrentMaxSpeed(100);
+        }
+
+        if (driveSystem.getCurrentSpeed() > driveSystem.getCurrentMaxSpeed()) {
+            driveSystem.setSpeed(driveSystem.getCurrentMaxSpeed());
+        }
+
     }
 
     //Plays the first part of the melody of Somebody that I used to know by Gotye

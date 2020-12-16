@@ -4,12 +4,16 @@ import Utils.CollisionDetectionCallback;
 import Utils.UltraSonicCallback;
 import Utils.Updatable;
 
+import java.util.Arrays;
+
 public class CollisionDetection implements Updatable, UltraSonicCallback {
     private CollisionDetectionCallback collisionDetectionCallback;
 
-    private static final int STOPPING_DISTANCE = 20;
     private int stopCounter = 0;
     private int continueCounter = 0;
+
+    private int counter = 0;
+    private int[] distances = new int[9];
 
     /**
      * Constructor for CollisionDetection
@@ -25,26 +29,21 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
      */
     @Override
     public void onUltraSonicPulse(Integer distance) {
+
         if (distance == null){
             distance = 0;
             System.out.println("Distance null object");
         }
 
-        if (distance < STOPPING_DISTANCE) {
-            stopCounter++;
+        if (counter < distances.length) {
+            distances[counter] = distance;
+            counter++;
         } else {
-            continueCounter++;
+            Arrays.sort(distances);
+            collisionDetectionCallback.onCollisionDetection(distances[distances.length/2]);
+            counter = 0;
         }
 
-        if (stopCounter + continueCounter > 10) {
-            if (stopCounter > continueCounter) {
-
-                collisionDetectionCallback.onCollisionDetection(distance);
-                System.out.println(distance);
-            }
-            stopCounter = 0;
-            continueCounter = 0;
-        }
     }
 
     @Override
