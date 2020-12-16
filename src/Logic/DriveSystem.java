@@ -24,6 +24,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     public static final int FORWARD = 1;
     public static final int BACKWARD = -1;
+    private static final boolean RIGHT = true;
+    private static final boolean LEFT = false;
 
     public DriveSystem(Motor motors) {
         this.motor = motors;
@@ -58,45 +60,42 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     public void turnLeft() {
-        turn(false, MAX_SPEED/STEPS*2);
+        turn(LEFT, MAX_SPEED / STEPS * 2);
     }
 
     public void turnRight() {
-        turn(true, MAX_SPEED/STEPS*2);
+        turn(RIGHT, MAX_SPEED / STEPS * 2);
     }
 
     /**
-     *
-     * @param speed
+     * @param speed speed in percent
      */
     public void turnLeft(int speed) {
-        turn(false, speed);
+        turn(LEFT, speed);
     }
 
     /**
-     *
-     * @param speed
+     * @param speed speed in percent
      */
     public void turnRight(int speed) {
-        turn(true, speed);
+        turn(RIGHT, speed);
     }
 
     /**
-     *
      * @param direction true = right, false = left
-     * @param speed
+     * @param speed speed in percent
      */
     private void turn(boolean direction, int speed) {
         if (direction) {
-            currentSpeedRight = currentSpeed - speed/2;
-            currentSpeedLeft = currentSpeed + speed/2;
+            currentSpeedRight = currentSpeed - speed / 2;
+            currentSpeedLeft = currentSpeed + speed / 2;
             if (currentSpeedLeft > 100) {
                 currentSpeedLeft = 100;
                 currentSpeedRight = 100 - speed;
             }
         } else {
-            currentSpeedRight = currentSpeed + speed/2;
-            currentSpeedLeft = currentSpeed - speed/2;
+            currentSpeedRight = currentSpeed + speed / 2;
+            currentSpeedLeft = currentSpeed - speed / 2;
             if (currentSpeedRight > 100) {
                 currentSpeedRight = 100;
                 currentSpeedLeft = 100 - speed;
@@ -108,14 +107,19 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     }
 
+    /**
+     * Gradually stop BoeBot.
+     */
     public void stop() {
         currentSpeed = 0;
         currentSpeedLeft = currentSpeed;
         currentSpeedRight = currentSpeed;
         motor.goToSpeed(0, this.ACCELERATION_TIME);
-        //motor.emergencyStop();
     }
 
+    /**
+     * Immediately stop BoeBot
+     */
     public void emergencyStop() {
         currentSpeed = 0;
         currentSpeedLeft = currentSpeed;

@@ -7,16 +7,15 @@ import Utils.Updatable;
 import java.util.Arrays;
 
 public class CollisionDetection implements Updatable, UltraSonicCallback {
-    private CollisionDetectionCallback collisionDetectionCallback;
 
-    private int stopCounter = 0;
-    private int continueCounter = 0;
+    private CollisionDetectionCallback collisionDetectionCallback;
 
     private int counter = 0;
     private int[] distances = new int[9];
 
     /**
      * Constructor for CollisionDetection
+     *
      * @param collisionDetectionCallback CollisionDetectionCallback object
      */
     public CollisionDetection(CollisionDetectionCallback collisionDetectionCallback) {
@@ -25,12 +24,13 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
 
     /**
      * Receives the distance calculated using the ultrasonicsensor pulse and prints it.
+     *
      * @param distance calculated distance using an ultrasonsicsensor pulse.
      */
     @Override
     public void onUltraSonicPulse(Integer distance) {
 
-        if (distance == null){
+        if (distance == null) {
             distance = 0;
             System.out.println("Distance null object");
         }
@@ -40,7 +40,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
             counter++;
         } else {
             Arrays.sort(distances);
-            collisionDetectionCallback.onCollisionDetection(distances[distances.length/2]);
+            collisionDetectionCallback.onCollisionDetection(distances[distances.length / 2]);
             counter = 0;
         }
 

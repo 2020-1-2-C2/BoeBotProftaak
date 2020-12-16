@@ -205,9 +205,11 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     @Override
     public void onCollisionDetection(int distance) {
         if (distance < 20) {
+            // Prevent calling emergency stop if the speed is already 0, otherwise turning of the BoeBot is also prevented.
             if (driveSystem.getCurrentSpeed() != 0 && driveSystem.getCurrentMaxSpeed() != 0) {
                 driveSystem.setCurrentMaxSpeed(0);
                 driveSystem.emergencyStop();
+                // TODO Disable emergency notification outside of emergency stop state.
                 notifications.emergencyNotification();
                 System.out.println("Emergency stop");
             }
@@ -247,7 +249,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
     //TODO: Decide where to update this
     public void update() {
-        if (driveSystem.getDirection() == -1) {
+        if (driveSystem.getDirection() == DriveSystem.BACKWARD) {
             notifications.drivingBackwardsNotification();
         }
     }
