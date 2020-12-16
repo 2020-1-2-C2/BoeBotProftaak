@@ -91,34 +91,48 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     public void turnLeft() {
-        turn(false);
+        turn(false, MAX_SPEED/STEPS*2);
     }
 
     public void turnRight() {
-        turn(true);
+        turn(true, MAX_SPEED/STEPS*2);
     }
 
     /**
-     * @param direction true = right, false = left
+     *
+     * @param speed
      */
-    private void turn(boolean direction) {
+    public void turnLeft(int speed) {
+        turn(false, speed);
+    }
 
-        int diff = MAX_SPEED / STEPS;
+    /**
+     *
+     * @param speed
+     */
+    public void turnRight(int speed) {
+        turn(true, speed);
+    }
 
-
+    /**
+     *
+     * @param direction true = right, false = left
+     * @param speed
+     */
+    private void turn(boolean direction, int speed) {
         if (direction) {
-            currentSpeedRight = currentSpeed - diff;
-            currentSpeedLeft = currentSpeed + diff;
+            currentSpeedRight = currentSpeed - speed/2;
+            currentSpeedLeft = currentSpeed + speed/2;
             if (currentSpeedLeft > 100) {
                 currentSpeedLeft = 100;
-                currentSpeedRight = 80;
+                currentSpeedRight = 100 - speed;
             }
         } else {
-            currentSpeedRight = currentSpeed + diff;
-            currentSpeedLeft = currentSpeed - diff;
+            currentSpeedRight = currentSpeed + speed/2;
+            currentSpeedLeft = currentSpeed - speed/2;
             if (currentSpeedRight > 100) {
                 currentSpeedRight = 100;
-                currentSpeedLeft = 80;
+                currentSpeedLeft = 100 - speed;
             }
         }
 
