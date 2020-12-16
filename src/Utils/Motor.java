@@ -1,5 +1,8 @@
 package Utils;
 
+/**
+ * General motor interface so the specific motor on the bot can implement the interface and the bots logic can still call these methods
+ */
 public interface Motor extends Updatable {
 
     /**

@@ -5,6 +5,7 @@ import TI.PinMode;
 import Utils.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class RobotMain implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
 
@@ -18,9 +19,14 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
     public static void main(String[] args) {
         RobotMain main = new RobotMain();
+        main.initialise();
         main.run();
     }
 
+    /**
+     * Initialise all relevant objects for the bot
+     * Add the necessary objects to the updatables list
+     */
     public void initialise() {
         // creating all the different objects which will be used
         InfraredReceiver infraredReceiver = new InfraredReceiver(0, this);
@@ -30,7 +36,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
 
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
-        driveSystem = new DriveSystem(servoMotor);
+        this.driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
         LineFollower lineFollower = new LineFollower(8, 9, driveSystem);
 
@@ -58,18 +64,24 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         notifications = new Notifications(buzzers, neoPixelLeds);
 
 //        Adds all the updatables to an arraylist.
-        updatables.add(infraredReceiver);
-        updatables.add(ultraSonicReceiver);
-        updatables.add(collisionDetection);
-        updatables.add(driveSystem);
-        updatables.add(buzzer);
-        updatables.add(servoMotor);
-        updatables.add(this.shapes);
-        updatables.add(bluetoothReceiver);
-        updatables.add(notifications);
-        for (NeoPixelLed neoPixelLed : neoPixelLeds) {
-            updatables.add(neoPixelLed);
-        }
+        Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
+                this.driveSystem, buzzer, servoMotor, this.shapes, bluetoothReceiver, this.notifications,
+                neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5);
+
+
+//        updatables.add(infraredReceiver);
+//        updatables.add(ultraSonicReceiver);
+//        updatables.add(collisionDetection);
+//        updatables.add(driveSystem);
+//        updatables.add(buzzer);
+//        updatables.add(servoMotor);
+//        updatables.add(this.shapes);
+//        updatables.add(bluetoothReceiver);
+//        updatables.add(notifications);
+//
+//        for (NeoPixelLed neoPixelLed : neoPixelLeds) {
+//            updatables.add(neoPixelLed);
+//        }
     }
 
     /**
@@ -85,9 +97,9 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     }
 
     /**
-     * Receives the pressed button on an infrared remote and prints it.
+     * Receives the pressed button on the infrared remote and tells the bot to do the action combined with the button
      *
-     * @param button received button pressed on the infrared remote.
+     * @param button received binary code for the button pressed on the infrared remote.
      */
     @Override
     public void onInfraredButton(int button) {
@@ -202,6 +214,11 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         }
     }
 
+    /**
+     * Receive the distance from the ultrasonic receiver and sets the bot to a certain max allowable speed or an emergency stop according to the distance
+     *
+     * @param distance distance from collision in cm
+     */
     @Override
     public void onCollisionDetection(int distance) {
         if (distance < 20) {
@@ -235,6 +252,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             driveSystem.setCurrentMaxSpeed(100);
         }
 
+        // if the current speed is greater than the newly set allowable maximum then decrease it to the max allowable speed
         if (driveSystem.getCurrentSpeed() > driveSystem.getCurrentMaxSpeed()) {
             driveSystem.setSpeed(driveSystem.getCurrentMaxSpeed());
         }
