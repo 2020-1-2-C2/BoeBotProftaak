@@ -101,8 +101,9 @@ public class LineFollower implements Updatable {
     }
 
     private void detectLine2Sensors() {
-        //System.out.println(BoeBot.analogRead(1) + " Left");
-        //System.out.println(BoeBot.analogRead(0) + " Right");
+/*        System.out.println(BoeBot.analogRead(0) + " Left");
+        System.out.println(BoeBot.analogRead(1) + " Right");
+        System.out.println(BoeBot.analogRead(2) + " Center");*/
         if (!this.leftSeesBlack() && !this.rightSeesBlack()) {
             this.callBack = LinePosition.ON_LINE;
 

@@ -77,9 +77,9 @@ public class Shapes implements Updatable {
             if (this.triangleSegmentBoolean) {
                 //If true, corner
                 this.driveSystem.stop();
-                this.triangleTimer.setInterval(1600);
+                this.triangleTimer.setInterval(1350);
                 this.triangleSegmentBoolean = false;
-                this.driveSystem.turnLeft(80);
+                this.driveSystem.turnLeft(60);
                 this.triangleCounter++;
             } else {
                 //If false, straight
