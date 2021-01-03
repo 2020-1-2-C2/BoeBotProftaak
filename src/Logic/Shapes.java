@@ -60,7 +60,7 @@ public class Shapes implements Updatable {
     /**
      * Drive in a circle
      */
-    public void circle() {
+    private void circle() {
         if (this.circleTimerEnabled) {
             this.driveSystem.turnLeft();
         } else {
@@ -72,7 +72,7 @@ public class Shapes implements Updatable {
      * Drive in a triangle
      * TODO: Adjust timers
      */
-    public void triangle() {
+    private void triangle() {
         if (this.triangleCounter < 3) {
             if (this.triangleSegmentBoolean) {
                 //If true, corner
