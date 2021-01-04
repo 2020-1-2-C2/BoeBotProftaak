@@ -186,6 +186,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         }
     }
 
+    //TODO Input for route following needs to be interpreted and converted into a route object, after which the DriveSystem.followRoute(route) method can be called to start following that route
     @Override
     public void onBluetoothReceive(BluetoothReceiver.Commands command) {
         if (!command.equals(BluetoothReceiver.Commands.DEFAULT)) {

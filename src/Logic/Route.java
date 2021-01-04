@@ -38,7 +38,7 @@ public class Route {
 
 
     /**
-     * Reverse the route and continue from the start of the route.
+     * Reverse the route and continue from the end of the previous route.
      */
     public void reverse() {
         for (int i = 0; i < route.size(); i++) {

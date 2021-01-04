@@ -180,6 +180,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     @Override
     public void update() {
+        //TODO if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly
         if (turnAtEndTimer.isOn() && turnAtEndTimer.timeout()) {
             // stop driving backwards and start turning around
             stop();
@@ -188,6 +189,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         } else if (routeTimer.isOn() && routeTimer.timeout()) {
             if (turnAtEnd) {
                 // start driving backwards when then end of a route is reached and set a timer to stop this
+                //TODO notification for driving backwards?
                 setSpeed(followSpeed);
                 setDirection(BACKWARD);
                 turnAtEndTimer.mark();
@@ -248,6 +250,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 break;
             default:
                 // If there is no valid instruction stop following the route.
+                //TODO notificatie dat er geen route is
                 followLine(false);
                 setFollowingRoute(false);
                 this.stop();
@@ -282,6 +285,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
+        // Following the line normally while not turning
         if (this.followLine && !turningRight && !turningLeft) {
             switch (linePosition) {
                 case ON_LINE:
@@ -303,10 +307,12 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     break;
                 case CROSSING:
                     this.stop();
+                    // if a route is being followed detect crossroads to determine the next step in the route
                     if (isFollowingRoute()) {
                         routeNextStep();
                     }
             }
+            // Turning while following line so it turns to the next corner (usually a 90 degree turn)
         } else if (this.followLine && (turningLeft || turningRight)) {
             switch (linePosition) {
                 case LEFT_OF_LINE:
@@ -320,15 +326,20 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     }
                     break;
             }
+            // For turning at the end of a route, also needs to give back that the turn has been completed
+            // Followline will be false when this turn happens, so the above else if statement isn't reached
+            // Once the turn has been completed it stops and waits for a new timer to expire before following the new route
         } else if (turnAtEnd) {
             switch (linePosition) {
                 case RIGHT_OF_LINE:
                     turnAtEnd = false;
+                    stop();
                     routeTimer.mark();
                     routeTimer.setOn(true);
                     break;
                 case LEFT_OF_LINE:
                     turnAtEnd = false;
+                    stop();
                     routeTimer.mark();
                     routeTimer.setOn(true);
                     break;
