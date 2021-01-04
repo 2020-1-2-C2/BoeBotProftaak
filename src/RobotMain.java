@@ -21,6 +21,14 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
     private Jingle jingle = new Jingle();
 
+    private AbstractNotification abstractNotification;
+    public int abstractNotificationIndex;
+
+    private Buzzer buzzer;
+    private ArrayList<Buzzer> buzzers;
+
+    private ArrayList<NeoPixelLed> neoPixelLeds;
+
     public static void main(String[] args) {
         RobotMain main = new RobotMain();
         main.initialise();
@@ -40,14 +48,15 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
 
         //TODO don't hardcode orientation like this
+        //TODO: Uncomment linefollower initialization
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         this.driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
-        LineFollower lineFollower = new LineFollower(2, 1, driveSystem);
+        //LineFollower lineFollower = new LineFollower(2, 1, driveSystem);
 
-        Buzzer buzzer = new Buzzer(6);
-        ArrayList<Buzzer> buzzers = new ArrayList<>();
-        buzzers.add(buzzer);
+        this.buzzer = new Buzzer(6);
+        this.buzzers = new ArrayList<>();
+        this.buzzers.add(buzzer);
 
         NeoPixelLed neoPixelLed0 = new NeoPixelLed(0);
         NeoPixelLed neoPixelLed1 = new NeoPixelLed(1);
@@ -57,7 +66,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         NeoPixelLed neoPixelLed5 = new NeoPixelLed(5);
 
         //Adds all the NeoPixelLeds to an arraylist.
-        ArrayList<NeoPixelLed> neoPixelLeds = new ArrayList<>();
+        this.neoPixelLeds = new ArrayList<>();
         neoPixelLeds.add(neoPixelLed0);
         neoPixelLeds.add(neoPixelLed1);
         neoPixelLeds.add(neoPixelLed2);
@@ -65,16 +74,28 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         neoPixelLeds.add(neoPixelLed4);
         neoPixelLeds.add(neoPixelLed5);
 
-        BoeBot.rgbShow();
+        //BoeBot.rgbShow();
 
-        //notificationsSystem = new NotificationsSystem(buzzers, neoPixelLeds);
-
+        this.abstractNotification = new EmptyNotification(buzzers, neoPixelLeds);
+        System.out.println("TEST");
 
 //        Adds all the updatables to an arraylist.
+        //TODO: Comment out lineFollower.
         //TODO: Add the neoPixelLeds arraylist instead of all the neoPixelLeds individually.
         Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
-                this.driveSystem, buzzer, servoMotor, this.shapes, bluetoothReceiver, lineFollower
-                /*neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5*/);
+                this.driveSystem, this.buzzer, servoMotor, this.shapes, bluetoothReceiver, /*lineFollower*/
+                neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5,
+                this.abstractNotification
+        );
+
+        int lookForAbstractNotification = 0;
+        for (Updatable updatable : this.updatables){
+            lookForAbstractNotification++;
+            if (updatable instanceof AbstractNotification){
+                abstractNotificationIndex = lookForAbstractNotification;
+            }
+        }
+
     }
 
     /**
@@ -142,15 +163,19 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 break;
             case InfraredReceiver.ONE:
                 driveSystem.setSpeed(10);
+                setNotification(new DisconnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.TWO:
                 driveSystem.setSpeed(20);
+                setNotification(new ConnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.THREE:
                 driveSystem.setSpeed(30);
+                this.abstractNotification.cancel();
                 break;
             case InfraredReceiver.FOUR:
                 driveSystem.setSpeed(40);
+                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.FIVE:
                 driveSystem.setSpeed(50);
@@ -290,12 +315,30 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         //System.out.println("Emergency stop");
     }
 
+    public void setNotification(AbstractNotification notification){
+        //this.abstractNotification.cancel();
+//        if (updatables.get(abstractNotificationIndex) instanceof AbstractNotification){
+//            updatables.set(abstractNotificationIndex, notification);
+//        }
+
+        for (Updatable updatable : updatables){
+            if (updatable instanceof AbstractNotification){
+                 updatables.set(updatables.indexOf(updatable), notification);
+            }
+        }
+    }
+
+
+
     //Plays the first part of the melody of Somebody that I used to know by Gotye
     //TODO: Remove this after the last test for both the audio & the notifications system.
     public void testSong(Buzzer buzzer) {
         System.out.println("Entered Somebody that I used to know by Gotye");
         buzzer.playSong(jingle.somebodyThatIUsedToKnow());
     }
+
+
+
 
     //TODO: Fix this system.
     //TODO: Get the notificationsSystem out of the updatables Arraylist and change it from there.
