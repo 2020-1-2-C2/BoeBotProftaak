@@ -181,16 +181,19 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     @Override
     public void update() {
         if (turnAtEndTimer.isOn() && turnAtEndTimer.timeout()) {
+            // stop driving backwards and start turning around
             stop();
             turnLeft(50);
             turnAtEndTimer.setOn(false);
         } else if (routeTimer.isOn() && routeTimer.timeout()) {
             if (turnAtEnd) {
+                // start driving backwards when then end of a route is reached and set a timer to stop this
                 setSpeed(followSpeed);
                 setDirection(BACKWARD);
                 turnAtEndTimer.mark();
                 turnAtEndTimer.setOn(true);
             } else {
+                // when the BoeBot is turned around, reverse the route and follow the new route, back to the starting position
                 route.reverse();
                 followRoute(route);
             }
@@ -207,12 +210,20 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         return direction;
     }
 
+    /**
+     * Start following the provided route
+     *
+     * @param route Route object to use
+     */
     public void followRoute(Route route) {
         setFollowingRoute(true);
         this.route = route;
         followLine(true);
     }
 
+    /**
+     * Get the next step of the route and take the appropriate action to follow it.
+     */
     private void routeNextStep() {
         switch (route.nextDirection()) {
             case Route.FORWARD:
@@ -227,14 +238,16 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 turnRight();
                 break;
             case Route.NONE:
-                this.stop();
                 followLine(false);
                 setFollowingRoute(false);
+                this.stop();
+                // Start the process of turning around and following the route back.
                 turnAtEnd = true;
                 routeTimer.mark();
                 routeTimer.setOn(true);
                 break;
             default:
+                // If there is no valid instruction stop following the route.
                 followLine(false);
                 setFollowingRoute(false);
                 this.stop();
@@ -242,14 +255,25 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         }
     }
 
+    /**
+     * @return value of followingRoute
+     */
     public boolean isFollowingRoute() {
         return followingRoute;
     }
 
+    /**
+     * Stop following the route.
+     */
     public void stopFollowingRoute() {
         setFollowingRoute(false);
     }
 
+    /**
+     * Set the value of following route.
+     *
+     * @param followingRoute value to set
+     */
     private void setFollowingRoute(boolean followingRoute) {
         this.followingRoute = followingRoute;
     }
