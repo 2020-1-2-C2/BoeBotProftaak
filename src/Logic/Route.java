@@ -43,12 +43,12 @@ public class Route {
     public void reverse() {
         for (int i = 0; i < route.size(); i++) {
             if (route.get(i) == LEFT) {
-                route.set(i, RIGHT);
+                this.route.set(i, RIGHT);
             } else if (route.get(i) == RIGHT) {
-                route.set(i,LEFT);
+                this.route.set(i,LEFT);
             }
         }
-        Collections.reverse(route);
-        index = 0;
+        Collections.reverse(this.route);
+        this.index = 0;
     }
 }

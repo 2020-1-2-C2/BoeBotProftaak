@@ -46,17 +46,17 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void setSpeed(int speed) {
 
-        if (speed > currentMaxSpeed) {
-            speed = currentMaxSpeed;
+        if (speed > this.currentMaxSpeed) {
+            speed = this.currentMaxSpeed;
         } else if (speed < 0) {
             speed = 0;
         }
-        speed = speed * direction;
-        currentSpeed = speed;
-        currentSpeedLeft = currentSpeed;
-        currentSpeedRight = currentSpeed;
+        speed = speed * this.direction;
+        this.currentSpeed = speed;
+        this.currentSpeedLeft = this.currentSpeed;
+        this.currentSpeedRight = this.currentSpeed;
 
-        motor.goToSpeed(speed, ACCELERATION_TIME);
+        this.motor.goToSpeed(speed, this.ACCELERATION_TIME);
     }
 
     /**
@@ -65,16 +65,16 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void setDirection(int direction) {
         if (direction != this.direction && (direction == FORWARD || direction == BACKWARD)) {
             this.direction = direction;
-            setSpeed(MAX_SPEED / STEPS);
+            setSpeed(this.MAX_SPEED / this.STEPS);
         }
     }
 
     public void turnLeft() {
-        turn(LEFT, MAX_SPEED / STEPS * 2);
+        turn(LEFT, this.MAX_SPEED / this.STEPS * 2);
     }
 
     public void turnRight() {
-        turn(RIGHT, MAX_SPEED / STEPS * 2);
+        turn(RIGHT, this.MAX_SPEED / this.STEPS * 2);
     }
 
     /**
@@ -97,23 +97,23 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     private void turn(boolean direction, int speed) {
         if (direction) {
-            currentSpeedRight = currentSpeed - speed / 2;
-            currentSpeedLeft = currentSpeed + speed / 2;
-            if (currentSpeedLeft > 100) {
-                currentSpeedLeft = 100;
-                currentSpeedRight = 100 - speed;
+            this.currentSpeedRight = this.currentSpeed - speed / 2;
+            this.currentSpeedLeft = this.currentSpeed + speed / 2;
+            if (this.currentSpeedLeft > 100) {
+                this.currentSpeedLeft = 100;
+                this.currentSpeedRight = 100 - speed;
             }
         } else {
-            currentSpeedRight = currentSpeed + speed / 2;
-            currentSpeedLeft = currentSpeed - speed / 2;
-            if (currentSpeedRight > 100) {
-                currentSpeedRight = 100;
-                currentSpeedLeft = 100 - speed;
+            this.currentSpeedRight = this.currentSpeed + speed / 2;
+            this.currentSpeedLeft = this.currentSpeed - speed / 2;
+            if (this.currentSpeedRight > 100) {
+                this.currentSpeedRight = 100;
+                this.currentSpeedLeft = 100 - speed;
             }
         }
 
-        motor.goToSpeedRight(currentSpeedRight * this.direction, ACCELERATION_TIME);
-        motor.goToSpeedLeft(currentSpeedLeft * this.direction, ACCELERATION_TIME);
+        this.motor.goToSpeedRight(this.currentSpeedRight * this.direction, this.ACCELERATION_TIME);
+        this.motor.goToSpeedLeft(this.currentSpeedLeft * this.direction, this.ACCELERATION_TIME);
 
     }
 
@@ -121,20 +121,20 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * Gradually stop BoeBot.
      */
     public void stop() {
-        currentSpeed = 0;
-        currentSpeedLeft = currentSpeed;
-        currentSpeedRight = currentSpeed;
-        motor.goToSpeed(0, this.ACCELERATION_TIME);
+        this.currentSpeed = 0;
+        this.currentSpeedLeft = this.currentSpeed;
+        this.currentSpeedRight = this.currentSpeed;
+        this.motor.goToSpeed(0, this.ACCELERATION_TIME);
     }
 
     /**
      * Immediately stop BoeBot
      */
     public void emergencyStop() {
-        currentSpeed = 0;
-        currentSpeedLeft = currentSpeed;
-        currentSpeedRight = currentSpeed;
-        motor.emergencyStop();
+        this.currentSpeed = 0;
+        this.currentSpeedLeft = this.currentSpeed;
+        this.currentSpeedRight = this.currentSpeed;
+        this.motor.emergencyStop();
     }
 
     /**
@@ -158,15 +158,15 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @return current maximum speed.
      */
     public int getCurrentMaxSpeed() {
-        return currentMaxSpeed;
+        return this.currentMaxSpeed;
     }
 
     /**
      * @param currentMaxSpeed new maximum speed
      */
     public void setCurrentMaxSpeed(int currentMaxSpeed) {
-        if (currentMaxSpeed > MAX_SPEED) {
-            currentMaxSpeed = MAX_SPEED;
+        if (currentMaxSpeed > this.MAX_SPEED) {
+            currentMaxSpeed = this.MAX_SPEED;
         }
         this.currentMaxSpeed = currentMaxSpeed;
     }
@@ -175,31 +175,31 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @return current speed
      */
     public int getCurrentSpeed() {
-        return currentSpeed;
+        return this.currentSpeed;
     }
 
     @Override
     public void update() {
         //TODO if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly
-        if (turnAtEndTimer.isOn() && turnAtEndTimer.timeout()) {
+        if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
             // stop driving backwards and start turning around
             stop();
             turnLeft(50);
-            turnAtEndTimer.setOn(false);
-        } else if (routeTimer.isOn() && routeTimer.timeout()) {
-            if (turnAtEnd) {
+            this.turnAtEndTimer.setOn(false);
+        } else if (this.routeTimer.isOn() && this.routeTimer.timeout()) {
+            if (this.turnAtEnd) {
                 // start driving backwards when then end of a route is reached and set a timer to stop this
                 //TODO notification for driving backwards?
-                setSpeed(followSpeed);
+                setSpeed(this.followSpeed);
                 setDirection(BACKWARD);
-                turnAtEndTimer.mark();
-                turnAtEndTimer.setOn(true);
+                this.turnAtEndTimer.mark();
+                this.turnAtEndTimer.setOn(true);
             } else {
                 // when the BoeBot is turned around, reverse the route and follow the new route, back to the starting position
-                route.reverse();
-                followRoute(route);
+                this.route.reverse();
+                followRoute(this.route);
             }
-            routeTimer.setOn(false);
+            this.routeTimer.setOn(false);
         }
     }
 
@@ -209,7 +209,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @return An int representing the direction the bot is heading to
      */
     public int getDirection() {
-        return direction;
+        return this.direction;
     }
 
     /**
@@ -227,16 +227,16 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * Get the next step of the route and take the appropriate action to follow it.
      */
     private void routeNextStep() {
-        switch (route.nextDirection()) {
+        switch (this.route.nextDirection()) {
             case Route.FORWARD:
-                this.setSpeed(followSpeed);
+                this.setSpeed(this.followSpeed);
                 break;
             case Route.LEFT:
-                turningLeft = true;
+                this.turningLeft = true;
                 turnLeft();
                 break;
             case Route.RIGHT:
-                turningRight = true;
+                this.turningRight = true;
                 turnRight();
                 break;
             case Route.NONE:
@@ -244,9 +244,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 setFollowingRoute(false);
                 this.stop();
                 // Start the process of turning around and following the route back.
-                turnAtEnd = true;
-                routeTimer.mark();
-                routeTimer.setOn(true);
+                this.turnAtEnd = true;
+                this.routeTimer.mark();
+                this.routeTimer.setOn(true);
                 break;
             default:
                 // If there is no valid instruction stop following the route.
@@ -262,7 +262,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @return value of followingRoute
      */
     public boolean isFollowingRoute() {
-        return followingRoute;
+        return this.followingRoute;
     }
 
     /**
@@ -270,8 +270,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void stopFollowingRoute() {
         setFollowingRoute(false);
-        turnAtEndTimer.setOn(false);
-        routeTimer.setOn(false);
+        this.turnAtEndTimer.setOn(false);
+        this.routeTimer.setOn(false);
     }
 
     /**
@@ -286,10 +286,10 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
         // Following the line normally while not turning
-        if (this.followLine && !turningRight && !turningLeft) {
+        if (this.followLine && !this.turningRight && !this.turningLeft) {
             switch (linePosition) {
                 case ON_LINE:
-                    this.setSpeed(followSpeed);
+                    this.setSpeed(this.followSpeed);
                     break;
                 case LEFT_OF_LINE:
                     this.stop();
@@ -313,35 +313,35 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     }
             }
             // Turning while following line so it turns to the next corner (usually a 90 degree turn)
-        } else if (this.followLine && (turningLeft || turningRight)) {
+        } else if (this.followLine && (this.turningLeft || this.turningRight)) {
             switch (linePosition) {
                 case LEFT_OF_LINE:
-                    if (turningRight) {
-                        turningRight = false;
+                    if (this.turningRight) {
+                        this.turningRight = false;
                     }
                     break;
                 case RIGHT_OF_LINE:
-                    if (turningLeft) {
-                        turningLeft = false;
+                    if (this.turningLeft) {
+                        this.turningLeft = false;
                     }
                     break;
             }
             // For turning at the end of a route, also needs to give back that the turn has been completed
             // Followline will be false when this turn happens, so the above else if statement isn't reached
             // Once the turn has been completed it stops and waits for a new timer to expire before following the new route
-        } else if (turnAtEnd) {
+        } else if (this.turnAtEnd) {
             switch (linePosition) {
                 case RIGHT_OF_LINE:
-                    turnAtEnd = false;
+                    this.turnAtEnd = false;
                     stop();
-                    routeTimer.mark();
-                    routeTimer.setOn(true);
+                    this.routeTimer.mark();
+                    this.routeTimer.setOn(true);
                     break;
                 case LEFT_OF_LINE:
-                    turnAtEnd = false;
+                    this.turnAtEnd = false;
                     stop();
-                    routeTimer.mark();
-                    routeTimer.setOn(true);
+                    this.routeTimer.mark();
+                    this.routeTimer.setOn(true);
                     break;
             }
         }
