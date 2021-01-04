@@ -267,6 +267,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void stopFollowingRoute() {
         setFollowingRoute(false);
+        turnAtEndTimer.setOn(false);
+        routeTimer.setOn(false);
     }
 
     /**
