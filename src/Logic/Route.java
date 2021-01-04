@@ -12,11 +12,18 @@ public class Route {
     private ArrayList<Integer> route;
     private int index;
 
+    /**
+     *
+     * @param route ArrayList of directions as integers.
+     */
     public Route(ArrayList<Integer> route) {
         this.route = route;
         this.index = 0;
     }
 
+    /**
+     * @return return the next direction as an integer.
+     */
     public Integer nextDirection() {
         if (route.size() < 1) {
             return null;
@@ -31,7 +38,7 @@ public class Route {
 
 
     /**
-     * reverse the route and continue from the start of the route.
+     * Reverse the route and continue from the start of the route.
      */
     public void reverse() {
         for (int i = 0; i < route.size(); i++) {

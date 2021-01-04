@@ -123,6 +123,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     @Override
     public void onInfraredButton(int button) {
         //notifications.remoteNotification();
+        boolean recognized = true;
         switch (button) {
             case InfraredReceiver.POWER:
                 driveSystem.stop();
@@ -175,6 +176,13 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
             case InfraredReceiver.TVVCR:
                 this.shapes.beginShape(Shapes.Shape.CIRCLE);
                 break;
+            default:
+                recognized = false;
+                break;
+        }
+        if (recognized) {
+            driveSystem.followLine(false);
+            driveSystem.stopFollowingRoute();
         }
     }
 
@@ -242,6 +250,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         if (distance < 20) {
             // Prevent calling emergency stop if the speed is already 0, otherwise turning of the BoeBot is also prevented.
             if (driveSystem.getCurrentSpeed() != 0 && driveSystem.getCurrentMaxSpeed() != 0) {
+                driveSystem.followLine(false);
+                driveSystem.stopFollowingRoute();
                 driveSystem.setCurrentMaxSpeed(0);
                 driveSystem.emergencyStop();
                 // TODO: Disable emergency notification outside of emergency stop state.

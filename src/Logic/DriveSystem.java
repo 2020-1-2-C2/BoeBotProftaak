@@ -246,7 +246,11 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         return followingRoute;
     }
 
-    public void setFollowingRoute(boolean followingRoute) {
+    public void stopFollowingRoute() {
+        setFollowingRoute(false);
+    }
+
+    private void setFollowingRoute(boolean followingRoute) {
         this.followingRoute = followingRoute;
     }
 
