@@ -283,6 +283,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.followingRoute = followingRoute;
     }
 
+    //TODO situation where the line stops, the robot should stop then
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
         // Following the line normally while not turning
