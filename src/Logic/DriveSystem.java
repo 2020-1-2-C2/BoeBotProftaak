@@ -3,7 +3,9 @@ package Logic;
 import Hardware.LineFollower;
 import Utils.LineFollowCallback;
 import Utils.Motor;
+import Utils.TimerWithState;
 import Utils.Updatable;
+
 
 //TODO: Remove unnecessary comments & code
 //TODO: Update documentation
@@ -26,6 +28,14 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public static final int BACKWARD = -1;
     private static final boolean RIGHT = true;
     private static final boolean LEFT = false;
+
+    private boolean followingRoute = false;
+    private Route route;
+    private boolean turningLeft = false;
+    private boolean turningRight = false;
+    private boolean turnAtEnd = false;
+    private TimerWithState routeTimer = new TimerWithState(2000, false);
+    private TimerWithState turnAtEndTimer = new TimerWithState(500, false);
 
     public DriveSystem(Motor motors) {
         this.motor = motors;
@@ -141,6 +151,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void followLine(boolean follow, int followSpeed) {
         this.followLine = follow;
         this.followSpeed = followSpeed;
+        setDirection(FORWARD);
     }
 
     /**
@@ -169,7 +180,22 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     @Override
     public void update() {
-
+        if (turnAtEndTimer.isOn() && turnAtEndTimer.timeout()) {
+            stop();
+            turnLeft(50);
+            turnAtEndTimer.setOn(false);
+        } else if (routeTimer.isOn() && routeTimer.timeout()) {
+            if (turnAtEnd) {
+                setSpeed(followSpeed);
+                setDirection(BACKWARD);
+                turnAtEndTimer.mark();
+                turnAtEndTimer.setOn(true);
+            } else {
+                route.reverse();
+                followRoute(route);
+            }
+            routeTimer.setOn(false);
+        }
     }
 
     /**
@@ -181,9 +207,52 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         return direction;
     }
 
+    public void followRoute(Route route) {
+        setFollowingRoute(true);
+        this.route = route;
+        followLine(true);
+    }
+
+    private void routeNextStep() {
+        switch (route.nextDirection()) {
+            case Route.FORWARD:
+                this.setSpeed(followSpeed);
+                break;
+            case Route.LEFT:
+                turningLeft = true;
+                turnLeft();
+                break;
+            case Route.RIGHT:
+                turningRight = true;
+                turnRight();
+                break;
+            case Route.NONE:
+                this.stop();
+                followLine(false);
+                setFollowingRoute(false);
+                turnAtEnd = true;
+                routeTimer.mark();
+                routeTimer.setOn(true);
+                break;
+            default:
+                followLine(false);
+                setFollowingRoute(false);
+                this.stop();
+                break;
+        }
+    }
+
+    public boolean isFollowingRoute() {
+        return followingRoute;
+    }
+
+    public void setFollowingRoute(boolean followingRoute) {
+        this.followingRoute = followingRoute;
+    }
+
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
-        if (this.followLine) {
+        if (this.followLine && !turningRight && !turningLeft) {
             switch (linePosition) {
                 case ON_LINE:
                     this.setSpeed(followSpeed);
@@ -204,6 +273,35 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     break;
                 case CROSSING:
                     this.stop();
+                    if (isFollowingRoute()) {
+                        routeNextStep();
+                    }
+            }
+        } else if (this.followLine && (turningLeft || turningRight)) {
+            switch (linePosition) {
+                case LEFT_OF_LINE:
+                    if (turningRight) {
+                        turningRight = false;
+                    }
+                    break;
+                case RIGHT_OF_LINE:
+                    if (turningLeft) {
+                        turningLeft = false;
+                    }
+                    break;
+            }
+        } else if (turnAtEnd) {
+            switch (linePosition) {
+                case RIGHT_OF_LINE:
+                    turnAtEnd = false;
+                    routeTimer.mark();
+                    routeTimer.setOn(true);
+                    break;
+                case LEFT_OF_LINE:
+                    turnAtEnd = false;
+                    routeTimer.mark();
+                    routeTimer.setOn(true);
+                    break;
             }
         }
     }

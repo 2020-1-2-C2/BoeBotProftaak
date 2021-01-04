@@ -39,6 +39,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         CollisionDetection collisionDetection = new CollisionDetection(this);
         UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
 
+        //TODO don't hardcode orientation like this
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         this.driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
