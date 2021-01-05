@@ -39,7 +39,7 @@ public class Shapes implements Updatable {
     /**
      * This method is a setup for the shape.
      *
-     * @param shape Shape enum/object
+     * @param shape Shape enum
      */
     public void beginShape(Shape shape) {
         this.driveSystem.stop();
@@ -48,7 +48,7 @@ public class Shapes implements Updatable {
         if (shape.equals(Shape.CIRCLE)) {
             this.circleTimerEnabled = true;
             //TODO: Time needs to be adjusted!
-            this.circleTimer.setInterval(10000);
+            this.circleTimer.setInterval(11000);
             circle();
         } else if (shape.equals(Shape.TRIANGLE)) {
             this.triangleTimerEnabled = true;
