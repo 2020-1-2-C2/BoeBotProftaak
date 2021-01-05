@@ -3,8 +3,13 @@ package Logic;
 import TI.Timer;
 import Utils.Updatable;
 
+
+//TODO: Be more specific while writing documentation!
 /**
  * Class containing the instructions for the BoeBot when it receives the command to drive in a shape defined in this class.
+ * This class implements Updatable.java.
+ * @see Updatable
+ * @see DriveSystem
  */
 public class Shapes implements Updatable {
     private DriveSystem driveSystem;
@@ -17,6 +22,7 @@ public class Shapes implements Updatable {
 
     /**
      * Enums to define which shape to drive.
+     * This can either be a circle or a triangle.
      */
     public enum Shape {
         CIRCLE, TRIANGLE
@@ -87,7 +93,7 @@ public class Shapes implements Updatable {
                 this.triangleTimer.setInterval(2000);
                 this.triangleSegmentBoolean = true;
             }
-        } else if (this.triangleCounter >= 3) {
+        } else if (this.triangleCounter >= 3) { //TODO: Isn't this always true? If so... remove it!
             this.triangleTimerEnabled = false;
             this.triangleCounter = 0;
             this.driveSystem.stop();
@@ -95,7 +101,8 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Update method
+     * Override update method from Updatable.java.
+     * @see Updatable
      */
     @Override
     public void update() {

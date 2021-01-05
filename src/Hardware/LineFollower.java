@@ -2,9 +2,12 @@ package Hardware;
 
 import TI.BoeBot;
 import Utils.LineFollowCallback;
-import Utils.Motor;
 import Utils.Updatable;
 
+/**
+ * Class for the LineFollower hardware component, used by the BoeBot to navigate using lines.
+ *@see Utils.Updatable
+ */
 public class LineFollower implements Updatable {
 
     public enum LinePosition {
@@ -72,32 +75,19 @@ public class LineFollower implements Updatable {
     public void followLine(boolean follow, int speed) {
         this.speedDefault = speed;
         this.follow = follow;
-
     }
 
     private boolean leftSeesBlack() {
-        if (BoeBot.analogRead(leftLineSensorPin) > sensorTweak) {
-            return true;
-        } else {
-            return false;
-        }
+        return BoeBot.analogRead(leftLineSensorPin) > sensorTweak;
 
     }
 
     private boolean rightSeesBlack() {
-        if (BoeBot.analogRead(rightLineSensorPin) > sensorTweak) {
-            return true;
-        } else {
-            return false;
-        }
+        return BoeBot.analogRead(rightLineSensorPin) > sensorTweak;
     }
 
     private boolean centerSeesBlack() {
-        if (BoeBot.analogRead(centralLineSensorPin) > sensorTweak) {
-            return true;
-        } else {
-            return false;
-        }
+        return BoeBot.analogRead(centralLineSensorPin) > sensorTweak;
     }
 
     private void detectLine2Sensors() {
@@ -144,9 +134,12 @@ public class LineFollower implements Updatable {
         }
     }
 
+    /**
+     * Update method.
+     * @see Utils.Updatable
+     */
     @Override
     public void update() {
-
         if (this.centralLineSensorPin == -1) {
             this.detectLine2Sensors();
         } else {
@@ -154,8 +147,6 @@ public class LineFollower implements Updatable {
         }
 
         this.lineFollowCallback.onLineFollow(this.callBack);
-
-
     }
 }
 

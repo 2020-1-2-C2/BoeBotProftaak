@@ -5,6 +5,10 @@ import TI.PWM;
 import TI.Timer;
 import Utils.Led;
 
+/**
+ * DefaultLed class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
+ * @see Utils.Updatable
+ */
 public class DefaultLed implements Led {
     private int pinId;
     private boolean isOn;
@@ -35,9 +39,10 @@ public class DefaultLed implements Led {
     }
 
     /**
-     * Fade the LED
+     * Fade the LED.
      *
      * @param fade fades the LED. (Value: 0-100, 0 is full brightness, 100 is off.
+     * @see PWM
      */
     @Override
     public void fade(int fade) {
@@ -73,6 +78,7 @@ public class DefaultLed implements Led {
 
     /**
      * Updates the blinker
+     * @see Utils.Updatable
      */
     @Override
     public void update() {

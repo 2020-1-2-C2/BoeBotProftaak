@@ -77,9 +77,10 @@ public class MusicNote {
 
     /**
      * Auto-generated getter for the notePitch attribute.
+     * @return The pitch of the note (this.notePitch).
      */
     public int getNotePitch() {
-        return notePitch;
+        return this.notePitch;
     }
 
     /**

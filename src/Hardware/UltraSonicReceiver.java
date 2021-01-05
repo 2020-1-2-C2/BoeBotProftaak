@@ -7,7 +7,11 @@ import Utils.UltraSonicCallback;
 import Utils.Updatable;
 
 /**
+ * TODO BE MORE ACCURATE TODO UPDATE VERSION
  * Class for the hardware part ultrasonicsensor, contains methods to receive and interprit the signal from the ultrasonicsensor.
+ * @version 1.0
+ * @see Updatable
+ * @see UltraSonicCallback
  */
 public class UltraSonicReceiver implements Updatable {
 
@@ -32,8 +36,8 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Send an ultrasonic pulse and measure the time it takes to receive the pulse back in microseconds
-     * If the pulse length is less than 0 a null object is returned
+     * Send an ultrasonic pulse and measure the time it takes to receive the pulse back in microseconds.
+     * If the pulse length is less than 0 a null object is returned.
      *
      * @return time in microseconds to send and receive back an ultrasonic pulse.
      */
@@ -42,6 +46,7 @@ public class UltraSonicReceiver implements Updatable {
         BoeBot.wait(1);
         BoeBot.digitalWrite(this.pinIdTrigger, false);
 
+        //TODO: British only oi oi tea tea
         // pulse lengte in microseconden
         int pulse = BoeBot.pulseIn(this.pinIdEcho, true, 10000);
 
@@ -56,7 +61,7 @@ public class UltraSonicReceiver implements Updatable {
      * Using the pulse length in microseconds, alculate the distance of an ultrasonicpulse echo in cm.
      * The pulse length can be a null object, in which case a null object is directly returned
      *
-     * @return the distance an ultrasonicpulse has traveled one way, in cm.
+     * @return The distance an ultrasonicpulse has traveled one way, in cm.
      */
     private Integer distance() {
         Integer pulse = ultraSonicPulse();
@@ -68,7 +73,9 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
+     * Overrides update method.
      * If enough time has elapsed for the timer, then an ultrasonic pulse is sent, of which the distance is calculated and then sent to the callback object.
+     * @see Updatable
      */
     @Override
     public void update() {

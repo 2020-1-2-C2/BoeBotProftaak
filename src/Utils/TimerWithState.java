@@ -1,8 +1,9 @@
 package Utils;
 
 /**
- * Subclass of TI.Timer
- * Adds a private boolean isOn to keep track of whether the timer is on or not internally
+ * Subclass of TI.Timer.
+ * Adds a private boolean isOn to keep track of whether the timer is on or not internally.
+ * @see TI.Timer
  */
 public class TimerWithState extends TI.Timer {
 
@@ -18,10 +19,11 @@ public class TimerWithState extends TI.Timer {
     }
 
     /**
-     * Use the super constructor and set isOn to be true
+     * Uses the super constructor and set isOn to be true.
      *
-     * @param interval timer interval
-     * @param isOn set the value of isOn
+     * @param interval Timer interval.
+     * @param isOn Sets the value of isOn.
+     * @see TI.Timer#Timer(int)
      */
     public TimerWithState(int interval, boolean isOn) {
         super(interval);
@@ -29,20 +31,20 @@ public class TimerWithState extends TI.Timer {
     }
 
     /**
-     * Standard getter
+     * Auto-generated getter.
      *
-     * @return the value of isON
+     * @return Boolean; the value of isOn.
      */
     public boolean isOn() {
         return this.isOn;
     }
 
     /**
-     * Standard setter
+     * Auto-generated setter.
      *
-     * @param on set the value of isOn
+     * @param on Sets the value of isOn.
      */
     public void setOn(boolean on) {
-        isOn = on;
+        this.isOn = on;
     }
 }

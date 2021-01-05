@@ -3,6 +3,9 @@ package Logic;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
+//TODO: Check acces-modifiers.
+
 public class Route {
     public static final int LEFT = -1;
     public static final int FORWARD = 0;
@@ -13,7 +16,7 @@ public class Route {
     private int index;
 
     /**
-     *
+     * Constructor for the Route.java class.
      * @param route ArrayList of directions as integers.
      */
     public Route(ArrayList<Integer> route) {

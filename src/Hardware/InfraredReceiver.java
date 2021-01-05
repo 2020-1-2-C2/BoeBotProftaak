@@ -9,6 +9,8 @@ import Utils.Updatable;
 
 /**
  * Class for the hardware part infraredsensor, contains methods to receive and interprit the signal from the infraredsensor.
+ * @see Utils.Updatable
+ * @see Utils.InfraredCallback
  */
 public class InfraredReceiver implements Updatable {
 
@@ -47,7 +49,7 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Listens for the startsignal of an infrared remote
+     * Listens for the startsignal of an infrared remote.
      *
      * @return true when a startsignal has been read.
      */
@@ -92,6 +94,7 @@ public class InfraredReceiver implements Updatable {
 
     /**
      * If a start signal is received and then a bit signal is received, this signal is then converted to an integer and passed to the callback.
+     * @see Utils.Updatable
      */
     @Override
     public void update() {

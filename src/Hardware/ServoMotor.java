@@ -7,6 +7,12 @@ import Utils.TimerWithState;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO WRITE DOCUMENTATION PLEASEEEEEE
+ * @see Motor
+ * @see DirectionalServo
+ * @version 1.0
+ */
 public class ServoMotor implements Motor {
     private DirectionalServo servoLeft;
     private DirectionalServo servoRight;
@@ -23,8 +29,10 @@ public class ServoMotor implements Motor {
     private final int STANDSTILL_SPEED = 1500;
 
     /**
-     * @param servoRight the right servo motor of the bot
-     * @param servoLeft  the left servo motor of the bot
+     * Constructor for ServoMotor.java.
+     * @param servoRight The right servo motor of the bot.
+     * @param servoLeft  The left servo motor of the bot.
+     * @see DirectionalServo
      */
     public ServoMotor(DirectionalServo servoRight, DirectionalServo servoLeft) {
         this.servoLeft = servoLeft;
@@ -36,10 +44,10 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Convert a speed percentage to a signal length which matches that speed percentage to give to the servo motors
+     * Converts a speed percentage to a signal length which matches that speed percentage to give to the servo motors.
      *
-     * @param percent percentage speed of the maximum
-     * @return signal length which can be sent to the servo motors to set the speed
+     * @param percent Percentage speed of the maximum.
+     * @return Signal length which can be sent to the servo motors to set the speed.
      */
     private int percentToValue(int percent) {
         int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
@@ -47,10 +55,10 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Converts a signal length from the servo motors to a matching percentage of the maximum speed
+     * Converts a signal length from the servo motors to a matching percentage of the maximum speed.
      *
-     * @param value signal length used with the servo motors
-     * @return percentage speed of the maximum
+     * @param value Signal length used with the servo motors.
+     * @return Percentage speed of the maximum.
      */
     private int valueToPercent(int value) {
         int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
@@ -58,10 +66,12 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Set the desired speed (percentage of maximum) for both motors to go to
+     * Overrides goToSpeed in Motor.java.
+     * Set the desired speed (percentage of maximum) for both motors to go to.
      *
-     * @param speed percentage of the maximum speed (100 max forwards, -100 max backwards)
-     * @param time  time in milliseconds over which to accelerate
+     * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
+     * @param time  Time in milliseconds over which to accelerate.
+     * @see Motor#goToSpeed(int, int)
      */
     @Override
     public void goToSpeed(int speed, int time) {
@@ -72,10 +82,12 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Set the desired speed (percentage of maximum) for the left motor to go to
+     * Overrides goToSpeedLeft in Motor.java.
+     * Set the desired speed (percentage of maximum) for the left motor to go to.
      *
-     * @param speed percentage of the maximum speed (100 max forwards, -100 max backwards)
-     * @param time  time in milliseconds over which to accelerate
+     * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
+     * @param time  Time in milliseconds over which to accelerate.
+     * @see Motor#goToSpeedLeft(int, int)
      */
     @Override
     public void goToSpeedLeft(int speed, int time) {
@@ -107,10 +119,12 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Set the desired speed (percentage of maximum) for the right motor to go to
+     * Overrides goToSpeedRight in Motor.java.
+     * Sets the desired speed (percentage of maximum) for the right motor to go to.
      *
-     * @param speed percentage of the maximum speed (100 max forwards, -100 max backwards)
-     * @param time  time in milliseconds over which to accelerate
+     * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
+     * @param time  Time in milliseconds over which to accelerate.
+     * @see Motor#goToSpeedRight(int, int)
      */
     @Override
     public void goToSpeedRight(int speed, int time) {
@@ -142,12 +156,12 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Update both servos to change the servo motor speed by one stepsize
-     * Can't go higher or lower than the maximum speeds
+     * Update both servos to change the servo motor speed by one stepsize.
+     * Can't go higher or lower than the maximum speeds.
      *
-     * @param servos      Both servos of the bot
-     * @param stepSize    step size to change the servo motor pulsewidth with
-     * @param wantedSpeed desired speed to change to
+     * @param servos      Both servos of the bot.
+     * @param stepSize    Step size to change the servo motor pulsewidth with.
+     * @param wantedSpeed Desired speed to change to.
      */
     private void goToSpeedStep(List<Servo> servos, int stepSize, int wantedSpeed) {
         for (Servo servo : servos) {
@@ -170,8 +184,10 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Stop as soon as possible
-     * Sets the servo motors to stand still and changes the internal speed to match this
+     * Overrides emergencyStop() in Motor.java.
+     * Stop as soon as possible.
+     * Sets the servo motors to stand still and changes the internal speed to match this.
+     * @see Motor#emergencyStop()
      */
     @Override
     public void emergencyStop() {
@@ -181,13 +197,12 @@ public class ServoMotor implements Motor {
         // resetting the internal speed within the software to match the emergency stop
         wantedSpeedLeft = percentToValue(0);
         wantedSpeedRight = percentToValue(0);
-
-
-
     }
 
     /**
-     * @return the pulsewidth of the left servomotor converted to a percentage speed value
+     * Overrides getSpeedLeft() in Motor.java.
+     * @return The pulsewidth of the left servomotor converted to a percentage speed value.
+     * @see ServoMotor#getSpeedLeft()
      */
     @Override
     public int getSpeedLeft() {
@@ -195,7 +210,9 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * @return the pulsewidth of the right servomotor converted to a percentage speed value
+     * Overrides getSpeedRight() in Motor.java.
+     * @return The pulsewidth of the right servomotor converted to a percentage speed value.
+     * @see ServoMotor#getSpeedRight()
      */
     @Override
     public int getSpeedRight() {
@@ -203,14 +220,16 @@ public class ServoMotor implements Motor {
     }
 
     /**
+     * Overrides the update method.
      * Update the servo motors to go to the desired speed in a small step (2ms pulse width)
      * It will make a step each time the timer for the servo motor times out
      * As soon as the actual speed matches the desired speed the timer is turned off
+     * @see Utils.Updatable
      */
     @Override
     public void update() {
-        // update both motors
-        // if both timers are enabled then they should both be on synchronous timeout, so if one has a timeout then both motors can be updated
+        // Update both motors
+        // if both timers are enabled then they should both be on synchronous timeout, so if one has a timeout then both motors can be updated.
         if (timerLeft.isOn() && timerRight.isOn() && timerRight.timeout()) {
             timerLeft.mark();
             timerRight.mark();
@@ -225,7 +244,7 @@ public class ServoMotor implements Motor {
                 goToSpeedStep(servos, STEP_SIZE_RIGHT, wantedSpeedRight);
             }
 
-            // update just the right motor if the timer is enabled and timed out
+            // Update just the right motor if the timer is enabled and timed out.
         } else if (timerRight.isOn() && timerRight.timeout()) {
             if (this.servoRight.getPulseWidth() != wantedSpeedRight) {
                 List<Servo> servos = new ArrayList<>();
@@ -235,7 +254,7 @@ public class ServoMotor implements Motor {
                 timerRight.setOn(false);
             }
 
-            // update just the left motor if the timer is enabled and timed out
+            // Update just the left motor if the timer is enabled and timed out.
         } else if (timerLeft.isOn() && timerLeft.timeout()) {
             if (this.servoLeft.getPulseWidth() != wantedSpeedLeft) {
                 List<Servo> servos = new ArrayList<>();
@@ -244,7 +263,6 @@ public class ServoMotor implements Motor {
             } else {
                 timerLeft.setOn(false);
             }
-
         }
     }
 }

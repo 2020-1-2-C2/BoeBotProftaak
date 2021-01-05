@@ -33,7 +33,7 @@ public class RGBLed implements Led {
     /**
      * Mixes the colors
      *
-     * @param color
+     * @param color TODO ADD THIS
      */
     //TODO convert to PWM
     public void setColor(Color color) {

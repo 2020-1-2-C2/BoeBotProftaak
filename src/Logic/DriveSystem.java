@@ -182,13 +182,13 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void update() {
         //TODO if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly
         if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
-            // stop driving backwards and start turning around
+            // Stop driving backwards and start turning around.
             stop();
             turnLeft(50);
             this.turnAtEndTimer.setOn(false);
         } else if (this.routeTimer.isOn() && this.routeTimer.timeout()) {
             if (this.turnAtEnd) {
-                // start driving backwards when then end of a route is reached and set a timer to stop this
+                // Start driving backwards when then end of a route is reached and set a timer to stop this.
                 //TODO notification for driving backwards?
                 setSpeed(this.followSpeed);
                 setDirection(BACKWARD);

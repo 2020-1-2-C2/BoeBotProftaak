@@ -4,12 +4,19 @@ import TI.SerialConnection;
 import Utils.BluetoothCallback;
 import Utils.Updatable;
 
+/**
+ * BluetoothReceiver class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
+ * @see Utils.Updatable
+ * @see Utils.BluetoothCallback
+ * @see SerialConnection
+ */
 public class BluetoothReceiver implements Updatable {
     private SerialConnection serialConnection;
     private BluetoothCallback bluetoothCallback;
 
     /**
      * Enums for the bluetooth communication.
+     * This enumerator consists of FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT and the numbers 1 - 10.
      */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
@@ -85,6 +92,7 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Update method.
+     * @see Utils.Updatable
      */
     @Override
     public void update() {
