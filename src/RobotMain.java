@@ -75,16 +75,16 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
 
         //BoeBot.rgbShow();
 
-        this.abstractNotification = new EmptyNotification(buzzers, neoPixelLeds);
-        System.out.println("TEST");
+        /*this.abstractNotification = new EmptyNotification(buzzers, neoPixelLeds);
+        System.out.println("TEST");*/
 
 //        Adds all the updatables to an arraylist.
         //TODO: Comment out lineFollower.
         //TODO: Add the neoPixelLeds arraylist instead of all the neoPixelLeds individually.
         Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
-                this.driveSystem, this.buzzer, servoMotor, this.shapes, bluetoothReceiver, /*lineFollower*/
+                this.driveSystem, this.buzzer, servoMotor, this.shapes, bluetoothReceiver/*, lineFollower
                 neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5,
-                this.abstractNotification
+                this.abstractNotification*/
         );
 
         int lookForAbstractNotification = 0;
@@ -259,6 +259,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                     break;
                 case TEN:
                     driveSystem.setSpeed(100);
+                    break;
+                case START_ROUTE:
                     break;
             }
             System.out.println(command);

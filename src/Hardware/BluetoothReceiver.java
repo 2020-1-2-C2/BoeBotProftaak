@@ -1,19 +1,25 @@
 package Hardware;
 
+import Logic.Route;
 import TI.SerialConnection;
 import Utils.BluetoothCallback;
 import Utils.Updatable;
 
+import java.util.ArrayList;
+
 public class BluetoothReceiver implements Updatable {
     private SerialConnection serialConnection;
     private BluetoothCallback bluetoothCallback;
+    private ArrayList<Integer> routeDirections;
+    private Route route;
 
     /**
      * Enums for the bluetooth communication.
      */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
-        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN
+        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
+        START_ROUTE
     }
 
     /**
@@ -24,6 +30,8 @@ public class BluetoothReceiver implements Updatable {
     public BluetoothReceiver(BluetoothCallback bluetoothCallback) {
         this.serialConnection = new SerialConnection(115200);
         this.bluetoothCallback = bluetoothCallback;
+        this.routeDirections = new ArrayList<>();
+        this.route = new Route(this.routeDirections);
     }
 
     /**
@@ -36,7 +44,9 @@ public class BluetoothReceiver implements Updatable {
             int data = this.serialConnection.readByte();
             this.serialConnection.writeByte(data);
             System.out.println("Received: " + data);
+            boolean read = true;
             switch (data) {
+                //Directions
                 case 87:
                     return Commands.FORWARD;
                 case 65:
@@ -47,6 +57,7 @@ public class BluetoothReceiver implements Updatable {
                     return Commands.RIGHT;
                 case 16:
                     return Commands.STOP;
+                //Speeds
                 case 1:
                     return Commands.ONE;
                 case 2:
@@ -67,6 +78,9 @@ public class BluetoothReceiver implements Updatable {
                     return Commands.NINE;
                 case 10:
                     return Commands.TEN;
+                //Start route command TODO: Make it functional, can be done when the algorithm is implemented.
+                case 32:
+                    return Commands.START_ROUTE;
                 default:
                     return Commands.DEFAULT;
             }
