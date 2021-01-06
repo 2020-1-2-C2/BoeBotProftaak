@@ -8,8 +8,8 @@ import java.util.Arrays;
 
 /**
  * Class used to avoid collision with other objects. The BoeBot should never collide.
- * This class implements Updatable.java and UltraSonicCallback.java.
- * This class uses CollisionDetectionCallback.
+ * This class implements <a href="{@docRoot}/Utils/Updatable.html">Updatable.java</a>  and <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback.java</a>.
+ * This class uses <a href="{@docRoot}/Utils/CollisionDetectionCallback.html">CollisionDetectionCallback</a>.
  * @see Utils.Updatable
  * @see Utils.UltraSonicCallback
  * @see CollisionDetectionCallback
