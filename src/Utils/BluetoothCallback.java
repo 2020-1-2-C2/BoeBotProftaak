@@ -9,8 +9,8 @@ import Hardware.BluetoothReceiver;
  */
 public interface BluetoothCallback {
     /**
-     * TODO WRITE THIS PLEASE
-     * @param commands TODO WRITE THIS PLEASE
+     * Method that is used to receive the bluetooth commands.
+     * Commands zijn beschreven in BlueToothReceiver.
      */
     void onBluetoothReceive(BluetoothReceiver.Commands commands);
 }
