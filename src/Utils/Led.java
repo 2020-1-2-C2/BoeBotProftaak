@@ -22,7 +22,6 @@ public interface Led extends Updatable {
      */
     void off();
 
-    //TODO: Explain what this does better
     /**
      * Method called to make the Led fade.
      * @param fade Int specifying the color.
