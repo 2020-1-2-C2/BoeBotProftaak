@@ -3,8 +3,6 @@ package Logic;
 import TI.Timer;
 import Utils.Updatable;
 
-
-//TODO: Be more specific while writing documentation!
 /**
  * Class containing the instructions for the BoeBot when it receives the command to drive in a shape defined in this class.
  * This class implements Updatable.java.
@@ -53,7 +51,6 @@ public class Shapes implements Updatable {
         this.driveSystem.setSpeed(20);
         if (shape.equals(Shape.CIRCLE)) {
             this.circleTimerEnabled = true;
-            //TODO: Time needs to be adjusted!
             this.circleTimer.setInterval(10000);
             circle();
         } else if (shape.equals(Shape.TRIANGLE)) {
