@@ -10,7 +10,7 @@ import Hardware.BluetoothReceiver;
 public interface BluetoothCallback {
     /**
      * Method that is used to receive the bluetooth commands.
-     * Commands zijn beschreven in BlueToothReceiver.
+     * Commands-list are located in the BluetoothReceiver class.
      */
     void onBluetoothReceive(BluetoothReceiver.Commands commands);
 }
