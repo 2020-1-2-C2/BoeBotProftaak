@@ -10,33 +10,38 @@ import java.util.Collections;
 //General software TODO-list:
 //TODO: Put annotations in the documentation in the right order.
 //TODO: Add latency compensation for the Buzzer.
-//TODO: Look at usage of @author.
 //TODO: Fix grammar + spelling in the documentation & comments.
 //TODO: Make sure we use UK-English instead of US-English in all classes.
-//TODO: Remove SOUTs.
 //TODO: Check versions.
-//TODO: Change @see to specific methods (or constructors) if appropriate.
+//TODO: Make sure all "direction" attributes share common values across the whole program. Consistency makes everything clearer.
+//TODO: Remove .java and use <code> </code> and <a href=""> </a> instead.
+//TODO: Use "this" instead of "the" when talking about a specific instance on comments.
 
 //Class specific TODO-list:
 //TODO: Look at version-control and decide on the software's version.
-//TODO: Remove DefaultLed, since we do not use it anymore.
-//TODO: Remove RGBLed, since we do not use it anymore.
+//TODO: Remove DefaultLed.java, since we do not use it anymore.
+//TODO: Remove RGBLed.java, since we do not use it anymore.
 //TODO: Delete comments in LineFollower.java
 //TODO: Change some text in LineFollower.java so that everything is in English.
-//TODO: Write documentation for BluetoothCallback.java
-//TODO: Write documentation for InfraredCallback.java
-//TODO: Write documentation for LineFollowCallback.java
-//TODO: Write documentation for UltraSonicCallback.java
-//TODO: Write documentation for ServoMotor.java
-//TODO: Write documentation for UltraSonicReceiver.java
-//TODO: Write documentation for Updatable.java
-//TODO: Improve documentation for Shapes.java
+//TODO: Add backwards functionality for NavigationSystem.java and Route.java.
+//TODO: Write documentation for BluetoothCallback.java.
+//TODO: Write documentation for InfraredCallback.java.
+//TODO: Write documentation for LineFollowCallback.java.
+//TODO: Write documentation for UltraSonicCallback.java.
+//TODO: Write documentation for ServoMotor.java.
+//TODO: Write documentation for UltraSonicReceiver.java.
+//TODO: Write documentation for Updatable.java.
+//TODO: Improve documentation for Shapes.java.
+//TODO: Improve documentation for NavigationSystem.java.
 
 //For Berend
 //TODO: Make RemoteNotification.java
 //TODO: Finish Jingles (Make them short and easy to recognize!)
 //TODO: Pick a different shade of green, since it looks too much like yellow.
 //TODO: Make notifications play automatically.
+//TODO: Final grammar check before submitting.
+//TODO: Write documentation for MusicNote.java.
+//TODO: Fix NavigationSystem.java.
 
 /** Main class of the BoeBot, often described as being the brain of the robot.
  *
@@ -45,13 +50,17 @@ import java.util.Collections;
  */
 public class RobotMain implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
 
+    //TODO: Check whether you can use "Whom" when talking about code.
+    /**
+     * ArrayList containing all the hardware components' instances whom all implement the <a href="{@docRoot}/Util/Updatable.html">Updatable.java</a> interface.
+     * The <code>update()</code> method in that interface is being run constantly in the <code>run()</code> method in this class.
+     * @see #run()
+     * @see Updatable#update()
+     */
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
     private boolean running = true;
     private Shapes shapes;
-
-    private Jingle jingle = new Jingle();
-
 
     private Buzzer buzzer = new Buzzer(3);
     private ArrayList<Buzzer> buzzers;
@@ -64,10 +73,13 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     private NeoPixelLed neoPixelLed5 = new NeoPixelLed(5);
     private ArrayList<NeoPixelLed> neoPixelLeds;
 
-    //TODO: Write documentation for this (or not?)
+
     /**
-     * Do this ASAP
-     * @param args Do this ASAP
+     * Creates an instance of itself, and then initializes the attributes. After this has happened it goes through all the updatables in an endless loop. <p>
+     * This method is static, and is the default-generated <code>"main"</code> function.
+     * @param args Default parameter.
+     * @see #initialise()
+     * @see #run()
      */
     public static void main(String[] args) {
         RobotMain main = new RobotMain();
@@ -76,11 +88,12 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     }
 
     /**
-     * Initialise all relevant objects for the bot
-     * Add the necessary objects to the updatables list
+     * Initialises all relevant objects for the bot.
+     * Adds the necessary objects to the <code>updatables</code> list.
+     * @see #updatables
      */
     public void initialise() {
-        // creating all the different objects which will be used
+        // Creating all the different objects which will be used.
         InfraredReceiver infraredReceiver = new InfraredReceiver(0, this);
         BluetoothReceiver bluetoothReceiver = new BluetoothReceiver(this);
 
@@ -91,8 +104,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         this.driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
-        //TODO: Uncomment lineFollower initialization.
-        //LineFollower lineFollower = new LineFollower(2, 1, driveSystem);
+        LineFollower lineFollower = new LineFollower(2, 1, driveSystem);
 
         this.buzzers = new ArrayList<>();
         this.buzzers.add(buzzer);
@@ -107,16 +119,16 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         neoPixelLeds.add(neoPixelLed5);
 
         //Adds all the updatables to an arraylist.
-        //TODO: Comment out lineFollower.
         //TODO: Add the neoPixelLeds arraylist instead of all the neoPixelLeds individually.
         Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
-                this.driveSystem, this.buzzer, servoMotor, this.shapes, bluetoothReceiver, /*lineFollower*/
+                this.driveSystem, this.buzzer, servoMotor, this.shapes, bluetoothReceiver, lineFollower,
                 neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5
         );
     }
 
     /**
      * Main run method for the BoeBot logic.
+     * {@link #updatables}
      */
     public void run() {
         while (running) {
@@ -128,13 +140,12 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     }
 
     /**
-     * Receives the pressed button on the infrared remote and tells the bot to do the action combined with the button
-     *
+     * Receives the pressed button on the infrared remote and tells the bot to do the action combined with the button.
      * @param button received binary code for the button pressed on the infrared remote.
      */
     @Override
     public void onInfraredButton(int button) {
-        setNotification(new RemoteNotification(this.buzzers, this.neoPixelLeds));
+//        setNotification(new RemoteNotification(this.buzzers, this.neoPixelLeds));
         boolean recognized = true;
         switch (button) {
             case InfraredReceiver.POWER:
@@ -154,15 +165,15 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 break;
             case InfraredReceiver.ONE:
                 driveSystem.setSpeed(10);
-                setNotification(new DisconnectedNotification(this.buzzers, this.neoPixelLeds));
+//                setNotification(new DisconnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.TWO:
                 driveSystem.setSpeed(20);
-                setNotification(new ConnectedNotification(this.buzzers, this.neoPixelLeds));
+//                setNotification(new ConnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.THREE:
                 driveSystem.setSpeed(30);
-                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
+//                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.FOUR:
                 driveSystem.setSpeed(40);
@@ -181,6 +192,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 break;
             case InfraredReceiver.NINE:
                 driveSystem.setSpeed(90);
+                System.out.println("9");
+                driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
                 break;
             case InfraredReceiver.ZERO:
                 driveSystem.setSpeed(100);
@@ -257,9 +270,9 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     }
 
     /**
-     * Receive the distance from the ultrasonic receiver and sets the bot to a certain max allowable speed or an emergency stop according to the distance
+     * Receive the distance from the ultrasonic receiver and sets the bot to a certain max allowable speed or an emergency stop according to the distance.
      *
-     * @param distance distance from collision in cm
+     * @param distance Distance from collision in cm.
      */
     @Override
     public void onCollisionDetection(int distance) {
@@ -300,19 +313,17 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         }
     }
 
-    public void setNotification(AbstractNotification notification){
-        for (NeoPixelLed neoPixelLed : this.neoPixelLeds){
+    /**
+     * Used to execute <code>notificationsSpecificMethod()</code> for the notification given in its parameter. <p>
+     * This method also sets <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLeds' setShouldBeOn()</a> to <code>true</code>.
+     * @param notification Notification that should have its <code>notificationSpecificMethod()</code> executed.
+     * @see AbstractNotification#notificationSpecificMethod()
+     * @see NeoPixelLed#setShouldBeOn(boolean)
+     */
+    public void setNotification(AbstractNotification notification) {
+        for (NeoPixelLed neoPixelLed : this.neoPixelLeds) {
             neoPixelLed.setShouldBeOn(true);
         }
         notification.notificationSpecificMethod();
-    }
-
-
-
-    //Plays the first part of the melody of Somebody that I used to know by Gotye
-    //TODO: Remove this after the last test for both the audio & the notifications system.
-    public void testSong(Buzzer buzzer) {
-        System.out.println("Entered Somebody that I used to know by Gotye");
-        buzzer.playSong(jingle.somebodyThatIUsedToKnow());
     }
 }

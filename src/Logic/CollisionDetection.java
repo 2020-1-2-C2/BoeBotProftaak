@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 /**
  * Class used to avoid collision with other objects. The BoeBot should never collide.
- * This class implements <a href="{@docRoot}/Utils/Updatable.html">Updatable.java</a>  and <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback.java</a>.
+ * This class implements <a href="{@docRoot}/Utils/Updatable.html">Updatable.java</a> and <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback.java</a>.
  * This class uses <a href="{@docRoot}/Utils/CollisionDetectionCallback.html">CollisionDetectionCallback</a>.
  * @see Utils.Updatable
  * @see Utils.UltraSonicCallback
@@ -23,7 +23,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     private int[] distances = new int[9];
 
     /**
-     * Constructor for CollisionDetection.
+     * Constructor for <code>CollisionDetection</code>.
      *
      * @param collisionDetectionCallback CollisionDetectionCallback object
      */
@@ -32,10 +32,10 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     }
 
     /**
-     * Overrides the onUltraSonicPulse() method in UltraSonicCallback.java
+     * Overrides the <code>onUltraSonicPulse()</code> method in <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback.java</a>.
      * Receives the distance calculated using the ultrasonicsensor pulse and prints it.
      *
-     * @param distance calculated distance using an ultrasonsicsensor pulse.
+     * @param distance Calculated distance using an ultrasonsicsensor pulse.
      * @see Utils.UltraSonicCallback
      */
     @Override
@@ -55,7 +55,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     }
 
     /**
-     * Empty update method.
+     * Empty <code>update()</code> method.
      * @see Utils.Updatable
      */
     @Override

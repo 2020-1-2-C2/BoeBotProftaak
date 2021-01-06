@@ -1,7 +1,7 @@
 package Logic;
 
 /**
- * Class to generate timing for all notes. It does this by calculating how long a specific note (for example: quarterNote) would be in ms at a given BPM (beats per minute).
+ * Class to generate timing for all notes. It does this by calculating how long a specific note (for example: quarterNote) would be in ms at a given BPM (beats per minute). <p>
  * This class is mainly used by the Jingle.java class, which has a couple of AudioPlaySystem.java objects containing jingles used by the notificationssystem.
  * @author Berend de Groot
  * @version 1.0
@@ -31,9 +31,9 @@ public class NoteLengthGenerator {
     //NOTE: quarternotes (60.00) are 1/4 of a bar, which is 240.00
 
     /**
-     * Constructor for the NoteLengthGenerator class. It is used as an instance for other classes to generate timing for all notes.
-     * You can find instances of this class in the Jingle.java class.
-     * Example: 60 BPM is one beat per second.
+     * Constructor for the NoteLengthGenerator class. It is used as an instance for other classes to generate timing for all notes. <p>
+     * You can find instances of this class in the Jingle.java class. <p>
+     * <small>Example: 60 BPM is one beat per second.</small>
      * @param BPM Beats-Per-Minute (double). This is used to calculate the timing for all notes.
      * @see Jingle
      */

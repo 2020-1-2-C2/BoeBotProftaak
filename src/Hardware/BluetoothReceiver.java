@@ -5,7 +5,7 @@ import Utils.BluetoothCallback;
 import Utils.Updatable;
 
 /**
- * BluetoothReceiver class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
+ * <code>BluetoothReceiver</code> class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
  * @see Utils.Updatable
  * @see Utils.BluetoothCallback
  * @see SerialConnection
@@ -24,9 +24,9 @@ public class BluetoothReceiver implements Updatable {
     }
 
     /**
-     * Constructor for the BluetoothReceiver class.
+     * Constructor for the <code>BluetoothReceiver</code> class.
      *
-     * @param bluetoothCallback BluetoothCallBack object.
+     * @param bluetoothCallback <code>BluetoothCallBack</code> object.
      */
     public BluetoothReceiver(BluetoothCallback bluetoothCallback) {
         this.serialConnection = new SerialConnection(115200);
@@ -89,7 +89,7 @@ public class BluetoothReceiver implements Updatable {
     }
 
     /**
-     * Update method.
+     * The <code>Update()</code> method.
      * @see Utils.Updatable
      */
     @Override

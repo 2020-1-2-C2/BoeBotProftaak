@@ -180,6 +180,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     @Override
     public void update() {
+        debugToString();
         //TODO if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly
         if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
             // Stop driving backwards and start turning around.
@@ -206,7 +207,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     /**
      * Auto-generated getter for the variable direction
      *
-     * @return An int representing the direction the bot is heading to
+     * @return An int representing the direction the bot is heading to.
      */
     public int getDirection() {
         return this.direction;
@@ -314,6 +315,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     }
             }
             // Turning while following line so it turns to the next corner (usually a 90 degree turn)
+            //TODO: Check if this is always true.
         } else if (this.followLine && (this.turningLeft || this.turningRight)) {
             switch (linePosition) {
                 case LEFT_OF_LINE:
@@ -347,4 +349,19 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             }
         }
     }
+
+    /**
+     * For debugging purposes only.
+     * Called in <code>update()</code> to print out useful information.
+     * @see #update()
+     */
+    private void debugToString(){
+        if (this.route != null && this.route.nextDirection() != Route.NONE){
+            for (int i : this.route.getRoute()){
+                System.out.println("Next move: " + i);
+            }
+            System.out.println("\n");
+        }
+    }
+
 }

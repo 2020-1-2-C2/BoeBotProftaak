@@ -6,6 +6,8 @@ import Utils.Updatable;
 /**
  * Class containing the instructions for the BoeBot when it receives the command to drive in a shape defined in this class.
  * This class implements Updatable.java.
+ * @version 1.0
+ * @since 2.0
  * @see Updatable
  * @see DriveSystem
  */
@@ -27,9 +29,10 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Constructor for Shapes class.
+     * Constructor for <code>Shapes</code> class.
      *
-     * @param driveSystem DriveSystem object.
+     * @param driveSystem <code>DriveSystem</code> object.
+     * @see DriveSystem
      */
     public Shapes(DriveSystem driveSystem) {
         this.driveSystem = driveSystem;
@@ -97,7 +100,7 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Override update method from Updatable.java.
+     * The <code>update()</code> method from Updatable.java.
      * @see Updatable
      */
     @Override

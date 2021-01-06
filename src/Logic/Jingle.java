@@ -6,6 +6,7 @@ package Logic;
  * Class containing AudioPlaySystem instances for all jingles used by the BoeBot. Jingles use different MusicNote instances and have a different BPM (the tempo).
  * Jingles (instances of AudioPlaySystem) are played with the playSong() method in Buzzer.java.
  * @author Berend de Groot
+ * @version 2.0
  */
 public class Jingle {
 

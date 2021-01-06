@@ -9,7 +9,8 @@ import TI.Timer;
 import Utils.Updatable;
 
 /**
- * Buzzer class, from which all buzzer sensors should have its own instance. The methods are used to play sounds on the Buzzer.
+ * <code>Buzzer</code> class, from which all buzzer sensors should have its own instance. <p>
+ * The methods are used to play sounds on the <code>Buzzer</code>.
  * @see Utils.Updatable
  * @see Logic.NotePitchGenerator
  * @see Logic.AudioPlaySystem
@@ -27,15 +28,14 @@ public class Buzzer implements Updatable {
     private AudioPlaySystem selectedSong;
 
     /**
-     * Constructor for the buzzer hardware component, deriving from the Buzzer.java class.
-     *
+     * Constructor for the buzzer hardware component, deriving from the <code>Buzzer.java</code> class.
      * @param pinId An integer representing the pin whom the buzzer is connected to.
      */
     public Buzzer(int pinId) {
         this.pinId = pinId;
         BoeBot.setMode(pinId, PinMode.Output);
         this.selectedSong = null;
-        this.noteDelayTimer = new Timer(0); //THIS IS INFINITE
+        this.noteDelayTimer = new Timer(0); //Note: This is infinite.
         this.currentNoteCount = 0;
     }
 
@@ -47,8 +47,7 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Method that makes the Buzzer buzz at 1000Hz for the time specified in the parameter.
-     *
+     * Method that makes the <code>Buzzer</code> buzz at 1000Hz for the time specified in the parameter.
      * @param time Time in milliseconds. Buzzer stops buzzing after the timer has passed.
      */
     public void buzz(int time) {
@@ -56,8 +55,7 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Makes the Buzzer buzz for a certain amount of time on a certain frequency.
-     *
+     * Makes the <code>Buzzer</code> buzz for a certain amount of time on a certain frequency.
      * @param time Time in milliseconds. Buzzer stops buzzing after the timer has passed.
      * @param freq Frequency in Hz.
      * @see BoeBot#freqOut(int, int, int)
@@ -79,7 +77,7 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Makes the Buzzer buzz for half a second (500 ms).
+     * Makes the <code>Buzzer</code> buzz for half a second (500 ms).
      * @see Buzzer#buzz()
      */
     public void beep() {
@@ -87,8 +85,8 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Method used to turn the buzzer off.
-     * This will interrupt the jingle (see Jingle). It does this by setting this.selectedSong to null.
+     * Method used to turn the buzzer off. <p>
+     * This will interrupt the jingle (see Jingle). It does this by setting <code>this.selectedSong</code> to <code>null</code>. <p>
      * If the user wants to play the jingle again he has to start over from the beginning by initiating it again.
      * @see Logic.Jingle
      */
@@ -106,7 +104,7 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Update method.
+     * The <code>update()</code> method.
      * @see Utils.Updatable
      */
     @Override
@@ -132,7 +130,7 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Calculates the hertz for a musical note in NotePitchGenerator.
+     * Calculates the hertz for a musical note in NotePitchGenerator. <p>
      * All "A" notes, apart from A0, are as accurate as possible, with the bottleneck being the hardware (in this case, the buzzer).
      *
      * @param note A string containing a musical note (for example: B, A, G).
@@ -146,7 +144,6 @@ public class Buzzer implements Updatable {
 
     /**
      * Plays the song in the audioPlaySystem given as a parameter.
-     *
      * @param audioPlaySystem Method uses the notes from the getNotesToPlay() Arraylist.
      * @see AudioPlaySystem
      */
@@ -157,7 +154,7 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Simple getter for the int pinID of this object.
+     * Simple getter for the int <code>pinID</code> of this object.
      * @return this.pinId
      */
     public int getPinId() {
