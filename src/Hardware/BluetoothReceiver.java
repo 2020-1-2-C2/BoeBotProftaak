@@ -35,7 +35,6 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Will listen for input.
-     *
      * @return Commands
      */
     private Commands listenForSignal() {
@@ -83,7 +82,6 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Allows for external use of the connection. MIGHT GET REMOVED IF PROVEN UNNECESSARY!
-     *
      * @return Serialconnection object
      */
     public SerialConnection getSerialConnection() {
