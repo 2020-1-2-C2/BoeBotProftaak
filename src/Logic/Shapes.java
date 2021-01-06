@@ -76,7 +76,6 @@ public class Shapes implements Updatable {
 
     /**
      * Drive in a triangle
-     * TODO: Adjust timers
      */
     private void triangle() {
         if (this.triangleCounter < 3) {
@@ -93,7 +92,7 @@ public class Shapes implements Updatable {
                 this.triangleTimer.setInterval(2000);
                 this.triangleSegmentBoolean = true;
             }
-        } else if (this.triangleCounter >= 3) { //TODO: Isn't this always true? If so... remove it!
+        } else if (this.triangleCounter >= 3) {
             this.triangleTimerEnabled = false;
             this.triangleCounter = 0;
             this.driveSystem.stop();
