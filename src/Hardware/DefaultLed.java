@@ -4,6 +4,7 @@ import TI.BoeBot;
 import TI.PWM;
 import TI.Timer;
 import Utils.Led;
+import Utils.Updatable;
 
 /**
  * DefaultLed class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
@@ -17,8 +18,7 @@ public class DefaultLed implements Led {
     private boolean timerIsEnabled = false;
 
     /**
-     * Constructor for Hardware.DefaultLed class
-     *
+     * Constructor for Hardware.DefaultLed class.
      * @param pinId the pin where the LED is attached.
      */
     public DefaultLed(int pinId) {
@@ -40,7 +40,6 @@ public class DefaultLed implements Led {
 
     /**
      * Fade the LED.
-     *
      * @param fade fades the LED. (Value: 0-100, 0 is full brightness, 100 is off.
      * @see PWM
      */
@@ -52,7 +51,6 @@ public class DefaultLed implements Led {
 
     /**
      * Blink the LED
-     *
      * @param interval is the interval between each blink.
      */
     @Override
@@ -77,8 +75,9 @@ public class DefaultLed implements Led {
     }
 
     /**
-     * Updates the blinker
-     * @see Utils.Updatable
+     * Updates the blinker.
+     * <code>update()</code> from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * @see Updatable#update()
      */
     @Override
     public void update() {

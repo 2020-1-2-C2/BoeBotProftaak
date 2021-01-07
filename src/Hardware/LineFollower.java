@@ -135,7 +135,7 @@ public class LineFollower implements Updatable {
     }
 
     /**
-     * Update method.
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
      * @see Utils.Updatable
      */
     @Override

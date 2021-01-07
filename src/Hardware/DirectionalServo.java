@@ -1,8 +1,10 @@
 package Hardware;
 
+import Utils.Updatable;
+
 /**
- * Subclass of TI.Servo
- * Can store the orientation of the servo (right or left) so the pulsewidth is autoadjusted to both go forwards or backwards.
+ * Subclass of <code>TI.Servo</code>.
+ * Can store the orientation of the servo (right or left) so the pulse-width is auto-adjusted to both go forwards or backwards.
  * @see TI.Servo
  */
 public class DirectionalServo extends TI.Servo {
@@ -19,10 +21,10 @@ public class DirectionalServo extends TI.Servo {
     }
 
     /**
-     * Use the super method to update the servo motor, auto adjust the pulsewidth to the orientation of this object
-     *
-     * @param speed speed in pulsewidth
-     * @see Utils.Updatable
+     * Use the super method to update the servo motor, auto adjust the pulse-width to the orientation of this object.
+     * <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * @param speed speed in pulse-width.
+     * @see Updatable#update()
      */
     @Override
     public void update(int speed) {
@@ -33,7 +35,8 @@ public class DirectionalServo extends TI.Servo {
     }
 
     /**
-     * @return pulsewidth according to the super method, auto adjusting to the orientation of this object
+     * Gets the pulse-width.
+     * @return pulse-width according to the super method, auto adjusting to the orientation of this object.
      */
     @Override
     public int getPulseWidth() {

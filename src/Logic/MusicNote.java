@@ -3,7 +3,7 @@ package Logic;
 //TODO: Update all the documentation.
 
 /**
- * Instances of MusicNote are used by <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a>
+ * Instances of <code>MusicNote</code> are used by <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a>
  * to store note information when playing <a href="{@docRoot}/Logic/Jingle.html">Jingle</a>s.
  * @author Berend de Groot
  * @version 1.1
@@ -23,8 +23,8 @@ public class MusicNote {
 
     /**
      * Constructor that creates an object of this class.
-     * @param noteLength Length of the note (Should be an attribute of an instance of NoteLengthGenerator.java)
-     * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with NotePitchGenerator.java)
+     * @param noteLength Length of the note (Should be an attribute of an instance of <a href="{@docRoot}/Logic/NoteLengthGenerator.html">NoteLengthGenerator</a>)..
+     * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with <a href="{@docRoot}/Logic/NoteLengthGenerator.html">NotePitchGenerator</a>).
      * @param noteDelay Timing; this is the time it waits after the note before this note is done playing.
      */
     public MusicNote(double noteLength, int notePitch, double noteDelay) {
@@ -35,8 +35,8 @@ public class MusicNote {
 
     /**
      * Constructor that creates an object of this class.
-     * @param noteLength Length of the note (Should be an attribute of an instance of NoteLengthGenerator.java)
-     * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with NotePitchGenerator.java)
+     * @param noteLength Length of the note (Should be an attribute of an instance of <a href="{@docRoot}/Logic/NoteLengthGenerator.html">NoteLengthGenerator</a>)..
+     * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with <a href="{@docRoot}/Logic/NoteLengthGenerator.html">NotePitchGenerator</a>).
      */
     public MusicNote(double noteLength, int notePitch) {
         this.noteLength = noteLength;
@@ -52,27 +52,28 @@ public class MusicNote {
     }
 
     /**
-     * Getter for the <code>noteLength</code> attribute, used by the <code>Buzzer</code>. This is because the buzzer uses an integer (representing MS) for the timing.
-     * @return noteLength * 1000 as an integer (so decimals might be lost)
+     * Getter for the <code>noteLength</code> attribute, used by the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a>.
+     * This is because the <code>Buzzer</code> uses an integer (representing MS) for the timing.
+     * @return noteLength * 1000 as an integer (so decimals might be lost).
      */
     public int getNoteLengthInMS(){
-        return ((int)(getNoteLength() * 1000));
+        return ((int)(this.getNoteLength() * 1000));
     }
 
     /**
      * Auto-generated getter for the <code>whenToPlay</code> attribute.
-     * @return whenToPlay
+     * @return whenToPlay.
      */
     public double getNoteDelay() {
-        return noteDelay;
+        return this.noteDelay;
     }
 
     /**
-     * Getter for the <code>whenToPlay</code> attribute in MS, used by the <code>Buzzer</code>.
+     * Getter for the <code>whenToPlay</code> attribute in MS, used by the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a>.
      * @return whenToPlay * 1000 as an integer.
      */
     public int getNoteDelayInMS() {
-        return ((int)(noteDelay * 1000));
+        return ((int)(this.noteDelay * 1000));
     }
 
     /**

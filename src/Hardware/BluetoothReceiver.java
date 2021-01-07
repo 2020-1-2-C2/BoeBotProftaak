@@ -25,7 +25,6 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Constructor for the <code>BluetoothReceiver</code> class.
-     *
      * @param bluetoothCallback <code>BluetoothCallBack</code> object.
      */
     public BluetoothReceiver(BluetoothCallback bluetoothCallback) {
@@ -89,8 +88,8 @@ public class BluetoothReceiver implements Updatable {
     }
 
     /**
-     * The <code>Update()</code> method.
-     * @see Utils.Updatable
+     * The <code>Update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * @see Updatable#update()
      */
     @Override
     public void update() {

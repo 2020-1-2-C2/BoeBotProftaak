@@ -28,7 +28,7 @@ public class Buzzer implements Updatable {
     private AudioPlaySystem selectedSong;
 
     /**
-     * Constructor for the buzzer hardware component, deriving from the <code>Buzzer.java</code> class.
+     * Constructor for the buzzer hardware component, deriving from the <code>Buzzer</code> class.
      * @param pinId An integer representing the pin whom the buzzer is connected to.
      */
     public Buzzer(int pinId) {
@@ -86,8 +86,8 @@ public class Buzzer implements Updatable {
 
     /**
      * Method used to turn the buzzer off. <p>
-     * This will interrupt the jingle (see Jingle). It does this by setting <code>this.selectedSong</code> to <code>null</code>. <p>
-     * If the user wants to play the jingle again he has to start over from the beginning by initiating it again.
+     * This will interrupt the <a href="{@docRoot}/Logic/Jingle.html">jingle</a>. It does this by setting <code>this.selectedSong</code> to <code>null</code>. <p>
+     * If the user wants to play the <code>jingle</code> again he has to start over from the beginning by initiating it again.
      * @see Logic.Jingle
      */
     public void off() {
@@ -104,8 +104,8 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * The <code>update()</code> method.
-     * @see Utils.Updatable
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * @see Updatable#update()
      */
     @Override
     public void update() {
@@ -130,22 +130,22 @@ public class Buzzer implements Updatable {
     }
 
     /**
-     * Calculates the hertz for a musical note in NotePitchGenerator. <p>
+     * Calculates the hertz for a musical note in <a href="{@docRoot}/Logic/NoteLengthGenerator.html">NotePitchGenerator</a>. <p>
      * All "A" notes, apart from A0, are as accurate as possible, with the bottleneck being the hardware (in this case, the buzzer).
      *
      * @param note A string containing a musical note (for example: B, A, G).
      * @param octave An int containing the octave the note should be played in. One octave is 12 halfsteps/semitones.
-     * @return A rounded number containing the hz of the given musical note. This is calculated in an instance of the NotePitchGenerator.
-     * @see NotePitchGenerator
+     * @return A rounded number containing the hz of the given musical note. This is calculated in an instance of the <a href="{@docRoot}/Logic/NoteLengthGenerator.html">NotePitchGenerator</a>.
+     * @see NotePitchGenerator#getNote(String, int)
      */
     public int getNote(String note, int octave) {
-        return notePitchGenerator.getNote(note, octave);
+        return this.notePitchGenerator.getNote(note, octave);
     }
 
     /**
-     * Plays the song in the audioPlaySystem given as a parameter.
-     * @param audioPlaySystem Method uses the notes from the getNotesToPlay() Arraylist.
-     * @see AudioPlaySystem
+     * Plays the song in the <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> given as a parameter.
+     * @param audioPlaySystem Method uses the notes from the <code>getNotesToPlay()</code> ArrayList.
+     * @see AudioPlaySystem#getNotesToPlay()
      */
     public void playSong(AudioPlaySystem audioPlaySystem){
         this.selectedSong = audioPlaySystem;

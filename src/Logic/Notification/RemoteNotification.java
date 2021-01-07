@@ -16,7 +16,13 @@ import java.util.ArrayList;
  */
 public class RemoteNotification extends AbstractNotification{
 
-
+    /**
+     * Constructor for the RemoteNotification class. Extends AbstractNotification.
+     * @param buzzers      Takes in an Arraylist of Buzzers to handle the sound.
+     * @param neoPixelLeds Takes in an Arraylist of NeoPixelLeds to handle the lights.
+     * @see Buzzer
+     * @see NeoPixelLed
+     */
     public RemoteNotification(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzers, neoPixelLeds);
         this.neoPixelLedColorA = Color.CYAN;
@@ -25,6 +31,13 @@ public class RemoteNotification extends AbstractNotification{
         }
     }
 
+    /**
+     * Overrides notificationSpecificMethod() in AbstractNotification.java.
+     * Abstract method all notifications have. This method contain instructions for the Buzzer and NeoPixelLeds on the BoeBot.
+     * <p>
+     * Turns every individual NeoPixelLed on and sets its color to <code>this.neoPixelLedColorA</code> (CYAN).
+     * @see AbstractNotification#notificationSpecificMethod()
+     */
     @Override
     public void notificationSpecificMethod() {
         for (NeoPixelLed neoPixelLed : this.neoPixelLeds){

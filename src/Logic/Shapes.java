@@ -5,10 +5,10 @@ import Utils.Updatable;
 
 /**
  * Class containing the instructions for the BoeBot when it receives the command to drive in a shape defined in this class.
- * This class implements Updatable.java.
+ * This class implements <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
  * @version 1.0
  * @since 2.0
- * @see Updatable
+ * @see Updatable#update()
  * @see DriveSystem
  */
 public class Shapes implements Updatable {
@@ -45,7 +45,6 @@ public class Shapes implements Updatable {
 
     /**
      * This method is a setup for the shape.
-     *
      * @param shape Shape enum/object
      */
     public void beginShape(Shape shape) {
@@ -64,7 +63,7 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Drive in a circle
+     * Drives in a circle.
      */
     private void circle() {
         if (this.circleTimerEnabled) {
@@ -75,7 +74,7 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Drive in a triangle
+     * Drives in a triangle.
      */
     private void triangle() {
         if (this.triangleCounter < 3) {
@@ -100,7 +99,7 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * The <code>update()</code> method from Updatable.java.
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
      * @see Updatable
      */
     @Override

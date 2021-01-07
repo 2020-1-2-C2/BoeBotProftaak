@@ -3,6 +3,7 @@ package Hardware;
 import TI.BoeBot;
 import TI.Timer;
 import Utils.Led;
+import Utils.Updatable;
 
 import java.awt.*;
 
@@ -124,8 +125,8 @@ public class NeoPixelLed implements Led {
     }
 
     /**
-     * Update method.
-     * @see Utils.Updatable
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * @see Updatable#update()
      */
     @Override
     public void update() {

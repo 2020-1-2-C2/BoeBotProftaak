@@ -73,9 +73,9 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Overrides update method.
+     * Overrides the <code>update()</code> method.
      * If enough time has elapsed for the timer, then an ultrasonic pulse is sent, of which the distance is calculated and then sent to the callback object.
-     * @see Updatable
+     * @see Updatable#update()
      */
     @Override
     public void update() {
