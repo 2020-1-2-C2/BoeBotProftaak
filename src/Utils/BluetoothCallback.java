@@ -11,6 +11,7 @@ public interface BluetoothCallback {
     /**
      * Method that is used to receive the bluetooth commands.
      * Commands-list are located in the BluetoothReceiver class.
+     * @param commands The command it currently receives.
      */
     void onBluetoothReceive(BluetoothReceiver.Commands commands);
 }

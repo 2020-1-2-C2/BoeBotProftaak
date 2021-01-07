@@ -3,6 +3,7 @@ package Hardware;
 import TI.Servo;
 import Utils.Motor;
 import Utils.TimerWithState;
+import Utils.Updatable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -194,7 +195,7 @@ public class ServoMotor implements Motor {
         servoRight.update(STANDSTILL_SPEED);
         servoLeft.update(STANDSTILL_SPEED);
 
-        // resetting the internal speed within the software to match the emergency stop
+        // Resetting the internal speed within the software to match the emergency stop.
         wantedSpeedLeft = percentToValue(0);
         wantedSpeedRight = percentToValue(0);
     }
@@ -224,7 +225,7 @@ public class ServoMotor implements Motor {
      * Update the servo motors to go to the desired speed in a small step (2ms pulse width)
      * It will make a step each time the timer for the servo motor times out
      * As soon as the actual speed matches the desired speed the timer is turned off
-     * @see Utils.Updatable
+     * @see Updatable#update()
      */
     @Override
     public void update() {

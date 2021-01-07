@@ -3,6 +3,7 @@ package Hardware;
 import TI.PWM;
 import TI.Timer;
 import Utils.Led;
+import Utils.Updatable;
 
 import java.awt.*;
 
@@ -32,7 +33,6 @@ public class RGBLed implements Led {
 
     /**
      * Mixes the colors
-     *
      * @param color TODO ADD THIS
      */
     //TODO convert to PWM
@@ -96,6 +96,10 @@ public class RGBLed implements Led {
         return this.color.getRed();
     }
 
+    /**
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * @see Updatable#update()
+     */
     @Override
     public void update() {
         if (this.blinkingTimer.timeout() && this.timerIsEnabled) {

@@ -24,7 +24,6 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
 
     /**
      * Constructor for <code>CollisionDetection</code>.
-     *
      * @param collisionDetectionCallback CollisionDetectionCallback object
      */
     public CollisionDetection(CollisionDetectionCallback collisionDetectionCallback) {
@@ -34,7 +33,6 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     /**
      * Overrides the <code>onUltraSonicPulse()</code> method in <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback.java</a>.
      * Receives the distance calculated using the ultrasonicsensor pulse and prints it.
-     *
      * @param distance Calculated distance using an ultrasonsicsensor pulse.
      * @see Utils.UltraSonicCallback
      */

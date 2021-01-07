@@ -43,7 +43,6 @@ public class NavigationSystem {
      * @param goalCoordY Y-coordinate of destination. Think about this like your car's GPS.
      */
     public NavigationSystem(int goalCoordX, int goalCoordY){
-        //NOTE: Was added after testing. This should, however, not affect performance.
         this.currentCoordX = 0;
         this.currentCoordY = 0;
 

@@ -2,7 +2,6 @@ import Hardware.*;
 import Logic.*;
 import Logic.Notification.*;
 import TI.BoeBot;
-import TI.Timer;
 import Utils.*;
 
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import java.util.Collections;
 //TODO: Look at version-control and decide on the software's version.
 //TODO: Remove DefaultLed.java, since we do not use it anymore.
 //TODO: Remove RGBLed.java, since we do not use it anymore.
-//TODO: Remove ReverseNotification.java.
 //TODO: Delete comments in LineFollower.java.
 //TODO: Change some text in LineFollower.java so that everything is in English.
 //TODO: Add backwards functionality for NavigationSystem.java and Route.java.

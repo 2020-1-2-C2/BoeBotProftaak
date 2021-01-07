@@ -3,17 +3,21 @@ package Logic;
 //TODO: Simplify the oode in this class.
 
 /**
- * Class containing AudioPlaySystem instances for all jingles used by the BoeBot. Jingles use different MusicNote instances and have a different BPM (the tempo).
- * Jingles (instances of AudioPlaySystem) are played with the playSong() method in Buzzer.java.
+ * Class containing <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> instances for all jingles used by the BoeBot.
+ * Jingles use different <code>MusicNote</code> instances and have a different BPM (the tempo).
+ * Jingles (instances of <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a>) are played
+ * with the <code>playSong()</code> method in <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a>.
  * @author Berend de Groot
  * @version 2.0
+ * @see AudioPlaySystem#AudioPlaySystem()
  */
 public class Jingle {
 
     private NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
 
     /**
-     * AudioPlaySystem containing the first part of the melody of Somebody That I Used To Know by Gotye.
+     * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the first part of the
+     * melody of <i>Somebody That I Used To Know</i> by <i>Gotye</i>.
      * @return audioPlaySystem
      */
     public AudioPlaySystem somebodyThatIUsedToKnow(){
@@ -36,7 +40,7 @@ public class Jingle {
 
 
     /**
-     * AudioPlaySystem containing the first part of the melody of Brother John.
+     * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the first part of the melody of <i>Brother John</i>.
      * @return audioPlaySystem
      */
     public AudioPlaySystem brotherJohn(){

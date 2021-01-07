@@ -37,8 +37,7 @@ public class InfraredReceiver implements Updatable {
     public static final int TVVCR    = 0b000010100101;
 
     /**
-     * Constructor for the infraredsensor
-     *
+     * Constructor for the infraredsensor.
      * @param pinId            infraredsensor input signal pin id
      * @param infraredCallback infraredcallback object
      */
@@ -49,9 +48,8 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * Listens for the startsignal of an infrared remote.
-     *
-     * @return true when a startsignal has been read.
+     * Listens for the start-signal of an infrared remote.
+     * @return true when a start-signal has been read.
      */
     private boolean listenForStartSignal() {
         // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
@@ -61,7 +59,6 @@ public class InfraredReceiver implements Updatable {
 
     /**
      * Listens for an infrared bit-signal and puts the length of each low pulse in an array.
-     *
      * @return the length of 12 false infrared pulses received by the sensor.
      */
     private int[] listenForBitSignal() {
@@ -75,9 +72,8 @@ public class InfraredReceiver implements Updatable {
 
     /**
      * Converts an array of infrared-bitsignal pulse lengths to a binary number.
-     *
-     * @param rawBitSignal array of 12 pulse lengths
-     * @return binary number
+     * @param rawBitSignal array of 12 pulse lengths.
+     * @return binary number.
      */
     private int convertBitSignalToBinary(int[] rawBitSignal) {
         int bitSignalBinary = 0b0;
@@ -94,7 +90,8 @@ public class InfraredReceiver implements Updatable {
 
     /**
      * If a start signal is received and then a bit signal is received, this signal is then converted to an integer and passed to the callback.
-     * @see Utils.Updatable
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * @see Updatable#update()
      */
     @Override
     public void update() {

@@ -7,8 +7,8 @@ import Utils.TimerWithState;
 import Utils.Updatable;
 
 
-//TODO: Remove unnecessary comments & code
-//TODO: Update documentation
+//TODO: Remove unnecessary comments & code.
+//TODO: Update documentation.
 
 public class DriveSystem implements Updatable, LineFollowCallback {
     private Motor motor;
@@ -193,9 +193,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         } else if (this.routeTimer.isOn() && this.routeTimer.timeout()) {
             if (this.turnAtEnd) {
                 // Start driving backwards when then end of a route is reached and set a timer to stop this.
-                //TODO notification for driving backwards?
                 setSpeed(this.followSpeed);
                 setDirection(BACKWARD);
+                //TODO notification for driving backwards?
                 this.turnAtEndTimer.mark();
                 this.turnAtEndTimer.setOn(true);
             } else {
@@ -209,7 +209,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     /**
      * Auto-generated getter for the variable direction
-     *
      * @return An int representing the direction the bot is heading to.
      */
     public int getDirection() {
@@ -218,7 +217,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     /**
      * Start following the provided route
-     *
      * @param route Route object to use
      */
     public void followRoute(Route route) {
@@ -253,8 +251,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.routeTimer.setOn(true);
                 break;
             default:
-                // If there is no valid instruction stop following the route.
-                //TODO notificatie dat er geen route is
+                // If there are no valid instructions, stop following the route.
+                //TODO: Set the notification MissingRouteNotification.
                 followLine(false);
                 setFollowingRoute(false);
                 this.stop();

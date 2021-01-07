@@ -5,6 +5,7 @@ package Logic;
  * The calculations require a musical note and an octave as input.
  * @author Berend de Groot
  * @version 2.0
+ * @see MusicNote#getNotePitch()
  */
 public class NotePitchGenerator {
 
