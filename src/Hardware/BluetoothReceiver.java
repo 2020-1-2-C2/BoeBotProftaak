@@ -4,6 +4,8 @@ import TI.SerialConnection;
 import Utils.BluetoothCallback;
 import Utils.Updatable;
 
+import java.util.ArrayList;
+
 /**
  * <code>BluetoothReceiver</code> class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
  * @see Utils.Updatable
@@ -13,6 +15,7 @@ import Utils.Updatable;
 public class BluetoothReceiver implements Updatable {
     private SerialConnection serialConnection;
     private BluetoothCallback bluetoothCallback;
+    private ArrayList<Integer> routeList = new ArrayList<>();
 
     /**
      * Enums for the bluetooth communication.
@@ -20,7 +23,8 @@ public class BluetoothReceiver implements Updatable {
      */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
-        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN
+        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
+        START_ROUTE, STOP_ROUTE
     }
 
     /**
@@ -33,6 +37,18 @@ public class BluetoothReceiver implements Updatable {
     }
 
     /**
+     * Will return the int that is received via bluetooth. Only used to get route coords.
+     * @return int
+     */
+    public int listenForCoords() {
+        if (this.serialConnection.available() > 0) {
+            return this.serialConnection.readByte();
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * Will listen for input.
      * @return Commands
      */
@@ -41,6 +57,7 @@ public class BluetoothReceiver implements Updatable {
             int data = this.serialConnection.readByte();
             this.serialConnection.writeByte(data);
             System.out.println("Received: " + data);
+
             switch (data) {
                 case 87:
                     return Commands.FORWARD;
@@ -72,6 +89,12 @@ public class BluetoothReceiver implements Updatable {
                     return Commands.NINE;
                 case 10:
                     return Commands.TEN;
+                case 32:
+                    //Start reading route information
+                    return Commands.START_ROUTE;
+                case 126:
+                    //Stop reading route information
+                    return Commands.STOP_ROUTE;
                 default:
                     return Commands.DEFAULT;
             }
