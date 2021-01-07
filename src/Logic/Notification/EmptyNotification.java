@@ -23,6 +23,10 @@ public class EmptyNotification extends AbstractNotification {
      */
     public EmptyNotification(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzers, neoPixelLeds);
+        for (NeoPixelLed neoPixelLed : this.neoPixelLeds){
+            neoPixelLed.setBlinkingTimer(1000); //TODO: Check value.
+            neoPixelLed.setShouldBeOn(false);
+        }
     }
 
     /**

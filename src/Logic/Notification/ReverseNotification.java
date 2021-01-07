@@ -7,6 +7,8 @@ import Logic.Jingle;
 import java.awt.*;
 import java.util.ArrayList;
 
+//TODO: Remove this class, since the Bot does not drive backwards.
+
 /**
  * Notification for when the BoeBot is driving backwards. Extends AbstractNotification.
  * @author Berend de Groot

@@ -28,7 +28,7 @@ public class NeoPixelLed implements Led {
      */
     public NeoPixelLed(int id) {
         this.id = id;
-        this.blinkingTimer = new Timer(1000);
+        this.blinkingTimer = new Timer(0); //TODO: Check value.
         this.color = Color.white;
     }
 
@@ -54,7 +54,7 @@ public class NeoPixelLed implements Led {
     public void off() {
         BoeBot.setStatusLed(false);
         BoeBot.rgbSet(this.id, Color.black);
-        BoeBot.rgbShow();
+        BoeBot.rgbShow(); //Nani?
         this.isOn = false;
     }
 
@@ -134,6 +134,9 @@ public class NeoPixelLed implements Led {
                 blink(this.interval);
                 this.blinkingTimer.mark();
             }
+        } else { //TODO: Check whether this is necessary.
+            this.shouldBeOn = false;
+            this.off();
         }
     }
 

@@ -78,14 +78,14 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     * @param speed speed in percent
+     * @param speed speed in percent.
      */
     public void turnLeft(int speed) {
         turn(LEFT, speed);
     }
 
     /**
-     * @param speed speed in percent
+     * @param speed speed in percent.
      */
     public void turnRight(int speed) {
         turn(RIGHT, speed);
@@ -118,7 +118,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     * Gradually stop BoeBot.
+     * Gradually stops the BoeBot.
      */
     public void stop() {
         this.currentSpeed = 0;
@@ -128,7 +128,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     * Immediately stop BoeBot
+     * Immediately stops the BoeBot.
      */
     public void emergencyStop() {
         this.currentSpeed = 0;
@@ -145,7 +145,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     * @param follow      if true the BoeBot will start line following functionality
+     * @param follow      If true the BoeBot will start line following functionality.
      * @param followSpeed the speed of the BoeBot while following the line.
      */
     public void followLine(boolean follow, int followSpeed) {
@@ -178,6 +178,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         return this.currentSpeed;
     }
 
+    /**
+     * This class' update() method.
+     */
     @Override
     public void update() {
         debugToString();
@@ -196,7 +199,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.turnAtEndTimer.mark();
                 this.turnAtEndTimer.setOn(true);
             } else {
-                // when the BoeBot is turned around, reverse the route and follow the new route, back to the starting position
+                // When the BoeBot is turned around, reverse the route and follow the new route, back to the starting position.
                 this.route.reverse();
                 followRoute(this.route);
             }

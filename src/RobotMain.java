@@ -2,6 +2,7 @@ import Hardware.*;
 import Logic.*;
 import Logic.Notification.*;
 import TI.BoeBot;
+import TI.Timer;
 import Utils.*;
 
 import java.util.ArrayList;
@@ -21,7 +22,8 @@ import java.util.Collections;
 //TODO: Look at version-control and decide on the software's version.
 //TODO: Remove DefaultLed.java, since we do not use it anymore.
 //TODO: Remove RGBLed.java, since we do not use it anymore.
-//TODO: Delete comments in LineFollower.java
+//TODO: Remove ReverseNotification.java.
+//TODO: Delete comments in LineFollower.java.
 //TODO: Change some text in LineFollower.java so that everything is in English.
 //TODO: Add backwards functionality for NavigationSystem.java and Route.java.
 //TODO: Write documentation for BluetoothCallback.java.
@@ -31,17 +33,16 @@ import java.util.Collections;
 //TODO: Write documentation for ServoMotor.java.
 //TODO: Write documentation for UltraSonicReceiver.java.
 //TODO: Write documentation for Updatable.java.
+//TODO: Write documentation for DriveSystem.java.
 //TODO: Improve documentation for Shapes.java.
 //TODO: Improve documentation for NavigationSystem.java.
 
 //For Berend
-//TODO: Make RemoteNotification.java
 //TODO: Finish Jingles (Make them short and easy to recognize!)
 //TODO: Pick a different shade of green, since it looks too much like yellow.
 //TODO: Make notifications play automatically.
 //TODO: Final grammar check before submitting.
 //TODO: Write documentation for MusicNote.java.
-//TODO: Fix NavigationSystem.java.
 
 /** Main class of the BoeBot, often described as being the brain of the robot.
  *
@@ -145,8 +146,9 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
      */
     @Override
     public void onInfraredButton(int button) {
-//        setNotification(new RemoteNotification(this.buzzers, this.neoPixelLeds));
         boolean recognized = true;
+        setNotification(new RemoteNotification(this.buzzers, this.neoPixelLeds));
+        setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
         switch (button) {
             case InfraredReceiver.POWER:
                 driveSystem.stop();
@@ -165,15 +167,15 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 break;
             case InfraredReceiver.ONE:
                 driveSystem.setSpeed(10);
-//                setNotification(new DisconnectedNotification(this.buzzers, this.neoPixelLeds));
+                setNotification(new DisconnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.TWO:
                 driveSystem.setSpeed(20);
-//                setNotification(new ConnectedNotification(this.buzzers, this.neoPixelLeds));
+                setNotification(new ConnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.THREE:
                 driveSystem.setSpeed(30);
-//                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
+                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.FOUR:
                 driveSystem.setSpeed(40);
@@ -206,6 +208,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 break;
             default:
                 recognized = false;
+                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
                 break;
         }
         if (recognized) {
@@ -283,6 +286,8 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                 driveSystem.stopFollowingRoute();
                 driveSystem.setCurrentMaxSpeed(0);
                 driveSystem.emergencyStop();
+                //TODO: Consider putting this in DriveSystem.java?
+                setNotification(new EmergencyStopNotification(this.buzzers, this.neoPixelLeds));
                 System.out.println("Emergency stop");
             }
         } else if (distance < 30) {

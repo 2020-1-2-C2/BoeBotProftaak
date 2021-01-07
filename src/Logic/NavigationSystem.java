@@ -25,8 +25,8 @@ public class NavigationSystem {
     private int goalCoordY;
 
     //TODO: Add checks.
-    private final int maxY = 4;
-    private final int maxX = 4;
+    private final int maxY = 6;
+    private final int maxX = 6;
 
     private ArrayList<Integer> routeToNavigate;
 
@@ -105,6 +105,8 @@ public class NavigationSystem {
             //TODO: Add backwards functionality.
             /* NOTE: DON'T DO THIS!!!!
             TODO: This was done to ensure all emergency functionality works; the UltraSonicSensor is on the front of the bot!!!
+
+            TODO: TEST! This should be added.
              */
             if (this.direction == BACKWARDS){
                 this.faceForward();
