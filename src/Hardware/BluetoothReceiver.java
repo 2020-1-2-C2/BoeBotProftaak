@@ -1,42 +1,40 @@
 package Hardware;
 
-import Logic.Route;
 import TI.SerialConnection;
 import Utils.BluetoothCallback;
 import Utils.Updatable;
 
-import java.util.ArrayList;
-
+/**
+ * <code>BluetoothReceiver</code> class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
+ * @see Utils.Updatable
+ * @see Utils.BluetoothCallback
+ * @see SerialConnection
+ */
 public class BluetoothReceiver implements Updatable {
     private SerialConnection serialConnection;
     private BluetoothCallback bluetoothCallback;
-    private ArrayList<Integer> routeDirections;
-    private Route route;
 
     /**
      * Enums for the bluetooth communication.
+     * This enumerator consists of FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT and the numbers 1 - 10.
      */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
-        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
-        START_ROUTE
+        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN
     }
 
     /**
-     * Constructor for the BluetoothReceiver class.
+     * Constructor for the <code>BluetoothReceiver</code> class.
      *
-     * @param bluetoothCallback BluetoothCallBack object.
+     * @param bluetoothCallback <code>BluetoothCallBack</code> object.
      */
     public BluetoothReceiver(BluetoothCallback bluetoothCallback) {
         this.serialConnection = new SerialConnection(115200);
         this.bluetoothCallback = bluetoothCallback;
-        this.routeDirections = new ArrayList<>();
-        this.route = new Route(this.routeDirections);
     }
 
     /**
      * Will listen for input.
-     *
      * @return Commands
      */
     private Commands listenForSignal() {
@@ -44,9 +42,7 @@ public class BluetoothReceiver implements Updatable {
             int data = this.serialConnection.readByte();
             this.serialConnection.writeByte(data);
             System.out.println("Received: " + data);
-            boolean read = true;
             switch (data) {
-                //Directions
                 case 87:
                     return Commands.FORWARD;
                 case 65:
@@ -57,7 +53,6 @@ public class BluetoothReceiver implements Updatable {
                     return Commands.RIGHT;
                 case 16:
                     return Commands.STOP;
-                //Speeds
                 case 1:
                     return Commands.ONE;
                 case 2:
@@ -78,9 +73,6 @@ public class BluetoothReceiver implements Updatable {
                     return Commands.NINE;
                 case 10:
                     return Commands.TEN;
-                //Start route command TODO: Make it functional, can be done when the algorithm is implemented.
-                case 32:
-                    return Commands.START_ROUTE;
                 default:
                     return Commands.DEFAULT;
             }
@@ -90,7 +82,6 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Allows for external use of the connection. MIGHT GET REMOVED IF PROVEN UNNECESSARY!
-     *
      * @return Serialconnection object
      */
     public SerialConnection getSerialConnection() {
@@ -98,7 +89,8 @@ public class BluetoothReceiver implements Updatable {
     }
 
     /**
-     * Update method.
+     * The <code>Update()</code> method.
+     * @see Utils.Updatable
      */
     @Override
     public void update() {

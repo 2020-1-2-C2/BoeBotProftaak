@@ -1,10 +1,17 @@
 package Logic;
 
+/**
+ * Class to generate timing for all notes. It does this by calculating how long a specific note (for example: quarterNote) would be in ms at a given BPM (beats per minute). <p>
+ * This class is mainly used by the Jingle.java class, which has a couple of AudioPlaySystem.java objects containing jingles used by the notificationssystem.
+ * @author Berend de Groot
+ * @version 1.0
+ * @see Jingle#somebodyThatIUsedToKnow()
+ * @see AudioPlaySystem
+ */
 public class NoteLengthGenerator {
 
-    //TODO: Fix all typos.
-    //TODO: Add documentation.
-    //TODO: Update comments
+    //TODO: Remove unused notes at release.
+    //TODO: Check access-modifiers.
 
     //Source of information: https://musescore.org/en/node/22609
 
@@ -24,8 +31,11 @@ public class NoteLengthGenerator {
     //NOTE: quarternotes (60.00) are 1/4 of a bar, which is 240.00
 
     /**
-     * Constructor for the NoteLengthGenerator class. It is used as an instance for other classes to generate timing for all notes.
-     * @param BPM Beats-Per-Minute. This is used to calculate the timing for all notes.
+     * Constructor for the NoteLengthGenerator class. It is used as an instance for other classes to generate timing for all notes. <p>
+     * You can find instances of this class in the Jingle.java class. <p>
+     * <small>Example: 60 BPM is one beat per second.</small>
+     * @param BPM Beats-Per-Minute (double). This is used to calculate the timing for all notes.
+     * @see Jingle
      */
     public NoteLengthGenerator(double BPM){
         this.halfNote = 120.00 / BPM;
@@ -41,7 +51,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the halfNote veriable
+     * Auto-generated getter for the halfNote variable.
      * @return halfnote
      */
     public double getHalfNote() {
@@ -49,7 +59,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the quarterNote veriable
+     * Auto-generated getter for the quarterNote variable.
      * @return quarterNote
      */
     public double getQuarterNote() {
@@ -57,7 +67,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the eightNote veriable
+     * Auto-generated getter for the eightNote variable.
      * @return eightNote
      */
     public double getEightNote() {
@@ -65,7 +75,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the sixteenthNote veriable
+     * Auto-generated getter for the sixteenthNote variable.
      * @return sixteenthNote
      */
     public double getSixteenthNote() {
@@ -73,7 +83,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the dottedQuarterNote veriable
+     * Auto-generated getter for the dottedQuarterNote variable.
      * @return dottedQuarterNote
      */
     public double getDottedQuarterNote() {
@@ -81,7 +91,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the dottedEightNote veriable
+     * Auto-generated getter for the dottedEightNote variable.
      * @return dottedEightNote
      */
     public double getDottedEightNote() {
@@ -89,7 +99,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the dottedSixteenthNote veriable
+     * Auto-generated getter for the dottedSixteenthNote variable.
      * @return dottedSixteenthNote
      */
     public double getDottedSixteenthNote() {
@@ -97,7 +107,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the tripletQuarterNote veriable
+     * Auto-generated getter for the tripletQuarterNote variable.
      * @return tripletQuarterNote
      */
     public double getTripletQuarterNote() {
@@ -105,7 +115,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the tripletEightNote veriable
+     * Auto-generated getter for the tripletEightNote variable.
      * @return tripletEightNote
      */
     public double getTripletEightNote() {
@@ -113,7 +123,7 @@ public class NoteLengthGenerator {
     }
 
     /**
-     * Auto-generated getter for the tripletSixteenthNote veriable
+     * Auto-generated getter for the tripletSixteenthNote variable.
      * @return tripletSixteenthNote
      */
     public double getTripletSixteenthNote() {

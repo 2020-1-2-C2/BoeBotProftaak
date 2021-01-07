@@ -6,7 +6,8 @@ import java.util.ArrayList;
 //TODO: Add documentation
 
 /**
- * Instances made from this class are made in Jingle.java for sounds relying on pitch & rhythm (songs). This class contains methods to add notes with the right timings.
+ * Instances made from this class are made in Jingle.java for sounds relying on pitch and rhythm (songs). This class contains methods to add notes with the right timings.
+ * @author Berend de Groot
  */
 public class AudioPlaySystem {
 
@@ -23,7 +24,7 @@ public class AudioPlaySystem {
 
     /**
      * Constructor able to create a new instance from already correctly setup MusicNote objects.
-     * @param notesToPlay
+     * @param notesToPlay Takes an arraylist of MusicNote objects.
      */
     public AudioPlaySystem(ArrayList<MusicNote> notesToPlay){
         this.notesToPlay = notesToPlay;
@@ -79,6 +80,7 @@ public class AudioPlaySystem {
 
     /**
      * Auto-generated setter for the artist attribute.
+     * @param artist Sets this.artist to the parameter.
      */
     public void setArtist(String artist) {
         this.artist = artist;
@@ -94,6 +96,7 @@ public class AudioPlaySystem {
 
     /**
      * Auto-generated setter for the title attribute.
+     * @param title Sets this.title to the parameter.
      */
     public void setTitle(String title) {
         this.title = title;

@@ -4,16 +4,17 @@ import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
 import Logic.NoteLengthGenerator;
 import Logic.NotePitchGenerator;
-import Utils.Updatable;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-//TODO: Replace the update() method, since usage of update() like this is redundant.
+/**
+ * Class used by the BoeBot for handling notifications. All notification classes extend this class, and thus inherit attributes.
+ * Every notification has it's own unique notificationSpecificMethod() used to give instructions to the Buzzer and NeoPixelLeds.
+ */
+public abstract class AbstractNotification {
 
-public abstract class AbstractNotification implements Updatable {
-
-    //TODO: Check access-modifiers
+    //TODO: Check access-modifiers.
     protected ArrayList<Buzzer> buzzers;
     protected ArrayList<NeoPixelLed> neoPixelLeds;
     protected NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
@@ -22,50 +23,43 @@ public abstract class AbstractNotification implements Updatable {
     protected Color neoPixelLedColorB;
     protected String lightColorPattern;
 
+    //TODO: Check access-modifiers.
+
+    /**
+     * Constructor for the AbstractNotification.java class.
+     * @param buzzers Takes in an Arraylist of Buzzers to handle the sound.
+     * @param neoPixelLeds Takes in an Arraylist of NeoPixelLeds to handle the lights.
+     * @see Buzzer
+     * @see NeoPixelLed
+     */
     public AbstractNotification(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
         this.buzzers = buzzers;
         this.neoPixelLeds = neoPixelLeds;
     }
 
+    /**
+     * Abstract method all notifications have. Those methods contain instructions for the Buzzer and NeoPixelLeds on the BoeBot.
+     * See classes in Logic.Notification for examples.
+     * @see Logic.Notification.DisconnectedNotification
+     */
     public abstract void notificationSpecificMethod();
 
     /**
-     * Creates an instance of EmptyNotification
+     * Auto-generated getter for the Buzzer arraylist.
+     * @return this.buzzers, the Buzzer arraylist.
+     * @see Buzzer
      */
-    public void cancel() {
-        this.buzzers.get(0).off();
-        for (NeoPixelLed neoPixelLed : neoPixelLeds){
-            neoPixelLed.off();
-        }
-        new EmptyNotification(this.buzzers, this.neoPixelLeds);
-    }
-
     public ArrayList<Buzzer> getBuzzers() {
         return this.buzzers;
     }
 
+    //TODO: Remove if never used!
+    /**
+     * Auto-generated getter for the NeoPixelLed arraylist.
+     * @return this.neoPixelLeds, the NeoPixelLed arraylist.
+     * @see NeoPixelLed
+     */
     public ArrayList<NeoPixelLed> getNeoPixelLeds() {
         return this.neoPixelLeds;
     }
-
-    //TODO: Delete when new system is fully operational
-//    public void ABXcode() {
-//        int blinkTime = 250;
-//
-//        for (int i = 0; i < 6; i++) {
-//            NeoPixelLed neoPixelLed = this.neoPixelLeds.get(i);
-//
-//            if (this.lightColorPattern.charAt(i) == 'A') {
-//                neoPixelLed.on();
-//                neoPixelLed.setColor(neoPixelLedColorA);
-//                neoPixelLed.blink(blinkTime);
-//            } else if (this.lightColorPattern.charAt(i) == 'B') {
-//                neoPixelLed.on();
-//                neoPixelLed.setColor(neoPixelLedColorB);
-//                neoPixelLed.blink(blinkTime);
-//            } else if (this.lightColorPattern.charAt(i) == 'X') { //TODO: Check whether this messes with the other on/off code.
-//                neoPixelLed.off();
-//            }
-//        }
-//    }
 }

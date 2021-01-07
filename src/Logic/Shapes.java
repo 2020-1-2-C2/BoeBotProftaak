@@ -5,6 +5,11 @@ import Utils.Updatable;
 
 /**
  * Class containing the instructions for the BoeBot when it receives the command to drive in a shape defined in this class.
+ * This class implements Updatable.java.
+ * @version 1.0
+ * @since 2.0
+ * @see Updatable
+ * @see DriveSystem
  */
 public class Shapes implements Updatable {
     private DriveSystem driveSystem;
@@ -17,15 +22,17 @@ public class Shapes implements Updatable {
 
     /**
      * Enums to define which shape to drive.
+     * This can either be a circle or a triangle.
      */
     public enum Shape {
         CIRCLE, TRIANGLE
     }
 
     /**
-     * Constructor for Shapes class.
+     * Constructor for <code>Shapes</code> class.
      *
-     * @param driveSystem DriveSystem object.
+     * @param driveSystem <code>DriveSystem</code> object.
+     * @see DriveSystem
      */
     public Shapes(DriveSystem driveSystem) {
         this.driveSystem = driveSystem;
@@ -39,7 +46,7 @@ public class Shapes implements Updatable {
     /**
      * This method is a setup for the shape.
      *
-     * @param shape Shape enum
+     * @param shape Shape enum/object
      */
     public void beginShape(Shape shape) {
         this.driveSystem.stop();
@@ -47,8 +54,7 @@ public class Shapes implements Updatable {
         this.driveSystem.setSpeed(20);
         if (shape.equals(Shape.CIRCLE)) {
             this.circleTimerEnabled = true;
-            //TODO: Time needs to be adjusted!
-            this.circleTimer.setInterval(11000);
+            this.circleTimer.setInterval(10000);
             circle();
         } else if (shape.equals(Shape.TRIANGLE)) {
             this.triangleTimerEnabled = true;
@@ -70,7 +76,6 @@ public class Shapes implements Updatable {
 
     /**
      * Drive in a triangle
-     * TODO: Adjust timers
      */
     private void triangle() {
         if (this.triangleCounter < 3) {
@@ -95,7 +100,8 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Update method
+     * The <code>update()</code> method from Updatable.java.
+     * @see Updatable
      */
     @Override
     public void update() {

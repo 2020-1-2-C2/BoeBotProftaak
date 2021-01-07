@@ -5,10 +5,17 @@ import Logic.MusicNote;
 import Logic.NotePitchGenerator;
 import TI.BoeBot;
 import TI.PinMode;
+import TI.Timer;
 import Utils.Updatable;
 
 /**
- * Buzzer class, from which all buzzer sensors should have its own instance. The methods are used to play sounds on the Buzzer.
+ * <code>Buzzer</code> class, from which all buzzer sensors should have its own instance. <p>
+ * The methods are used to play sounds on the <code>Buzzer</code>.
+ * @see Utils.Updatable
+ * @see Logic.NotePitchGenerator
+ * @see Logic.AudioPlaySystem
+ * @author Berend de Groot
+ * @version 2.1
  */
 public class Buzzer implements Updatable {
     private int pinId;
@@ -16,37 +23,42 @@ public class Buzzer implements Updatable {
 
     private NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
 
+    private Timer noteDelayTimer;
+    private int currentNoteCount;
+    private AudioPlaySystem selectedSong;
+
     /**
-     * Constructor for the buzzer sensor, deriving from the Buzzer.java class.
-     *
+     * Constructor for the buzzer hardware component, deriving from the <code>Buzzer.java</code> class.
      * @param pinId An integer representing the pin whom the buzzer is connected to.
      */
     public Buzzer(int pinId) {
         this.pinId = pinId;
         BoeBot.setMode(pinId, PinMode.Output);
+        this.selectedSong = null;
+        this.noteDelayTimer = new Timer(0); //Note: This is infinite.
+        this.currentNoteCount = 0;
     }
 
     /**
-     * Buzz for 1 second on 1000Hz.
+     * Method that makes the Buzzer buzz for 1 second at 1000Hz.
      */
     public void buzz() {
         buzz(1000, 1000);
     }
 
     /**
-     * Buzz for a certain amount of time on 1000Hz.
-     *
-     * @param time in milliseconds.
+     * Method that makes the <code>Buzzer</code> buzz at 1000Hz for the time specified in the parameter.
+     * @param time Time in milliseconds. Buzzer stops buzzing after the timer has passed.
      */
     public void buzz(int time) {
         buzz(time, 1000);
     }
 
     /**
-     * Buzz for a certain amount of time on a certain frequency.
-     *
-     * @param time in milliseconds.
-     * @param freq in Hz.
+     * Makes the <code>Buzzer</code> buzz for a certain amount of time on a certain frequency.
+     * @param time Time in milliseconds. Buzzer stops buzzing after the timer has passed.
+     * @param freq Frequency in Hz.
+     * @see BoeBot#freqOut(int, int, int)
      */
     public void buzz(int time, int freq) {
         BoeBot.freqOut(this.pinId, freq, time);
@@ -55,45 +67,76 @@ public class Buzzer implements Updatable {
     /**
      * Buzzes at a frequency similar to a piano note given as a parameter
      *
-     * @param time   in milliseconds.
-     * @param note   musical note without the octave (for example: C, G, A#).
-     * @param octave octave (for example: 4, 5).
+     * @param time   Time in milliseconds. Buzzer stops buzzing after the timer has passed.
+     * @param note   Musical note without the octave (for example: C, G, A#).
+     * @param octave Octave (for example: 4, 5).
+     * @see Hardware.Buzzer#getNote(String, int)
      */
     public void buzz(int time, String note, int octave) {
         buzz(time, getNote(note, octave));
     }
 
     /**
-     * Buzz for half a second.
+     * Makes the <code>Buzzer</code> buzz for half a second (500 ms).
+     * @see Buzzer#buzz()
      */
     public void beep() {
         buzz(500);
     }
 
     /**
-     * Turns the buzzer off. (If the buzzer won't shut off automatically.)
+     * Method used to turn the buzzer off. <p>
+     * This will interrupt the jingle (see Jingle). It does this by setting <code>this.selectedSong</code> to <code>null</code>. <p>
+     * If the user wants to play the jingle again he has to start over from the beginning by initiating it again.
+     * @see Logic.Jingle
      */
     public void off() {
+        this.selectedSong = null;
         this.isOn = false;
     }
 
     /**
-     * @return the isOn boolean.
+     * Auto-generated getter.
+     * @return Returns the isOn boolean (this.isOn).
      */
     public boolean getIsOn() {
         return this.isOn;
     }
 
+    /**
+     * The <code>update()</code> method.
+     * @see Utils.Updatable
+     */
     @Override
     public void update() {
+        if (this.selectedSong != null){
+            if (this.currentNoteCount < this.selectedSong.getNotesToPlay().size()){
+                if (this.noteDelayTimer.timeout()){
+                    System.out.println("Went through TIMEOUT()");
+                    buzz(this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNoteLengthInMS(),
+                            this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNotePitch());
+                    this.currentNoteCount++;
+                        if (this.selectedSong.getNotesToPlay().size() - 1 > this.currentNoteCount){
+                            this.noteDelayTimer.setInterval(this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNoteDelayInMS()
+                                    + this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNoteLengthInMS());
+                        }
+                }
+            } else {
+                System.out.println("Went through ELSE");
+                this.selectedSong = null;
+                this.currentNoteCount = 0;
+            }
+        }
     }
 
     /**
-     * Data collected from https://nl.wikipedia.org/wiki/Toonhoogtetabel
+     * Calculates the hertz for a musical note in NotePitchGenerator. <p>
      * All "A" notes, apart from A0, are as accurate as possible, with the bottleneck being the hardware (in this case, the buzzer).
      *
-     * @param note A string containing a musical note (for example: B3, A6, G5).
-     * @return A rounded number containing the hz of the given musical note.
+     * @param note A string containing a musical note (for example: B, A, G).
+     * @param octave An int containing the octave the note should be played in. One octave is 12 halfsteps/semitones.
+     * @return A rounded number containing the hz of the given musical note. This is calculated in an instance of the NotePitchGenerator.
+     * @see NotePitchGenerator
      */
     public int getNote(String note, int octave) {
         return notePitchGenerator.getNote(note, octave);
@@ -101,21 +144,33 @@ public class Buzzer implements Updatable {
 
     /**
      * Plays the song in the audioPlaySystem given as a parameter.
-     *
-     * @param audioPlaySystem
+     * @param audioPlaySystem Method uses the notes from the getNotesToPlay() Arraylist.
+     * @see AudioPlaySystem
      */
     public void playSong(AudioPlaySystem audioPlaySystem){
-        System.out.println("Playing song: " + audioPlaySystem.getArtist() + " - " + audioPlaySystem.getTitle());
-        for (MusicNote musicNote : audioPlaySystem.getNotesToPlay()){
-            BoeBot.wait(musicNote.getNoteDelayInMS());
-            System.out.println(musicNote.getNoteDelayInMS());
-            buzz(musicNote.getNoteLengthInMS(), musicNote.getNotePitch());
-        }
+        this.selectedSong = audioPlaySystem;
+        this.currentNoteCount = 0;
+        this.noteDelayTimer.setInterval(1);
     }
 
+    /**
+     * Simple getter for the int <code>pinID</code> of this object.
+     * @return this.pinId
+     */
     public int getPinId() {
-        return pinId;
+        return this.pinId;
     }
 
-
+    /**
+     * Method used for debugging purposes only. It prints out the pitch, length and the delay for a note.
+     * @param musicNote Uses this to get information about the note.
+     * @return String containing information about a musicNote.
+     * @see MusicNote
+     */
+    private String toString(MusicNote musicNote) {
+        return "NEW MUSICNOTE" + "\n"
+                + "Note Pitch: " + musicNote.getNotePitch() + "\n"
+                + "Note Length: " + musicNote.getNoteLength() + "\n"
+                + "Note Delay: " + musicNote.getNoteDelay();
+    }
 }

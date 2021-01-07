@@ -1,5 +1,13 @@
 package Logic;
 
+//TODO: Update all the documentation.
+
+/**
+ * Instances of MusicNote are used by <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a>
+ * to store note information when playing <a href="{@docRoot}/Logic/Jingle.html">Jingle</a>s.
+ * @author Berend de Groot
+ * @version 1.1
+ */
 public class MusicNote {
 
     //TODO: Fix all typos.
@@ -11,10 +19,10 @@ public class MusicNote {
     private double noteDelay;
 
     //TODO: Specify which unit the attributes are measured in.
-    //TODO: Rename whenToPlay to noteDelay;
+    //TODO: Rename whenToPlay to noteDelay.
 
     /**
-     * Constructor that created an object of this class.
+     * Constructor that creates an object of this class.
      * @param noteLength Length of the note (Should be an attribute of an instance of NoteLengthGenerator.java)
      * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with NotePitchGenerator.java)
      * @param noteDelay Timing; this is the time it waits after the note before this note is done playing.
@@ -26,7 +34,7 @@ public class MusicNote {
     }
 
     /**
-     * Constructor that created an object of this class.
+     * Constructor that creates an object of this class.
      * @param noteLength Length of the note (Should be an attribute of an instance of NoteLengthGenerator.java)
      * @param notePitch Pitch of the note (for example: C4, A#6) (Should be a value generated with NotePitchGenerator.java)
      */
@@ -36,7 +44,7 @@ public class MusicNote {
     }
 
     /**
-     * Auto-generated getter for the noteLength attribute.
+     * Auto-generated getter for the <code>noteLength</code> attribute.
      * @return noteLength
      */
     public double getNoteLength() {
@@ -44,7 +52,7 @@ public class MusicNote {
     }
 
     /**
-     * Getter for the noteLength attribute, used by the buzzer. This is because the buzzer uses an integer (representing MS) for the timing.
+     * Getter for the <code>noteLength</code> attribute, used by the <code>Buzzer</code>. This is because the buzzer uses an integer (representing MS) for the timing.
      * @return noteLength * 1000 as an integer (so decimals might be lost)
      */
     public int getNoteLengthInMS(){
@@ -52,7 +60,7 @@ public class MusicNote {
     }
 
     /**
-     * Auto-generated getter for the whenToPlay attribute.
+     * Auto-generated getter for the <code>whenToPlay</code> attribute.
      * @return whenToPlay
      */
     public double getNoteDelay() {
@@ -60,7 +68,7 @@ public class MusicNote {
     }
 
     /**
-     * Getter for the whenToPlay attribute in MS, used by the Buzzer.
+     * Getter for the <code>whenToPlay</code> attribute in MS, used by the <code>Buzzer</code>.
      * @return whenToPlay * 1000 as an integer.
      */
     public int getNoteDelayInMS() {
@@ -68,7 +76,7 @@ public class MusicNote {
     }
 
     /**
-     * Auto-generated setter for the whenToPlay attribute.
+     * Auto-generated setter for the <code>whenToPlay</code> attribute.
      * @param whenToPlay Replaces the current whenToPlay value.
      */
     public void setNoteDelay(double whenToPlay) {
@@ -76,14 +84,15 @@ public class MusicNote {
     }
 
     /**
-     * Auto-generated getter for the notePitch attribute.
+     * Auto-generated getter for the <code>notePitch</code> attribute.
+     * @return The pitch of the note (this.notePitch).
      */
     public int getNotePitch() {
-        return notePitch;
+        return this.notePitch;
     }
 
     /**
-     * Auto-generated setter for the NoteLength attribute.
+     * Auto-generated setter for the <code>NoteLength</code> attribute.
      * @param noteLength Replaces the current NoteLength value.
      */
     public void setNoteLength(double noteLength) {
