@@ -78,16 +78,16 @@ public class LineFollower implements Updatable {
     }
 
     private boolean leftSeesBlack() {
-        return BoeBot.analogRead(leftLineSensorPin) > sensorTweak;
+        return BoeBot.analogRead(this.leftLineSensorPin) > this.sensorTweak;
 
     }
 
     private boolean rightSeesBlack() {
-        return BoeBot.analogRead(rightLineSensorPin) > sensorTweak;
+        return BoeBot.analogRead(this.rightLineSensorPin) > this.sensorTweak;
     }
 
     private boolean centerSeesBlack() {
-        return BoeBot.analogRead(centralLineSensorPin) > sensorTweak;
+        return BoeBot.analogRead(this.centralLineSensorPin) > this.sensorTweak;
     }
 
     private void detectLine2Sensors() {
