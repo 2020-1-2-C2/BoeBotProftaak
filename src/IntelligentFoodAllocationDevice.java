@@ -103,19 +103,19 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
         Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
         this.driveSystem = new DriveSystem(servoMotor);
         this.shapes = new Shapes(this.driveSystem);
-        LineFollower lineFollower = new LineFollower(2, 1, driveSystem);
+        LineFollower lineFollower = new LineFollower(2, 1, this.driveSystem);
 
         this.buzzers = new ArrayList<>();
-        this.buzzers.add(buzzer);
+        this.buzzers.add(this.buzzer);
 
         //Adds all the NeoPixelLeds to an arraylist.
         this.neoPixelLeds = new ArrayList<>();
-        this.neoPixelLeds.add(neoPixelLed0);
-        this.neoPixelLeds.add(neoPixelLed1);
-        this.neoPixelLeds.add(neoPixelLed2);
-        this.neoPixelLeds.add(neoPixelLed3);
-        this.neoPixelLeds.add(neoPixelLed4);
-        this.neoPixelLeds.add(neoPixelLed5);
+        this.neoPixelLeds.add(this.neoPixelLed0);
+        this.neoPixelLeds.add(this.neoPixelLed1);
+        this.neoPixelLeds.add(this.neoPixelLed2);
+        this.neoPixelLeds.add(this.neoPixelLed3);
+        this.neoPixelLeds.add(this.neoPixelLed4);
+        this.neoPixelLeds.add(this.neoPixelLed5);
 
         //Adds all the updatables to an arraylist.
         //TODO: Add the neoPixelLeds arraylist instead of all the neoPixelLeds individually.
@@ -269,7 +269,7 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
                     this.driveSystem.setSpeed(90);
                     break;
                 case TEN:
-                    driveSystem.setSpeed(100);
+                    this.driveSystem.setSpeed(100);
                 case START_ROUTE:
                     boolean reading = true;
                     String route = "";
