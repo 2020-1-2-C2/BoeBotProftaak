@@ -31,10 +31,10 @@ public class Route {
     public Integer nextDirection() {
         if (route.size() < 1) {
             return null;
-        } else if(index >= route.size()) {
+        } else if(index >= this.route.size()) {
             return NONE;
         } else {
-            int result = route.get(index);
+            int result = this.route.get(index);
             this.index++;
             return result;
         }
@@ -45,10 +45,10 @@ public class Route {
      * Reverse the route and continue from the end of the previous route. //TODO: Add backwards functionality.
      */
     public void reverse() {
-        for (int i = 0; i < route.size(); i++) {
+        for (int i = 0; i < this.route.size(); i++) {
             if (route.get(i) == LEFT) {
                 this.route.set(i, RIGHT);
-            } else if (route.get(i) == RIGHT) {
+            } else if (this.route.get(i) == RIGHT) {
                 this.route.set(i,LEFT);
             }
         }
