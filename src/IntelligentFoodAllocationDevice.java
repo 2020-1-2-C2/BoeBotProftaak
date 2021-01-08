@@ -47,7 +47,7 @@ import java.util.Collections;
  * @author Projectgroep C2 - Berend de Groot, Lars Hoendervangers, Capser Lous, Martijn de Kam, Meindert Kempe, Tom Martens
  * @version 1.0
  */
-public class RobotMain implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
+public class IntelligentFoodAllocationDevice implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
 
     //TODO: Check whether you can use "Whom" when talking about code.
     /**
@@ -71,6 +71,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     private NeoPixelLed neoPixelLed4 = new NeoPixelLed(4);
     private NeoPixelLed neoPixelLed5 = new NeoPixelLed(5);
     private ArrayList<NeoPixelLed> neoPixelLeds;
+    private BluetoothReceiver bluetoothReceiver = new BluetoothReceiver(this);
 
 
     /**
@@ -81,7 +82,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
      * @see #run()
      */
     public static void main(String[] args) {
-        RobotMain main = new RobotMain();
+        IntelligentFoodAllocationDevice main = new IntelligentFoodAllocationDevice();
         main.initialise();
         main.run();
     }
@@ -94,7 +95,6 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
     public void initialise() {
         // Creating all the different objects which will be used.
         InfraredReceiver infraredReceiver = new InfraredReceiver(0, this);
-        BluetoothReceiver bluetoothReceiver = new BluetoothReceiver(this);
 
         CollisionDetection collisionDetection = new CollisionDetection(this);
         UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
@@ -120,7 +120,7 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         //Adds all the updatables to an arraylist.
         //TODO: Add the neoPixelLeds arraylist instead of all the neoPixelLeds individually.
         Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
-                this.driveSystem, this.buzzer, servoMotor, this.shapes, bluetoothReceiver, lineFollower,
+                this.driveSystem, this.buzzer, servoMotor, this.shapes, this.bluetoothReceiver, lineFollower,
                 neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5
         );
     }
@@ -215,7 +215,13 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
         }
     }
 
-    //TODO Input for route following needs to be interpreted and converted into a route object, after which the DriveSystem.followRoute(route) method can be called to start following that route
+    /**
+     * This method will listen for commands that are sent by bluetooth. If the START_ROUTE command is called it will start a while loop for how ever long it will take to
+     * read the data. This will usually only take a couple ms. Then it will put the number in a string. That string will then be split into separate integers that are
+     * used to create a new NavigationSystem object. (First int = x, second int = y)
+     * TODO: Possible string length check, depends on if we want to use more coords.
+     * @param command
+     */
     @Override
     public void onBluetoothReceive(BluetoothReceiver.Commands command) {
         if (!command.equals(BluetoothReceiver.Commands.DEFAULT)) {
@@ -264,6 +270,23 @@ public class RobotMain implements InfraredCallback, CollisionDetectionCallback, 
                     break;
                 case TEN:
                     driveSystem.setSpeed(100);
+                case START_ROUTE:
+                    boolean reading = true;
+                    String route = "";
+                    while (reading) {
+                        int data = this.bluetoothReceiver.listenForCoords();
+                        if (data == 126) {
+                            reading = false;
+                            NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
+                            navigationSystem.getRoute();
+                            System.out.println(route);
+                            route = "";
+                        } else {
+                            route += ((char) data);
+                        }
+                    }
+                    break;
+                case STOP_ROUTE:
                     break;
             }
             System.out.println(command);
