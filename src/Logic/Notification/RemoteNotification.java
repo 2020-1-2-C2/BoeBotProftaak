@@ -42,7 +42,7 @@ public class RemoteNotification extends AbstractNotification{
     public void notificationSpecificMethod() {
         for (NeoPixelLed neoPixelLed : this.neoPixelLeds){
             neoPixelLed.on();
-            neoPixelLed.setColor(neoPixelLedColorA);
+            neoPixelLed.setColor(this.neoPixelLedColorA);
         }
     }
 }
