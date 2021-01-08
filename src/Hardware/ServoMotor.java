@@ -40,8 +40,8 @@ public class ServoMotor implements Motor {
         this.servoRight = servoRight;
         this.timerLeft = new TimerWithState(1000);
         this.timerRight = new TimerWithState(1000);
-        timerLeft.setOn(false);
-        timerRight.setOn(false);
+        this.timerLeft.setOn(false);
+        this.timerRight.setOn(false);
     }
 
     /**
@@ -51,8 +51,8 @@ public class ServoMotor implements Motor {
      * @return Signal length which can be sent to the servo motors to set the speed.
      */
     private int percentToValue(int percent) {
-        int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
-        return ((diff / 100) * percent) + STANDSTILL_SPEED;
+        int diff = this.MAX_FORWARD_SPEED - this.STANDSTILL_SPEED;
+        return ((diff / 100) * percent) + this.STANDSTILL_SPEED;
     }
 
     /**
@@ -62,8 +62,8 @@ public class ServoMotor implements Motor {
      * @return Percentage speed of the maximum.
      */
     private int valueToPercent(int value) {
-        int diff = MAX_FORWARD_SPEED - STANDSTILL_SPEED;
-        return -((value - STANDSTILL_SPEED) * 100) / diff;
+        int diff = this.MAX_FORWARD_SPEED - this.STANDSTILL_SPEED;
+        return -((value - this.STANDSTILL_SPEED) * 100) / diff;
     }
 
     /**
@@ -78,8 +78,8 @@ public class ServoMotor implements Motor {
     public void goToSpeed(int speed, int time) {
         goToSpeedLeft(speed, time);
         goToSpeedRight(speed, time);
-        timerRight.mark();
-        timerLeft.mark();
+        this.timerRight.mark();
+        this.timerLeft.mark();
     }
 
     /**
@@ -103,18 +103,18 @@ public class ServoMotor implements Motor {
         }
 
         this.wantedSpeedLeft = percentToValue(speed);
-        System.out.println("speed value: " + wantedSpeedLeft);
-        int diff = this.wantedSpeedLeft - servoLeft.getPulseWidth();
+        System.out.println("speed value: " + this.wantedSpeedLeft);
+        int diff = this.wantedSpeedLeft - this.servoLeft.getPulseWidth();
 
-        int steps = diff / STEP_SIZE_LEFT;
+        int steps = diff / this.STEP_SIZE_LEFT;
 
         if (time < steps) {
             time = steps;
         }
 
         if (steps != 0) {
-            timerLeft.setInterval(time / steps);
-            timerLeft.setOn(true);
+            this.timerLeft.setInterval(time / steps);
+            this.timerLeft.setOn(true);
         }
 
     }
@@ -140,18 +140,18 @@ public class ServoMotor implements Motor {
         }
 
         this.wantedSpeedRight = percentToValue(speed);
-        System.out.println("speed value: " + wantedSpeedRight);
-        int diff = this.wantedSpeedRight - servoRight.getPulseWidth();
+        System.out.println("speed value: " + this.wantedSpeedRight);
+        int diff = this.wantedSpeedRight - this.servoRight.getPulseWidth();
 
-        int steps = diff / STEP_SIZE_RIGHT;
+        int steps = diff / this.STEP_SIZE_RIGHT;
 
         if (time < steps) {
             time = steps;
         }
 
         if (steps != 0) {
-            timerRight.setInterval(time / steps);
-            timerRight.setOn(true);
+            this.timerRight.setInterval(time / steps);
+            this.timerRight.setOn(true);
         }
 
     }
@@ -175,10 +175,10 @@ public class ServoMotor implements Motor {
             }
 
             int newSpeed = servo.getPulseWidth() + step;
-            if (newSpeed > MAX_FORWARD_SPEED) {
-                newSpeed = MAX_FORWARD_SPEED;
-            } else if (newSpeed < MAX_BACKWARD_SPEED) {
-                newSpeed = MAX_BACKWARD_SPEED;
+            if (newSpeed > this.MAX_FORWARD_SPEED) {
+                newSpeed = this.MAX_FORWARD_SPEED;
+            } else if (newSpeed < this.MAX_BACKWARD_SPEED) {
+                newSpeed = this.MAX_BACKWARD_SPEED;
             }
             servo.update(newSpeed);
         }
@@ -192,12 +192,12 @@ public class ServoMotor implements Motor {
      */
     @Override
     public void emergencyStop() {
-        servoRight.update(STANDSTILL_SPEED);
-        servoLeft.update(STANDSTILL_SPEED);
+        this.servoRight.update(this.STANDSTILL_SPEED);
+        this.servoLeft.update(this.STANDSTILL_SPEED);
 
         // Resetting the internal speed within the software to match the emergency stop.
-        wantedSpeedLeft = percentToValue(0);
-        wantedSpeedRight = percentToValue(0);
+        this.wantedSpeedLeft = percentToValue(0);
+        this.wantedSpeedRight = percentToValue(0);
     }
 
     /**
@@ -207,7 +207,7 @@ public class ServoMotor implements Motor {
      */
     @Override
     public int getSpeedLeft() {
-        return valueToPercent(servoLeft.getPulseWidth());
+        return valueToPercent(this.servoLeft.getPulseWidth());
     }
 
     /**
@@ -217,7 +217,7 @@ public class ServoMotor implements Motor {
      */
     @Override
     public int getSpeedRight() {
-        return valueToPercent(servoRight.getPulseWidth());
+        return valueToPercent(this.servoRight.getPulseWidth());
     }
 
     /**
@@ -231,38 +231,38 @@ public class ServoMotor implements Motor {
     public void update() {
         // Update both motors
         // if both timers are enabled then they should both be on synchronous timeout, so if one has a timeout then both motors can be updated.
-        if (timerLeft.isOn() && timerRight.isOn() && timerRight.timeout()) {
-            timerLeft.mark();
-            timerRight.mark();
-            if (this.servoRight.getPulseWidth() == wantedSpeedRight) {
-                timerRight.setOn(false);
-            } else if (this.servoLeft.getPulseWidth() == wantedSpeedLeft) {
-                timerLeft.setOn(false);
+        if (this.timerLeft.isOn() && this.timerRight.isOn() && this.timerRight.timeout()) {
+            this.timerLeft.mark();
+            this.timerRight.mark();
+            if (this.servoRight.getPulseWidth() == this.wantedSpeedRight) {
+                this.timerRight.setOn(false);
+            } else if (this.servoLeft.getPulseWidth() == this.wantedSpeedLeft) {
+                this.timerLeft.setOn(false);
             } else {
                 List<Servo> servos = new ArrayList<>();
-                servos.add(servoLeft);
-                servos.add(servoRight);
-                goToSpeedStep(servos, STEP_SIZE_RIGHT, wantedSpeedRight);
+                servos.add(this.servoLeft);
+                servos.add(this.servoRight);
+                goToSpeedStep(servos, this.STEP_SIZE_RIGHT, this.wantedSpeedRight);
             }
 
             // Update just the right motor if the timer is enabled and timed out.
-        } else if (timerRight.isOn() && timerRight.timeout()) {
-            if (this.servoRight.getPulseWidth() != wantedSpeedRight) {
+        } else if (this.timerRight.isOn() && this.timerRight.timeout()) {
+            if (this.servoRight.getPulseWidth() != this.wantedSpeedRight) {
                 List<Servo> servos = new ArrayList<>();
-                servos.add(servoRight);
-                goToSpeedStep(servos, STEP_SIZE_RIGHT, wantedSpeedRight);
+                servos.add(this.servoRight);
+                goToSpeedStep(servos, this.STEP_SIZE_RIGHT, this.wantedSpeedRight);
             } else {
-                timerRight.setOn(false);
+                this.timerRight.setOn(false);
             }
 
             // Update just the left motor if the timer is enabled and timed out.
-        } else if (timerLeft.isOn() && timerLeft.timeout()) {
-            if (this.servoLeft.getPulseWidth() != wantedSpeedLeft) {
+        } else if (this.timerLeft.isOn() && this.timerLeft.timeout()) {
+            if (this.servoLeft.getPulseWidth() != this.wantedSpeedLeft) {
                 List<Servo> servos = new ArrayList<>();
-                servos.add(servoLeft);
-                goToSpeedStep(servos, STEP_SIZE_LEFT, wantedSpeedLeft);
+                servos.add(this.servoLeft);
+                goToSpeedStep(servos, this.STEP_SIZE_LEFT, this.wantedSpeedLeft);
             } else {
-                timerLeft.setOn(false);
+                this.timerLeft.setOn(false);
             }
         }
     }

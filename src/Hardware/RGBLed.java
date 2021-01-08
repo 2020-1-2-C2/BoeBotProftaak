@@ -25,9 +25,9 @@ public class RGBLed implements Led {
         this.pinGreen = pinGreen;
         this.pinBlue = pinBlue;
         this.color = color;
-        pwmRed = new PWM(this.pinRed, color.getRed());
-        pwmGreen = new PWM(this.pinGreen, color.getGreen());
-        pwmBlue = new PWM(this.pinBlue, color.getBlue());
+        this.pwmRed = new PWM(this.pinRed, color.getRed());
+        this.pwmGreen = new PWM(this.pinGreen, color.getGreen());
+        this.pwmBlue = new PWM(this.pinBlue, color.getBlue());
         this.blinkingTimer = new Timer(1000);
     }
 
@@ -38,9 +38,9 @@ public class RGBLed implements Led {
     //TODO convert to PWM
     public void setColor(Color color) {
         this.color = color;
-        pwmRed.update(color.getRed());
-        pwmGreen.update(color.getGreen());
-        pwmBlue.update(color.getBlue());
+        this.pwmRed.update(color.getRed());
+        this.pwmGreen.update(color.getGreen());
+        this.pwmBlue.update(color.getBlue());
     }
 
     @Override
@@ -63,9 +63,9 @@ public class RGBLed implements Led {
     @Override
     public void fade(int fade) {
         this.color = new Color(fade, fade, fade);
-        pwmRed.update(fade);
-        pwmGreen.update(fade);
-        pwmBlue.update(fade);
+        this.pwmRed.update(fade);
+        this.pwmGreen.update(fade);
+        this.pwmBlue.update(fade);
     }
 
     @Override
