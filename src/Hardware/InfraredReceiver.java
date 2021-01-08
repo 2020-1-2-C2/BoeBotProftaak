@@ -5,6 +5,9 @@ import TI.PinMode;
 import Utils.InfraredCallback;
 import Utils.Updatable;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 //TODO: Fix documentation
 
 /**
@@ -16,6 +19,7 @@ public class InfraredReceiver implements Updatable {
 
     private int pinId;
     private InfraredCallback infraredCallback;
+    private ArrayList<Integer> possibleButtons;
 
     // Binary representations of remote buttons.
     public static final int FORWARD  = 0b000010010000;
@@ -45,6 +49,9 @@ public class InfraredReceiver implements Updatable {
         this.pinId = pinId;
         BoeBot.setMode(this.pinId, PinMode.Input);
         this.infraredCallback = infraredCallback;
+        this.possibleButtons = new ArrayList<>();
+        Collections.addAll(this.possibleButtons, FORWARD, BACKWARD, RIGHT, LEFT, ONE, TWO, THREE, FOUR, FIVE, SIX,
+                SEVEN, EIGHT, NINE, ZERO, POWER, TRIANGLE, TVVCR);
     }
 
     /**
@@ -86,6 +93,10 @@ public class InfraredReceiver implements Updatable {
         }
         System.out.println(Integer.toBinaryString(bitSignalBinary));
         return bitSignalBinary;
+    }
+
+    public ArrayList<Integer> getPossibleButtons() {
+        return possibleButtons;
     }
 
     /**

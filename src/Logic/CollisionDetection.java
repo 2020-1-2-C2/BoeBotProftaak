@@ -1,5 +1,6 @@
 package Logic;
 
+import Hardware.UltraSonicReceiver;
 import Utils.CollisionDetectionCallback;
 import Utils.UltraSonicCallback;
 import Utils.Updatable;
@@ -28,6 +29,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
      */
     public CollisionDetection(CollisionDetectionCallback collisionDetectionCallback) {
         this.collisionDetectionCallback = collisionDetectionCallback;
+        UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(Configuration.ultraSonicReceiverTriggerPinId, Configuration.ultraSonicReceiverEchoPinId, this);
     }
 
     /**

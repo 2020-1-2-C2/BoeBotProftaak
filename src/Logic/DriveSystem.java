@@ -1,6 +1,8 @@
 package Logic;
 
+import Hardware.DirectionalServo;
 import Hardware.LineFollower;
+import Hardware.ServoMotor;
 import Utils.LineFollowCallback;
 import Utils.Motor;
 import Utils.TimerWithState;
@@ -37,8 +39,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private TimerWithState routeTimer = new TimerWithState(2000, false);
     private TimerWithState turnAtEndTimer = new TimerWithState(500, false);
 
-    public DriveSystem(Motor motors) {
-        this.motor = motors;
+    public DriveSystem() {
+        //TODO: Don't hardcode orientation like this.
+        this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, 1), new DirectionalServo(Configuration.servoMotor2PinId, -1));
     }
 
     /**

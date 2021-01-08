@@ -97,8 +97,9 @@ public class BluetoothReceiver implements Updatable {
                 default:
                     return Commands.DEFAULT;
             }
+        } else {
+            return Commands.DEFAULT;
         }
-        return Commands.DEFAULT;
     }
 
     /**
