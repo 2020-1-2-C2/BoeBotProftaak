@@ -42,13 +42,13 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
             distance = 0;
         }
 
-        if (counter < distances.length) {
-            distances[counter] = distance;
-            counter++;
+        if (this.counter < this.distances.length) {
+            this.distances[this.counter] = distance;
+            this.counter++;
         } else {
-            Arrays.sort(distances);
-            collisionDetectionCallback.onCollisionDetection(distances[distances.length / 2]);
-            counter = 0;
+            Arrays.sort(this.distances);
+            this.collisionDetectionCallback.onCollisionDetection(this.distances[this.distances.length / 2]);
+            this.counter = 0;
         }
     }
 
