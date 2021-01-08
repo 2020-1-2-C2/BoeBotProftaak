@@ -57,7 +57,7 @@ public class NoteLengthGenerator {
      * @return halfnote
      */
     public double getHalfNote() {
-        return halfNote;
+        return this.halfNote;
     }
 
     /**
@@ -65,7 +65,7 @@ public class NoteLengthGenerator {
      * @return quarterNote
      */
     public double getQuarterNote() {
-        return quarterNote;
+        return this.quarterNote;
     }
 
     /**
@@ -73,7 +73,7 @@ public class NoteLengthGenerator {
      * @return eightNote
      */
     public double getEightNote() {
-        return eightNote;
+        return this.eightNote;
     }
 
     /**
@@ -81,7 +81,7 @@ public class NoteLengthGenerator {
      * @return sixteenthNote
      */
     public double getSixteenthNote() {
-        return sixteenthNote;
+        return this.sixteenthNote;
     }
 
     /**
@@ -89,7 +89,7 @@ public class NoteLengthGenerator {
      * @return dottedQuarterNote
      */
     public double getDottedQuarterNote() {
-        return dottedQuarterNote;
+        return this.dottedQuarterNote;
     }
 
     /**
@@ -97,7 +97,7 @@ public class NoteLengthGenerator {
      * @return dottedEightNote
      */
     public double getDottedEightNote() {
-        return dottedEightNote;
+        return this.dottedEightNote;
     }
 
     /**
@@ -105,7 +105,7 @@ public class NoteLengthGenerator {
      * @return dottedSixteenthNote
      */
     public double getDottedSixteenthNote() {
-        return dottedSixteenthNote;
+        return this.dottedSixteenthNote;
     }
 
     /**
@@ -113,7 +113,7 @@ public class NoteLengthGenerator {
      * @return tripletQuarterNote
      */
     public double getTripletQuarterNote() {
-        return tripletQuarterNote;
+        return this.tripletQuarterNote;
     }
 
     /**
@@ -121,7 +121,7 @@ public class NoteLengthGenerator {
      * @return tripletEightNote
      */
     public double getTripletEightNote() {
-        return tripletEightNote;
+        return this.tripletEightNote;
     }
 
     /**
@@ -129,6 +129,6 @@ public class NoteLengthGenerator {
      * @return tripletSixteenthNote
      */
     public double getTripletSixteenthNote() {
-        return tripletSixteenthNote;
+        return this.tripletSixteenthNote;
     }
 }
