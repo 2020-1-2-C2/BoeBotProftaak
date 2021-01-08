@@ -26,15 +26,15 @@ public class Jingle {
         audioPlaySystem.setArtist("Gotye");
         audioPlaySystem.setTitle("Somebody that I used to know");
 
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.getNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.getNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.getNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), notePitchGenerator.getNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), notePitchGenerator.getNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), notePitchGenerator.getNote("A#", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), notePitchGenerator.getNote("C", 6)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), notePitchGenerator.getNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getHalfNote(), notePitchGenerator.getNote("G", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("F", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("F", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("G", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("G", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A#", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("C", 6)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getHalfNote(), this.notePitchGenerator.getNote("G", 5)));
         return audioPlaySystem;
     }
 
@@ -50,10 +50,10 @@ public class Jingle {
         audioPlaySystem.setTitle("Brother John");
 
         for (int i = 0; i < 2; i++ ){ //First part of the melody repeats itself
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("G", 4)));
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("A", 4)));
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("B", 4)));
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), notePitchGenerator.getNote("G", 4)));
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("G", 4)));
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("A", 4)));
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("B", 4)));
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("G", 4)));
         }
         return audioPlaySystem;
     }
