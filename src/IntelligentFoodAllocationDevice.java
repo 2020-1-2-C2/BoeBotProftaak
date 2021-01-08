@@ -110,18 +110,18 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
 
         //Adds all the NeoPixelLeds to an arraylist.
         this.neoPixelLeds = new ArrayList<>();
-        neoPixelLeds.add(neoPixelLed0);
-        neoPixelLeds.add(neoPixelLed1);
-        neoPixelLeds.add(neoPixelLed2);
-        neoPixelLeds.add(neoPixelLed3);
-        neoPixelLeds.add(neoPixelLed4);
-        neoPixelLeds.add(neoPixelLed5);
+        this.neoPixelLeds.add(neoPixelLed0);
+        this.neoPixelLeds.add(neoPixelLed1);
+        this.neoPixelLeds.add(neoPixelLed2);
+        this.neoPixelLeds.add(neoPixelLed3);
+        this.neoPixelLeds.add(neoPixelLed4);
+        this.neoPixelLeds.add(neoPixelLed5);
 
         //Adds all the updatables to an arraylist.
         //TODO: Add the neoPixelLeds arraylist instead of all the neoPixelLeds individually.
         Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
                 this.driveSystem, this.buzzer, servoMotor, this.shapes, this.bluetoothReceiver, lineFollower,
-                neoPixelLed0, neoPixelLed1, neoPixelLed2, neoPixelLed3, neoPixelLed4, neoPixelLed5
+                this.neoPixelLed0, this.neoPixelLed1, this.neoPixelLed2, this.neoPixelLed3, this.neoPixelLed4, this.neoPixelLed5
         );
     }
 
@@ -130,8 +130,8 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
      * {@link #updatables}
      */
     public void run() {
-        while (running) {
-            for (Updatable u : updatables) {
+        while (this.running) {
+            for (Updatable u : this.updatables) {
                 u.update();
             }
             BoeBot.wait(1);
@@ -149,54 +149,54 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
         setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
         switch (button) {
             case InfraredReceiver.POWER:
-                driveSystem.stop();
+                this.driveSystem.stop();
                 break;
             case InfraredReceiver.FORWARD:
-                driveSystem.setDirection(DriveSystem.FORWARD);
+                this.driveSystem.setDirection(DriveSystem.FORWARD);
                 break;
             case InfraredReceiver.BACKWARD:
-                driveSystem.setDirection(DriveSystem.BACKWARD);
+                this.driveSystem.setDirection(DriveSystem.BACKWARD);
                 break;
             case InfraredReceiver.RIGHT:
-                driveSystem.turnRight();
+                this.driveSystem.turnRight();
                 break;
             case InfraredReceiver.LEFT:
-                driveSystem.turnLeft();
+                this.driveSystem.turnLeft();
                 break;
             case InfraredReceiver.ONE:
-                driveSystem.setSpeed(10);
+                this.driveSystem.setSpeed(10);
                 setNotification(new DisconnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.TWO:
-                driveSystem.setSpeed(20);
+                this.driveSystem.setSpeed(20);
                 setNotification(new ConnectedNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.THREE:
-                driveSystem.setSpeed(30);
+                this.driveSystem.setSpeed(30);
                 setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
                 break;
             case InfraredReceiver.FOUR:
-                driveSystem.setSpeed(40);
+                this.driveSystem.setSpeed(40);
                 break;
             case InfraredReceiver.FIVE:
-                driveSystem.setSpeed(50);
+                this.driveSystem.setSpeed(50);
                 break;
             case InfraredReceiver.SIX:
-                driveSystem.setSpeed(60);
+                this.driveSystem.setSpeed(60);
                 break;
             case InfraredReceiver.SEVEN:
-                driveSystem.setSpeed(70);
+                this.driveSystem.setSpeed(70);
                 break;
             case InfraredReceiver.EIGHT:
-                driveSystem.setSpeed(80);
+                this.driveSystem.setSpeed(80);
                 break;
             case InfraredReceiver.NINE:
-                driveSystem.setSpeed(90);
+                this.driveSystem.setSpeed(90);
                 System.out.println("9");
-                driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
+                this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
                 break;
             case InfraredReceiver.ZERO:
-                driveSystem.setSpeed(100);
+                this.driveSystem.setSpeed(100);
                 break;
             case InfraredReceiver.TRIANGLE:
                 this.shapes.beginShape(Shapes.Shape.TRIANGLE);
@@ -210,8 +210,8 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
                 break;
         }
         if (recognized) {
-            driveSystem.followLine(false);
-            driveSystem.stopFollowingRoute();
+            this.driveSystem.followLine(false);
+            this.driveSystem.stopFollowingRoute();
         }
     }
 
@@ -227,46 +227,46 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
         if (!command.equals(BluetoothReceiver.Commands.DEFAULT)) {
             switch (command) {
                 case FORWARD:
-                    driveSystem.setDirection(1);
+                    this.driveSystem.setDirection(1);
                     break;
                 case REVERSE:
-                    driveSystem.setDirection(-1);
+                    this.driveSystem.setDirection(-1);
                     break;
                 case STOP:
-                    driveSystem.stop();
+                    this.driveSystem.stop();
                     break;
                 case LEFT:
-                    driveSystem.turnLeft();
+                    this.driveSystem.turnLeft();
                     break;
                 case RIGHT:
-                    driveSystem.turnRight();
+                    this.driveSystem.turnRight();
                     break;
                 case ONE:
-                    driveSystem.setSpeed(10);
+                    this.driveSystem.setSpeed(10);
                     break;
                 case TWO:
-                    driveSystem.setSpeed(20);
+                    this.driveSystem.setSpeed(20);
                     break;
                 case THREE:
-                    driveSystem.setSpeed(30);
+                    this.driveSystem.setSpeed(30);
                     break;
                 case FOUR:
-                    driveSystem.setSpeed(40);
+                    this.driveSystem.setSpeed(40);
                     break;
                 case FIVE:
-                    driveSystem.setSpeed(50);
+                    this.driveSystem.setSpeed(50);
                     break;
                 case SIX:
-                    driveSystem.setSpeed(60);
+                    this.driveSystem.setSpeed(60);
                     break;
                 case SEVEN:
-                    driveSystem.setSpeed(70);
+                    this.driveSystem.setSpeed(70);
                     break;
                 case EIGHT:
-                    driveSystem.setSpeed(80);
+                    this.driveSystem.setSpeed(80);
                     break;
                 case NINE:
-                    driveSystem.setSpeed(90);
+                    this.driveSystem.setSpeed(90);
                     break;
                 case TEN:
                     driveSystem.setSpeed(100);
@@ -302,40 +302,40 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
     public void onCollisionDetection(int distance) {
         if (distance < 20) {
             // Prevent calling emergency stop if the speed is already 0, otherwise turning of the BoeBot is also prevented.
-            if (driveSystem.getCurrentSpeed() != 0 && driveSystem.getCurrentMaxSpeed() != 0) {
-                driveSystem.followLine(false);
-                driveSystem.stopFollowingRoute();
-                driveSystem.setCurrentMaxSpeed(0);
-                driveSystem.emergencyStop();
+            if (this.driveSystem.getCurrentSpeed() != 0 && this.driveSystem.getCurrentMaxSpeed() != 0) {
+                this.driveSystem.followLine(false);
+                this.driveSystem.stopFollowingRoute();
+                this.driveSystem.setCurrentMaxSpeed(0);
+                this.driveSystem.emergencyStop();
                 //TODO: Consider putting this in DriveSystem.java?
                 setNotification(new EmergencyStopNotification(this.buzzers, this.neoPixelLeds));
                 System.out.println("Emergency stop");
             }
         } else if (distance < 30) {
-            driveSystem.setCurrentMaxSpeed(10);
+            this.driveSystem.setCurrentMaxSpeed(10);
         } else if (distance < 40) {
-            driveSystem.setCurrentMaxSpeed(20);
+            this.driveSystem.setCurrentMaxSpeed(20);
         } else if (distance < 50) {
-            driveSystem.setCurrentMaxSpeed(30);
+            this.driveSystem.setCurrentMaxSpeed(30);
         } else if (distance < 60) {
-            driveSystem.setCurrentMaxSpeed(40);
+            this.driveSystem.setCurrentMaxSpeed(40);
         } else if (distance < 70) {
-            driveSystem.setCurrentMaxSpeed(50);
+            this.driveSystem.setCurrentMaxSpeed(50);
         } else if (distance < 80) {
-            driveSystem.setCurrentMaxSpeed(60);
+            this.driveSystem.setCurrentMaxSpeed(60);
         } else if (distance < 90) {
-            driveSystem.setCurrentMaxSpeed(70);
+            this.driveSystem.setCurrentMaxSpeed(70);
         } else if (distance < 100) {
-            driveSystem.setCurrentMaxSpeed(80);
+            this.driveSystem.setCurrentMaxSpeed(80);
         } else if (distance < 110) {
-            driveSystem.setCurrentMaxSpeed(90);
+            this.driveSystem.setCurrentMaxSpeed(90);
         } else {
-            driveSystem.setCurrentMaxSpeed(100);
+            this.driveSystem.setCurrentMaxSpeed(100);
         }
 
         // If the current speed is greater than the newly set allowable maximum then decrease it to the max allowable speed.
-        if (driveSystem.getCurrentSpeed() > driveSystem.getCurrentMaxSpeed()) {
-            driveSystem.setSpeed(driveSystem.getCurrentMaxSpeed());
+        if (this.driveSystem.getCurrentSpeed() > this.driveSystem.getCurrentMaxSpeed()) {
+            this.driveSystem.setSpeed(this.driveSystem.getCurrentMaxSpeed());
         }
     }
 

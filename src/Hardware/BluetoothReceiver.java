@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class BluetoothReceiver implements Updatable {
     private SerialConnection serialConnection;
     private BluetoothCallback bluetoothCallback;
-    private ArrayList<Integer> routeList = new ArrayList<>();
 
     /**
      * Enums for the bluetooth communication.
@@ -100,14 +99,6 @@ public class BluetoothReceiver implements Updatable {
             }
         }
         return Commands.DEFAULT;
-    }
-
-    /**
-     * Allows for external use of the connection. MIGHT GET REMOVED IF PROVEN UNNECESSARY!
-     * @return Serialconnection object
-     */
-    public SerialConnection getSerialConnection() {
-        return serialConnection;
     }
 
     /**

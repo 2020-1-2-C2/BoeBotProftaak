@@ -28,7 +28,7 @@ public class DirectionalServo extends TI.Servo {
      */
     @Override
     public void update(int speed) {
-        if (orientation == 1) {
+        if (this.orientation == 1) {
             speed = ((speed - 1500) * -1) + 1500;
         }
         super.update(speed);
@@ -40,7 +40,7 @@ public class DirectionalServo extends TI.Servo {
      */
     @Override
     public int getPulseWidth() {
-        if (orientation == 1) {
+        if (this.orientation == 1) {
             return ((super.getPulseWidth() - 1500) * -1) + 1500;
         } else {
             return super.getPulseWidth();
