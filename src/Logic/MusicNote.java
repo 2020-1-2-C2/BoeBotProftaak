@@ -48,7 +48,7 @@ public class MusicNote {
      * @return noteLength
      */
     public double getNoteLength() {
-        return noteLength;
+        return this.noteLength;
     }
 
     /**
