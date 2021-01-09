@@ -217,6 +217,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             boolean reading = true;
             String route = "";
             //TODO this is a big blocking call with the loop, is it possible to implement this in a different way using Updatable?
+            //This is a block and call, but should only be used when the bot is stationary.
             while (reading) {
                 int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
                 if (data == 126) {
