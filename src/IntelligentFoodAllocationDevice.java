@@ -229,7 +229,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                         navigationSystem.getRoute();
                         //A length of 4 means that there is a start and end point.
                     } else if (route.length() == 4) {
-                        NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(3), route.charAt(4));
+                        NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(2), route.charAt(3));
                         navigationSystem.getRoute();
                     } else {
                         System.out.println("Invalid route data received.");
