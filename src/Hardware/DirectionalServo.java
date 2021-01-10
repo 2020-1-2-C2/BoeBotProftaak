@@ -3,7 +3,7 @@ package Hardware;
 import Utils.Updatable;
 
 /**
- * Subclass of <code>TI.Servo</code>.
+ * serSubclass of <code>TI.Servo</code>.
  * Can store the orientation of the servo (right or left) so the pulse-width is auto-adjusted to both go forwards or backwards.
  * @see TI.Servo
  */

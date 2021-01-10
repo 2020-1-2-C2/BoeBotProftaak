@@ -6,6 +6,7 @@ import Utils.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 //General software TODO-list:
 //TODO: Put annotations in the documentation in the right order.
@@ -47,7 +48,7 @@ import java.util.Collections;
  * @author Projectgroep C2 - Berend de Groot, Lars Hoendervangers, Capser Lous, Martijn de Kam, Meindert Kempe, Tom Martens
  * @version 1.0
  */
-public class IntelligentFoodAllocationDevice implements InfraredCallback, CollisionDetectionCallback, BluetoothCallback {
+public class IntelligentFoodAllocationDevice implements CollisionDetectionCallback, BlueToothControllerCallback, InfraredControllerCallback {
 
     //TODO: Check whether you can use "Whom" when talking about code.
     /**
@@ -56,22 +57,16 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
      * @see #run()
      * @see Updatable#update()
      */
+    private boolean running = true;
+
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
-    private boolean running = true;
     private Shapes shapes;
+    private NotificationSystemController notificationSystemController;
+    private BluetoothController bluetoothController;
 
-    private Buzzer buzzer = new Buzzer(3);
-    private ArrayList<Buzzer> buzzers;
-
-    private NeoPixelLed neoPixelLed0 = new NeoPixelLed(0);
-    private NeoPixelLed neoPixelLed1 = new NeoPixelLed(1);
-    private NeoPixelLed neoPixelLed2 = new NeoPixelLed(2);
-    private NeoPixelLed neoPixelLed3 = new NeoPixelLed(3);
-    private NeoPixelLed neoPixelLed4 = new NeoPixelLed(4);
-    private NeoPixelLed neoPixelLed5 = new NeoPixelLed(5);
-    private ArrayList<NeoPixelLed> neoPixelLeds;
-    private BluetoothReceiver bluetoothReceiver = new BluetoothReceiver(this);
+    private HashMap<Integer, Executable> onInfraredCommandMap;
+    private HashMap<BluetoothReceiver.Commands, Executable> onBlueToothCommandMap;
 
 
     /**
@@ -94,35 +89,154 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
      */
     public void initialise() {
         // Creating all the different objects which will be used.
-        InfraredReceiver infraredReceiver = new InfraredReceiver(0, this);
-
-        CollisionDetection collisionDetection = new CollisionDetection(this);
-        UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(1, 2, collisionDetection);
-
-        //TODO: Don't hardcode orientation like this.
-        Motor servoMotor = new ServoMotor(new DirectionalServo(12, 1), new DirectionalServo(13, -1));
-        this.driveSystem = new DriveSystem(servoMotor);
+        this.driveSystem = new DriveSystem();
         this.shapes = new Shapes(this.driveSystem);
-        LineFollower lineFollower = new LineFollower(2, 1, this.driveSystem);
+        this.notificationSystemController = new NotificationSystemController();
+        this.bluetoothController = new BluetoothController(this);
 
-        this.buzzers = new ArrayList<>();
-        this.buzzers.add(this.buzzer);
-
-        //Adds all the NeoPixelLeds to an arraylist.
-        this.neoPixelLeds = new ArrayList<>();
-        this.neoPixelLeds.add(this.neoPixelLed0);
-        this.neoPixelLeds.add(this.neoPixelLed1);
-        this.neoPixelLeds.add(this.neoPixelLed2);
-        this.neoPixelLeds.add(this.neoPixelLed3);
-        this.neoPixelLeds.add(this.neoPixelLed4);
-        this.neoPixelLeds.add(this.neoPixelLed5);
+        InfraredController infraredController = new InfraredController(this);
+        CollisionDetection collisionDetection = new CollisionDetection(this);
+        LineFollowerController lineFollowerController = new LineFollowerController(driveSystem);
 
         //Adds all the updatables to an arraylist.
-        //TODO: Add the neoPixelLeds arraylist instead of all the neoPixelLeds individually.
-        Collections.addAll(this.updatables, infraredReceiver, ultraSonicReceiver, collisionDetection,
-                this.driveSystem, this.buzzer, servoMotor, this.shapes, this.bluetoothReceiver, lineFollower,
-                this.neoPixelLed0, this.neoPixelLed1, this.neoPixelLed2, this.neoPixelLed3, this.neoPixelLed4, this.neoPixelLed5
+        Collections.addAll(this.updatables, collisionDetection, this.driveSystem,
+                this.shapes, infraredController, this.notificationSystemController,
+                lineFollowerController, bluetoothController
         );
+
+        // initialise the hashmaps which holds the commands to use 
+        this.onInfraredCommandMap = new HashMap<>();
+        this.onBlueToothCommandMap = new HashMap<>();
+        // Fill the HashMaps with commands
+        // infrared button commands:
+        this.onInfraredCommandMap.put(InfraredReceiver.POWER, () -> {
+            this.driveSystem.stop();
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.FORWARD, () -> {
+            this.driveSystem.setDirection(DriveSystem.FORWARD);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.BACKWARD, () -> {
+            this.driveSystem.setDirection(DriveSystem.BACKWARD);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.RIGHT, () -> {
+            this.driveSystem.turnRight();
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.LEFT, () -> {
+            this.driveSystem.turnLeft();
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.ONE, () -> {
+            this.driveSystem.setSpeed(10);
+            setNotification(new DisconnectedNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.TWO, () -> {
+            this.driveSystem.setSpeed(20);
+            setNotification(new ConnectedNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.THREE, () -> {
+            this.driveSystem.setSpeed(30);
+            setNotification(new EmptyNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.FOUR, () -> {
+            this.driveSystem.setSpeed(40);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.FIVE, () -> {
+            this.driveSystem.setSpeed(50);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.SIX, () -> {
+            this.driveSystem.setSpeed(60);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.SEVEN, () -> {
+            this.driveSystem.setSpeed(70);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.EIGHT, () -> {
+            this.driveSystem.setSpeed(80);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.NINE, () -> {
+            this.driveSystem.setSpeed(90);
+            //TODO dit ziet er uit als testcode, dit moet dus weg worden gehaald
+            System.out.println("9");
+            this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> {
+            this.driveSystem.setSpeed(100);
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> {
+            this.driveSystem.stop();
+        });
+        this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> {
+            this.driveSystem.stop();
+        });
+
+        // bluetoothreceiver commands
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FORWARD, () -> {
+           this.driveSystem.setDirection(1);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.REVERSE, () -> {
+            this.driveSystem.setDirection(-1);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.STOP, () -> {
+            this.driveSystem.stop();
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.LEFT, () -> {
+            this.driveSystem.turnLeft();
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.RIGHT, () -> {
+            this.driveSystem.turnRight();
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.ONE, () -> {
+            this.driveSystem.setSpeed(10);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TWO, () -> {
+            this.driveSystem.setSpeed(20);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.THREE, () -> {
+            this.driveSystem.setSpeed(30);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FOUR, () -> {
+            this.driveSystem.setSpeed(40);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FIVE, () -> {
+            this.driveSystem.setSpeed(50);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.SIX, () -> {
+            this.driveSystem.setSpeed(60);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.SEVEN, () -> {
+            this.driveSystem.setSpeed(70);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.EIGHT, () -> {
+            this.driveSystem.setSpeed(80);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.NINE, () -> {
+            this.driveSystem.setSpeed(90);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TEN, () -> {
+            this.driveSystem.setSpeed(100);
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.START_ROUTE, () -> {
+            boolean reading = true;
+            String route = "";
+            //TODO this is a big blocking call with the loop, is it possible to implement this in a different way using Updatable?
+            //This is a block and call, but should only be used when the bot is stationary.
+            while (reading) {
+                int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
+                if (data == 126) {
+                    reading = false;
+                    NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
+                    navigationSystem.getRoute();
+                    System.out.println(route);
+                    route = "";
+                } else {
+                    route += ((char) data);
+                }
+            }
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.STOP_ROUTE, () -> {
+
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {
+            // this shouldn't do anything
+        });
     }
 
     /**
@@ -135,161 +249,6 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
                 u.update();
             }
             BoeBot.wait(1);
-        }
-    }
-
-    /**
-     * Receives the pressed button on the infrared remote and tells the bot to do the action combined with the button.
-     * @param button received binary code for the button pressed on the infrared remote.
-     */
-    @Override
-    public void onInfraredButton(int button) {
-        boolean recognized = true;
-        setNotification(new RemoteNotification(this.buzzers, this.neoPixelLeds));
-        setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
-        switch (button) {
-            case InfraredReceiver.POWER:
-                this.driveSystem.stop();
-                break;
-            case InfraredReceiver.FORWARD:
-                this.driveSystem.setDirection(DriveSystem.FORWARD);
-                break;
-            case InfraredReceiver.BACKWARD:
-                this.driveSystem.setDirection(DriveSystem.BACKWARD);
-                break;
-            case InfraredReceiver.RIGHT:
-                this.driveSystem.turnRight();
-                break;
-            case InfraredReceiver.LEFT:
-                this.driveSystem.turnLeft();
-                break;
-            case InfraredReceiver.ONE:
-                this.driveSystem.setSpeed(10);
-                setNotification(new DisconnectedNotification(this.buzzers, this.neoPixelLeds));
-                break;
-            case InfraredReceiver.TWO:
-                this.driveSystem.setSpeed(20);
-                setNotification(new ConnectedNotification(this.buzzers, this.neoPixelLeds));
-                break;
-            case InfraredReceiver.THREE:
-                this.driveSystem.setSpeed(30);
-                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
-                break;
-            case InfraredReceiver.FOUR:
-                this.driveSystem.setSpeed(40);
-                break;
-            case InfraredReceiver.FIVE:
-                this.driveSystem.setSpeed(50);
-                break;
-            case InfraredReceiver.SIX:
-                this.driveSystem.setSpeed(60);
-                break;
-            case InfraredReceiver.SEVEN:
-                this.driveSystem.setSpeed(70);
-                break;
-            case InfraredReceiver.EIGHT:
-                this.driveSystem.setSpeed(80);
-                break;
-            case InfraredReceiver.NINE:
-                this.driveSystem.setSpeed(90);
-                System.out.println("9");
-                this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
-                break;
-            case InfraredReceiver.ZERO:
-                this.driveSystem.setSpeed(100);
-                break;
-            case InfraredReceiver.TRIANGLE:
-                this.shapes.beginShape(Shapes.Shape.TRIANGLE);
-                break;
-            case InfraredReceiver.TVVCR:
-                this.shapes.beginShape(Shapes.Shape.CIRCLE);
-                break;
-            default:
-                recognized = false;
-                setNotification(new EmptyNotification(this.buzzers, this.neoPixelLeds));
-                break;
-        }
-        if (recognized) {
-            this.driveSystem.followLine(false);
-            this.driveSystem.stopFollowingRoute();
-        }
-    }
-
-    /**
-     * This method will listen for commands that are sent by bluetooth. If the START_ROUTE command is called it will start a while loop for how ever long it will take to
-     * read the data. This will usually only take a couple ms. Then it will put the number in a string. That string will then be split into separate integers that are
-     * used to create a new NavigationSystem object. (First int = x, second int = y)
-     * TODO: Possible string length check, depends on if we want to use more coords.
-     * @param command
-     */
-    @Override
-    public void onBluetoothReceive(BluetoothReceiver.Commands command) {
-        if (!command.equals(BluetoothReceiver.Commands.DEFAULT)) {
-            switch (command) {
-                case FORWARD:
-                    this.driveSystem.setDirection(1);
-                    break;
-                case REVERSE:
-                    this.driveSystem.setDirection(-1);
-                    break;
-                case STOP:
-                    this.driveSystem.stop();
-                    break;
-                case LEFT:
-                    this.driveSystem.turnLeft();
-                    break;
-                case RIGHT:
-                    this.driveSystem.turnRight();
-                    break;
-                case ONE:
-                    this.driveSystem.setSpeed(10);
-                    break;
-                case TWO:
-                    this.driveSystem.setSpeed(20);
-                    break;
-                case THREE:
-                    this.driveSystem.setSpeed(30);
-                    break;
-                case FOUR:
-                    this.driveSystem.setSpeed(40);
-                    break;
-                case FIVE:
-                    this.driveSystem.setSpeed(50);
-                    break;
-                case SIX:
-                    this.driveSystem.setSpeed(60);
-                    break;
-                case SEVEN:
-                    this.driveSystem.setSpeed(70);
-                    break;
-                case EIGHT:
-                    this.driveSystem.setSpeed(80);
-                    break;
-                case NINE:
-                    this.driveSystem.setSpeed(90);
-                    break;
-                case TEN:
-                    this.driveSystem.setSpeed(100);
-                case START_ROUTE:
-                    boolean reading = true;
-                    String route = "";
-                    while (reading) {
-                        int data = this.bluetoothReceiver.listenForCoords();
-                        if (data == 126) {
-                            reading = false;
-                            NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
-                            navigationSystem.getRoute();
-                            System.out.println(route);
-                            route = "";
-                        } else {
-                            route += ((char) data);
-                        }
-                    }
-                    break;
-                case STOP_ROUTE:
-                    break;
-            }
-            System.out.println(command);
         }
     }
 
@@ -308,7 +267,7 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
                 this.driveSystem.setCurrentMaxSpeed(0);
                 this.driveSystem.emergencyStop();
                 //TODO: Consider putting this in DriveSystem.java?
-                setNotification(new EmergencyStopNotification(this.buzzers, this.neoPixelLeds));
+                setNotification(new EmergencyStopNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
                 System.out.println("Emergency stop");
             }
         } else if (distance < 30) {
@@ -347,9 +306,40 @@ public class IntelligentFoodAllocationDevice implements InfraredCallback, Collis
      * @see NeoPixelLed#setShouldBeOn(boolean)
      */
     public void setNotification(AbstractNotification notification) {
-        for (NeoPixelLed neoPixelLed : this.neoPixelLeds) {
+        //TODO why is this inside the main and not somewhere in logic?
+        for (NeoPixelLed neoPixelLed : this.notificationSystemController.getNeoPixelLeds()) {
             neoPixelLed.setShouldBeOn(true);
         }
         notification.notificationSpecificMethod();
+    }
+
+    /**
+     * Receives a valid button press from the infraredController and executes the command associated with it
+     * @param button
+     */
+    @Override
+    public void onInfraredControllerCommand(int button) {
+        setNotification(new RemoteNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+        setNotification(new EmptyNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+
+        this.onInfraredCommandMap.get(button).Execute();
+
+        // if the received command is following a route, then the program should stop following the route and stop following lines
+        if (this.driveSystem.isFollowingRoute()) {
+            this.driveSystem.followLine(false);
+            this.driveSystem.stopFollowingRoute();
+        }
+    }
+
+    /**
+     * This method will listen for commands that are sent by bluetooth. If the START_ROUTE command is called it will start a while loop for how ever long it will take to
+     * read the data. This will usually only take a couple ms. Then it will put the number in a string. That string will then be split into separate integers that are
+     * used to create a new NavigationSystem object. (First int = x, second int = y)
+     * TODO: Possible string length check, depends on if we want to use more coords.
+     * @param command
+     */
+    @Override
+    public void onBlueToothControllerCommand(BluetoothReceiver.Commands command) {
+       this.onBlueToothCommandMap.get(command).Execute();
     }
 }
