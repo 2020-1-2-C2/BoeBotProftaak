@@ -4,6 +4,7 @@ package Utils;
  * Subclass of TI.Timer.
  * Adds a private boolean isOn to keep track of whether the timer is on or not internally.
  * @see TI.Timer
+ * @author Martijn de Kam, Meindert Kempe, Berend de Groot
  */
 public class TimerWithState extends TI.Timer {
 

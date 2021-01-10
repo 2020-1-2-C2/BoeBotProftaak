@@ -2,7 +2,6 @@ package Logic.Notification;
 
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
-import Logic.NoteLengthGenerator;
 import Logic.NotePitchGenerator;
 
 import java.awt.*;

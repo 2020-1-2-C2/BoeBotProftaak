@@ -13,6 +13,12 @@ public class LineFollowerController implements Updatable {
                 driveSystem);
     }
 
+    /**
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * Runs the <ocde>update()</code> method in <a href="{@docRoot}/Hardware/LineFollower.html">LineFollower</a>.
+     * @see Updatable#update()
+     * @see LineFollower#update()
+     */
     @Override
     public void update() {
         this.lineFollower.update();

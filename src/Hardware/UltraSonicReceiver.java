@@ -7,7 +7,6 @@ import Utils.UltraSonicCallback;
 import Utils.Updatable;
 
 /**
- * TODO BE MORE ACCURATE TODO UPDATE VERSION
  * Class for the hardware part ultrasonicsensor, contains methods to receive and interprit the signal from the ultrasonicsensor.
  * @version 1.0
  * @see Updatable
@@ -46,7 +45,6 @@ public class UltraSonicReceiver implements Updatable {
         BoeBot.wait(1);
         BoeBot.digitalWrite(this.pinIdTrigger, false);
 
-        //TODO: British only oi oi tea tea
         // pulse lengte in microseconden
         int pulse = BoeBot.pulseIn(this.pinIdEcho, true, 10000);
 
@@ -58,7 +56,7 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Using the pulse length in microseconds, alculate the distance of an ultrasonicpulse echo in cm.
+     * Using the pulse length in microseconds, calculate the distance of an ultrasonicpulse echo in cm.
      * The pulse length can be a null object, in which case a null object is directly returned
      *
      * @return The distance an ultrasonicpulse has traveled one way, in cm.

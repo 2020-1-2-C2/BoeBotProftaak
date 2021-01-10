@@ -20,17 +20,14 @@ public class LineFollower implements Updatable {
 
     }
 
-    private boolean follow;
     private LineFollowCallback lineFollowCallback;
 
     private int leftLineSensorPin;
     private int rightLineSensorPin;
     private int centralLineSensorPin;
     private LinePosition callBack;
-    private int speedDefault;
 
     private int sensorTweak;    //editid for calibration function please check
-    private boolean turning = false;
 
 
     public LineFollower(int leftLineSensorPin, int rightLineSensorPin, LineFollowCallback lineFollowCallback) {
@@ -41,41 +38,6 @@ public class LineFollower implements Updatable {
 
         this.centralLineSensorPin = -1;
 
-    }
-
-    public LineFollower(int leftLineSensorPin, int rightLineSensorPin, int centralLineSensorPin, LineFollowCallback lineFollowCallback) {
-        this(leftLineSensorPin, rightLineSensorPin, lineFollowCallback);
-        this.centralLineSensorPin = centralLineSensorPin;
-    }
-
-    /*private void straightAhead() {
-        servoLeft.update(STANDSTILL_SPEED - servoSpeedDefault);
-        servoRight.update(STANDSTILL_SPEED + servoSpeedDefault );
-    }
-
-    private void turnFullRight() {
-        servoRight.update(servoRight.getPulseWidth() + turningSpeed);
-        servoLeft.update(servoLeft.getPulseWidth() + turningSpeed + turningTweak);
-    }
-
-    private void turnSlightRight() {
-        servoRight.update(servoRight.getPulseWidth() + (turningSpeed / 3));
-        servoLeft.update(STANDSTILL_SPEED);
-    }
-
-    private void turnFullLeft() {
-        servoLeft.update(servoLeft.getPulseWidth() - turningSpeed);
-        servoRight.update(servoRight.getPulseWidth() - turningSpeed - turningTweak);
-    }
-
-    private void turnSlightLeft() {
-        servoRight.update(servoRight.getPulseWidth() - (turningSpeed / 3));
-        servoLeft.update(STANDSTILL_SPEED);
-    }*/
-
-    public void followLine(boolean follow, int speed) {
-        this.speedDefault = speed;
-        this.follow = follow;
     }
 
     private boolean leftSeesBlack() {
@@ -92,9 +54,6 @@ public class LineFollower implements Updatable {
     }
 
     private void detectLine2Sensors() {
-/*        System.out.println(BoeBot.analogRead(0) + " Left");
-        System.out.println(BoeBot.analogRead(1) + " Right");
-        System.out.println(BoeBot.analogRead(2) + " Center");*/
         if (!this.leftSeesBlack() && !this.rightSeesBlack()) {
             this.callBack = LinePosition.ON_LINE;
 
@@ -135,6 +94,7 @@ public class LineFollower implements Updatable {
         }
     }
 
+    //TODO: Remove if it remains unused on final release.
     //editid for calibration function please check
     public void calibrate() {
         this.sensorTweak = BoeBot.analogRead(this.centralLineSensorPin);
@@ -147,7 +107,7 @@ public class LineFollower implements Updatable {
 
     /**
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
-     * @see Utils.Updatable
+     * @see Updatable#update()
      */
     @Override
     public void update() {

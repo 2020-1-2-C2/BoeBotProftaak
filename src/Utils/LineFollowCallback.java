@@ -7,6 +7,7 @@ import Hardware.LineFollower;
  * This interface contains one method.
  * @see LineFollower
  * @version 1.0
+ * @author Casper Lous, Berend de Groot
  */
 public interface LineFollowCallback {
     /**

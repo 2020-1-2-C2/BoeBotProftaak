@@ -3,6 +3,7 @@ package Utils;
 /**
  * General motor interface so the specific motor on the bot can implement the interface and the bots logic can still call these methods.
  * @see Utils.Updatable
+ * @author Meindert Kempe, Tom Martens, Martijn de Kam, Berend de Groot
  */
 public interface Motor extends Updatable {
 
@@ -43,7 +44,6 @@ public interface Motor extends Updatable {
      */
     int getSpeedLeft();
 
-    //TODO: Remove if this remains unused.
     /**
      * Get the current speed in a percentage of the maximum speed.
      *

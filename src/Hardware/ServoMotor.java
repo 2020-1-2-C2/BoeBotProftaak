@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TODO WRITE DOCUMENTATION PLEASEEEEEE
+ * //TODO: Write documentation.
  * @see Motor
  * @see DirectionalServo
  * @version 1.0
@@ -46,7 +46,6 @@ public class ServoMotor implements Motor {
 
     /**
      * Converts a speed percentage to a signal length which matches that speed percentage to give to the servo motors.
-     *
      * @param percent Percentage speed of the maximum.
      * @return Signal length which can be sent to the servo motors to set the speed.
      */
@@ -57,7 +56,6 @@ public class ServoMotor implements Motor {
 
     /**
      * Converts a signal length from the servo motors to a matching percentage of the maximum speed.
-     *
      * @param value Signal length used with the servo motors.
      * @return Percentage speed of the maximum.
      */
@@ -83,91 +81,81 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Overrides goToSpeedLeft in Motor.java.
+     * Overrides <code>goToSpeedLeft</code> in <a href="{@docRoot}/Hardware/Motor.html">Motor</a>.
      * Set the desired speed (percentage of maximum) for the left motor to go to.
-     *
+     * Runs through this.goToSpeedSide with the parameter "side" set to left.
      * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
      * @param time  Time in milliseconds over which to accelerate.
      * @see Motor#goToSpeedLeft(int, int)
+     * @see #goToSpeedSide(int, int, String)
      */
     @Override
     public void goToSpeedLeft(int speed, int time) {
-        System.out.println("speed %: " + speed);
-
-        if (speed > 100) {
-            System.out.println("Speed was higher than 100!");
-            speed = 100;
-        } else if (speed < -100) {
-            System.out.println("Speed was lower than -100!");
-            speed = -100;
-        }
-
-        this.wantedSpeedLeft = percentToValue(speed);
-        System.out.println("speed value: " + this.wantedSpeedLeft);
-        int diff = this.wantedSpeedLeft - this.servoLeft.getPulseWidth();
-
-        int steps = diff / this.STEP_SIZE_LEFT;
-
-        if (time < steps) {
-            time = steps;
-        }
-
-        if (steps != 0) {
-            this.timerLeft.setInterval(time / steps);
-            this.timerLeft.setOn(true);
-        }
-
+        this.goToSpeedSide(speed, time, "Left");
     }
 
     /**
-     * Overrides goToSpeedRight in Motor.java.
+     * Overrides goToSpeedRight in <a href="{@docRoot}/Hardware/Motor.html">Motor</a>.
      * Sets the desired speed (percentage of maximum) for the right motor to go to.
-     *
+     * Runs through this.goToSpeedSide with the parameter "side" set to right.
      * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
      * @param time  Time in milliseconds over which to accelerate.
      * @see Motor#goToSpeedRight(int, int)
+     * @see #goToSpeedSide(int, int, String)
      */
     @Override
     public void goToSpeedRight(int speed, int time) {
+        this.goToSpeedSide(speed, time, "Right");
+    }
 
-        System.out.println("speed %: " + speed);
+    private void goToSpeedSide(int speed, int time, String side){
         if (speed > 100) {
-            System.out.println("Speed was higher than 100!");
             speed = 100;
         } else if (speed < -100) {
-            System.out.println("Speed was lower than -100!");
             speed = -100;
         }
 
-        this.wantedSpeedRight = percentToValue(speed);
-        System.out.println("speed value: " + this.wantedSpeedRight);
-        int diff = this.wantedSpeedRight - this.servoRight.getPulseWidth();
+        if (side.equals("Right")){
+            this.wantedSpeedRight = percentToValue(speed);
+            int diff = this.wantedSpeedRight - this.servoRight.getPulseWidth();
+            int steps = diff / this.STEP_SIZE_RIGHT;
 
-        int steps = diff / this.STEP_SIZE_RIGHT;
+            if (time < steps) {
+                time = steps;
+            }
 
-        if (time < steps) {
-            time = steps;
+            if (steps != 0) {
+                this.timerRight.setInterval(time / steps);
+                this.timerRight.setOn(true);
+            }
+        } else if (side.equals("Left")) {
+            this.wantedSpeedLeft = percentToValue(speed);
+            int diff = this.wantedSpeedLeft - this.servoLeft.getPulseWidth();
+            int steps = diff / this.STEP_SIZE_LEFT;
+
+            if (time < steps) {
+                time = steps;
+            }
+
+            if (steps != 0) {
+                this.timerLeft.setInterval(time / steps);
+                this.timerLeft.setOn(true);
+            }
         }
-
-        if (steps != 0) {
-            this.timerRight.setInterval(time / steps);
-            this.timerRight.setOn(true);
-        }
-
     }
 
     /**
-     * Update both servos to change the servo motor speed by one stepsize.
+     * Update both servos to change the servo motor speed by one step-size.
      * Can't go higher or lower than the maximum speeds.
      *
      * @param servos      Both servos of the bot.
-     * @param stepSize    Step size to change the servo motor pulsewidth with.
+     * @param stepSize    Step size to change the servo motor pulse-width with.
      * @param wantedSpeed Desired speed to change to.
      */
     private void goToSpeedStep(List<Servo> servos, int stepSize, int wantedSpeed) {
         for (Servo servo : servos) {
             int step;
-            // if the current speed is greater then it needs to be decreased, else it needs to be increased
+            // If the current speed is greater then it needs to be decreased, else it needs to be increased.
             if (servo.getPulseWidth() > wantedSpeed) {
                 step = -stepSize;
             } else {
@@ -185,7 +173,7 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Overrides emergencyStop() in Motor.java.
+     * Overrides <code>emergencyStop()</code> in <a href="{@docRoot}/Hardware/Motor.html">Motor</a>.
      * Stop as soon as possible.
      * Sets the servo motors to stand still and changes the internal speed to match this.
      * @see Motor#emergencyStop()
@@ -201,7 +189,7 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Overrides getSpeedLeft() in Motor.java.
+     * Overrides getSpeedLeft() in <a href="{@docRoot}/Hardware/Motor.html">Motor</a>.
      * @return The pulsewidth of the left servomotor converted to a percentage speed value.
      * @see ServoMotor#getSpeedLeft()
      */
@@ -211,7 +199,7 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Overrides getSpeedRight() in Motor.java.
+     * Overrides getSpeedRight() in <a href="{@docRoot}/Hardware/Motor.html">Motor</a>.
      * @return The pulsewidth of the right servomotor converted to a percentage speed value.
      * @see ServoMotor#getSpeedRight()
      */
@@ -221,7 +209,7 @@ public class ServoMotor implements Motor {
     }
 
     /**
-     * Overrides the update method.
+     * Overrides the <code>update()</code> method.
      * Update the servo motors to go to the desired speed in a small step (2ms pulse width)
      * It will make a step each time the timer for the servo motor times out
      * As soon as the actual speed matches the desired speed the timer is turned off
@@ -229,8 +217,7 @@ public class ServoMotor implements Motor {
      */
     @Override
     public void update() {
-        // Update both motors
-        // if both timers are enabled then they should both be on synchronous timeout, so if one has a timeout then both motors can be updated.
+        // If both timers are enabled then they should both be on synchronous timeout, so if one has a timeout then both motors can be updated.
         if (this.timerLeft.isOn() && this.timerRight.isOn() && this.timerRight.timeout()) {
             this.timerLeft.mark();
             this.timerRight.mark();

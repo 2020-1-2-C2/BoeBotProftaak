@@ -1,15 +1,11 @@
 package Utils;
 
-//TODO: Update documentation on removal of the DefaultLed.java and RGBLed.java classes.
-
 /**
- * Callback used by the NeoPixelLed, DefaultLed and RGBLed class.
+ * Callback used by the NeoPixelLed class.
  * This interface contains the basic functions these hardware components need.
  * @see Hardware.NeoPixelLed
- * @see Hardware.DefaultLed
- * @see Hardware.RGBLed
- * @version 1.0
- * @author Berend de Groot
+ * @version 1.1
+ * @author Meindert Kempe, Lars Hoendervangers, Berend de Groot
  */
 public interface Led extends Updatable {
     /**

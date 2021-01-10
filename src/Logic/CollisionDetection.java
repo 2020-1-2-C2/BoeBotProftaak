@@ -29,6 +29,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
      */
     public CollisionDetection(CollisionDetectionCallback collisionDetectionCallback) {
         this.collisionDetectionCallback = collisionDetectionCallback;
+        //TODO: Should the UltroSonicReceiver be used?! Why is this never used?! Remove it if unnecessary.
         UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(Configuration.ultraSonicReceiverTriggerPinId, Configuration.ultraSonicReceiverEchoPinId, this);
     }
 
@@ -56,7 +57,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
 
     /**
      * Empty <code>update()</code> method.
-     * @see Utils.Updatable
+     * @see Updatable#update()
      */
     @Override
     public void update() {

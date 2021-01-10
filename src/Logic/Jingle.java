@@ -1,7 +1,5 @@
 package Logic;
 
-//TODO: Simplify the oode in this class.
-
 /**
  * Class containing <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> instances for all jingles used by the BoeBot.
  * Jingles use different <code>MusicNote</code> instances and have a different BPM (the tempo).
@@ -23,8 +21,6 @@ public class Jingle {
     public AudioPlaySystem somebodyThatIUsedToKnow(){
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
-        audioPlaySystem.setArtist("Gotye");
-        audioPlaySystem.setTitle("Somebody that I used to know");
 
         audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("F", 5)));
         audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("F", 5)));
@@ -44,10 +40,8 @@ public class Jingle {
      * @return audioPlaySystem
      */
     public AudioPlaySystem brotherJohn(){
-        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(150); //TODO: Check BPM
+        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(150);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
-        audioPlaySystem.setArtist("Unknown");
-        audioPlaySystem.setTitle("Brother John");
 
         for (int i = 0; i < 2; i++ ){ //First part of the melody repeats itself
             audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("G", 4)));

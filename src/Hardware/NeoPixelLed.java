@@ -8,7 +8,7 @@ import Utils.Updatable;
 import java.awt.*;
 
 /**
- * Class used by the NeoPixelLed hardware component. The NeoPixelLeds are used by the notificationssystem to signal the current state the BoeBot is in.
+ * Class used by the NeoPixelLed hardware component. The NeoPixelLeds are used by the notifications-system to signal the current state the BoeBot is in.
  * @see Utils.Updatable
  * @see Utils.Led
  * Class is used by the notificationssystem.
@@ -18,7 +18,6 @@ public class NeoPixelLed implements Led {
     private int id;
     private Timer blinkingTimer;
     private int interval;
-    private boolean timerIsEnabled = false;
     private boolean isOn;
     private Color color;
     private boolean shouldBeOn = false;
@@ -89,10 +88,7 @@ public class NeoPixelLed implements Led {
         System.out.println("NeoPixelLed (" + this.id + ") is blinking at interval " + interval + ".");
         this.interval = interval;
         if (interval > 0) {
-            this.timerIsEnabled = true;
             this.blinkingTimer.setInterval(interval);
-        } else {
-            this.timerIsEnabled = false;
         }
         if (getIsOn()) {
             off();
@@ -111,19 +107,6 @@ public class NeoPixelLed implements Led {
         return this.isOn;
     }
 
-    //TODO: Remove getBlue(), getGreen() & getRed().
-    public int getBlue() {
-        return this.color.getBlue();
-    }
-
-    public int getGreen() {
-        return this.color.getGreen();
-    }
-
-    public int getRed() {
-        return this.color.getRed();
-    }
-
     /**
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
      * @see Updatable#update()
@@ -135,14 +118,13 @@ public class NeoPixelLed implements Led {
                 blink(this.interval);
                 this.blinkingTimer.mark();
             }
-        } else { //TODO: Check whether this is necessary.
-            this.shouldBeOn = false;
+        } else {
             this.off();
         }
     }
 
     /**
-     * Auto-generated setter.
+     * Auto-generated setter for blinkingTimer.
      * Method used to change the interval of the timer to the value of the parameter.
      * @param amountOfTime Int specifying the amount of time the timer should be.
      */
@@ -151,7 +133,7 @@ public class NeoPixelLed implements Led {
     }
 
     /**
-     * Method used by the notificationssystem to check whether the light should be on or off.
+     * Method used by the notifications-system to check whether the light should be on or off.
      * @param shouldBeOn Boolean specifying whether the Led should be on or off.
      */
     public void setShouldBeOn(boolean shouldBeOn) {

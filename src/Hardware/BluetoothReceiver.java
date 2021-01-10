@@ -4,8 +4,6 @@ import TI.SerialConnection;
 import Utils.BluetoothCallback;
 import Utils.Updatable;
 
-import java.util.ArrayList;
-
 /**
  * <code>BluetoothReceiver</code> class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
  * @see Utils.Updatable
@@ -37,7 +35,7 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Will return the int that is received via bluetooth. Only used to get route coords.
-     * @return int
+     * @return int //TODO: Specify what this is.
      */
     public int listenForCoords() {
         if (this.serialConnection.available() > 0) {

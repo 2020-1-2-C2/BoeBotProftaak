@@ -8,10 +8,8 @@ import Utils.Updatable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-//TODO: Fix documentation
-
 /**
- * Class for the hardware part infraredsensor, contains methods to receive and interprit the signal from the infraredsensor.
+ * Class for the hardware part Infrared-sensor. Contains methods to receive and interpret the signal from the Infrared-sensor.
  * @see Utils.Updatable
  * @see Utils.InfraredCallback
  */
@@ -41,7 +39,7 @@ public class InfraredReceiver implements Updatable {
     public static final int TVVCR    = 0b000010100101;
 
     /**
-     * Constructor for the infraredsensor.
+     * Constructor for the infrared-sensor.
      * @param pinId            infraredsensor input signal pin id
      * @param infraredCallback infraredcallback object
      */

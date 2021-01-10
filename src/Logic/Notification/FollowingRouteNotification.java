@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Berend de Groot
  * @version 1.2
  */
-public class FollowingRoute extends AbstractNotification  {
+public class FollowingRouteNotification extends AbstractNotification  {
     /**
      * Constructor for the <code>AbstractNotification</code> class.
      * @param buzzer      Takes in an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> to handle the sound.
@@ -23,7 +23,7 @@ public class FollowingRoute extends AbstractNotification  {
      * @see Buzzer
      * @see NeoPixelLed
      */
-    public FollowingRoute(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
+    public FollowingRouteNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzer, neoPixelLeds);
         this.neoPixelLedColorA = Color.DARK_GRAY;
         this.neoPixelLedColorB = Color.BLUE;

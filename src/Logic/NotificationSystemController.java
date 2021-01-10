@@ -3,7 +3,6 @@ package Logic;
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
 import Utils.Updatable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 

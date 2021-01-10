@@ -5,16 +5,12 @@ package Logic;
  * This class is mainly used by the <a href="{@docRoot}/Logic/Jingle.html">Jingle</a> class, which has a couple of
  * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> objects containing jingles used by the notificationssystem.
  * @author Berend de Groot
- * @version 1.0
+ * @version 1.1
  * @see Jingle#somebodyThatIUsedToKnow()
  * @see AudioPlaySystem
  * @see MusicNote#getNoteLength()
  */
 public class NoteLengthGenerator {
-
-    //TODO: Remove unused notes at release.
-    //TODO: Check access-modifiers.
-
     //Source of information: https://musescore.org/en/node/22609
 
     //All attributes related to the timing are based on the BPM. You can see this in the constructor.
@@ -30,7 +26,7 @@ public class NoteLengthGenerator {
     private double tripletSixteenthNote;
 
     //NOTE: 60 BPM is one beat per second.
-    //NOTE: quarternotes (60.00) are 1/4 of a bar, which is 240.00
+    //NOTE: quarterNotes (60.00) are 1/4 of a bar, which is 240.00
 
     /**
      * Constructor for the NoteLengthGenerator class. It is used as an instance for other classes to generate timing for all notes. <p>
@@ -39,7 +35,7 @@ public class NoteLengthGenerator {
      * @param BPM Beats-Per-Minute (double). This is used to calculate the timing for all notes.
      * @see Jingle
      */
-    public NoteLengthGenerator(double BPM){
+    NoteLengthGenerator(double BPM){
         this.halfNote = 120.00 / BPM;
         this.quarterNote = 60.00 / BPM;
         this.eightNote = 30.00 / BPM;
@@ -56,7 +52,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the halfNote variable.
      * @return halfnote
      */
-    public double getHalfNote() {
+    double getHalfNote() {
         return this.halfNote;
     }
 
@@ -64,7 +60,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the quarterNote variable.
      * @return quarterNote
      */
-    public double getQuarterNote() {
+    double getQuarterNote() {
         return this.quarterNote;
     }
 
@@ -72,7 +68,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the eightNote variable.
      * @return eightNote
      */
-    public double getEightNote() {
+    double getEightNote() {
         return this.eightNote;
     }
 
@@ -80,7 +76,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the sixteenthNote variable.
      * @return sixteenthNote
      */
-    public double getSixteenthNote() {
+    double getSixteenthNote() {
         return this.sixteenthNote;
     }
 
@@ -88,7 +84,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the dottedQuarterNote variable.
      * @return dottedQuarterNote
      */
-    public double getDottedQuarterNote() {
+    double getDottedQuarterNote() {
         return this.dottedQuarterNote;
     }
 
@@ -96,7 +92,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the dottedEightNote variable.
      * @return dottedEightNote
      */
-    public double getDottedEightNote() {
+    double getDottedEightNote() {
         return this.dottedEightNote;
     }
 
@@ -104,7 +100,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the dottedSixteenthNote variable.
      * @return dottedSixteenthNote
      */
-    public double getDottedSixteenthNote() {
+    double getDottedSixteenthNote() {
         return this.dottedSixteenthNote;
     }
 
@@ -112,7 +108,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the tripletQuarterNote variable.
      * @return tripletQuarterNote
      */
-    public double getTripletQuarterNote() {
+    double getTripletQuarterNote() {
         return this.tripletQuarterNote;
     }
 
@@ -120,7 +116,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the tripletEightNote variable.
      * @return tripletEightNote
      */
-    public double getTripletEightNote() {
+    double getTripletEightNote() {
         return this.tripletEightNote;
     }
 
@@ -128,7 +124,7 @@ public class NoteLengthGenerator {
      * Auto-generated getter for the tripletSixteenthNote variable.
      * @return tripletSixteenthNote
      */
-    public double getTripletSixteenthNote() {
+    double getTripletSixteenthNote() {
         return this.tripletSixteenthNote;
     }
 }

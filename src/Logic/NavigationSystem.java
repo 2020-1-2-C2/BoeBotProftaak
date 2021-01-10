@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Class used to generate <a href="{@docRoot}/Logic/NavigationSystem.html">Route.java</a> instances, used by the BoeBot to drive.
  * The method <code>followRoute()</code> in <a href="{@docRoot}/Logic/DriveSystem.html">DriveSystem.java</a> takes in a <code>Route</code> as a parameter, and is used for the navigation of the robot.
  * @author Berend de Groot, Casper Lous
- * @version 1.0
+ * @version 1.1
  * @see DriveSystem#followRoute(Route)
  */
 public class NavigationSystem {
@@ -23,10 +23,6 @@ public class NavigationSystem {
 
     private int goalCoordX;
     private int goalCoordY;
-
-    //TODO: Add checks.
-    private final int maxY = 6;
-    private final int maxX = 6;
 
     private ArrayList<Integer> routeToNavigate;
 
@@ -130,22 +126,6 @@ public class NavigationSystem {
         } else if (this.direction == LEFT){
             this.routeToNavigate.add(RIGHT);
         }
-    }
-
-    /**
-     * Auto-generated getter.
-     * @return <code>this.direction</code>
-     */
-    public int getDirection() {
-        return this.direction;
-    }
-
-    /**
-     * Auto-generated getter.
-     * @param direction An int which <code>this.direction</code> will be set to.
-     */
-    public void updateDirection(int direction) {
-        this.direction = direction;
     }
 
     /**

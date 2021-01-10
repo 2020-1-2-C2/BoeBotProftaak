@@ -20,12 +20,22 @@ public class BluetoothController implements Updatable, BluetoothCallback {
         this.blueToothControllerCallback.onBlueToothControllerCommand(commands);
     }
 
+    /**
+     * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
+     * Runs the <ocde>update()</code> method in <a href="{@docRoot}/Hardware/BluetoothReceiver.html">BluetoothReceiver</a>.
+     * @see Updatable#update()
+     * @see BluetoothReceiver#update()
+     */
     @Override
     public void update() {
         this.bluetoothReceiver.update();
     }
 
+    /**
+     * Auto-generated getter for <code>this.bluetoothReceiver</code>.
+     * @return this.bluetoothReceiver
+     */
     public BluetoothReceiver getBluetoothReceiver() {
-        return bluetoothReceiver;
+        return this.bluetoothReceiver;
     }
 }

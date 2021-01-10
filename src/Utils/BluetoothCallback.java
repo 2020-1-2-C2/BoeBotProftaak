@@ -3,9 +3,10 @@ package Utils;
 import Hardware.BluetoothReceiver;
 
 /**
- * Callback for the <a href="{@docRoot}/Hardware/BluetoothReceiver.html">BluetoothReceiver class</a>.
+ * Callback for the <a href="{@docRoot}/Hardware/BluetoothReceiver.html">BluetoothReceiver</a> class.
  * @see BluetoothReceiver
  * @version 1.0
+ * @author Berend de Groot, Lars hoendervangers
  */
 public interface BluetoothCallback {
     /**

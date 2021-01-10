@@ -20,10 +20,6 @@ import java.util.HashMap;
 
 //Class specific TODO-list:
 //TODO: Look at version-control and decide on the software's version.
-//TODO: Remove DefaultLed.java, since we do not use it anymore.
-//TODO: Remove RGBLed.java, since we do not use it anymore.
-//TODO: Delete comments in LineFollower.java.
-//TODO: Change some text in LineFollower.java so that everything is in English.
 //TODO: Add backwards functionality for NavigationSystem.java and Route.java.
 //TODO: Write documentation for BluetoothCallback.java.
 //TODO: Write documentation for InfraredCallback.java.
@@ -41,7 +37,6 @@ import java.util.HashMap;
 //TODO: Pick a different shade of green, since it looks too much like yellow.
 //TODO: Make notifications play automatically.
 //TODO: Final grammar check before submitting.
-//TODO: Write documentation for MusicNote.java.
 
 /** Main class of the BoeBot, often described as being the brain of the robot.
  *
@@ -57,11 +52,9 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * @see #run()
      * @see Updatable#update()
      */
-    private boolean running = true;
 
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
-    private Shapes shapes;
     private NotificationSystemController notificationSystemController;
     private BluetoothController bluetoothController;
 
@@ -87,10 +80,10 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * Adds the necessary objects to the <code>updatables</code> list.
      * @see #updatables
      */
-    public void initialise() {
+    private void initialise() {
         // Creating all the different objects which will be used.
         this.driveSystem = new DriveSystem();
-        this.shapes = new Shapes(this.driveSystem);
+        Shapes shapes = new Shapes(this.driveSystem);
         this.notificationSystemController = new NotificationSystemController();
         this.bluetoothController = new BluetoothController(this);
 
@@ -100,15 +93,15 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
         //Adds all the updatables to an ArrayList.
         Collections.addAll(this.updatables, collisionDetection, this.driveSystem,
-                this.shapes, infraredController, this.notificationSystemController,
+                shapes, infraredController, this.notificationSystemController,
                 lineFollowerController, bluetoothController
         );
 
-        // initialise the hashmaps which holds the commands to use 
+        // initialises the HashMaps which holds the commands to use.
         this.onInfraredCommandMap = new HashMap<>();
         this.onBlueToothCommandMap = new HashMap<>();
-        // Fill the HashMaps with commands
-        // infrared button commands:
+        // Fills the HashMaps with commands.
+        // Infrared button commands:
         this.onInfraredCommandMap.put(InfraredReceiver.POWER, () -> {
             this.driveSystem.stop();
         });
@@ -153,7 +146,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         });
         this.onInfraredCommandMap.put(InfraredReceiver.NINE, () -> {
             this.driveSystem.setSpeed(90);
-            //TODO: Testcode, should be removed.
+            //TODO: Test-code, should be removed once tested.
             this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
         });
         this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> {
@@ -166,7 +159,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             this.driveSystem.stop();
         });
 
-        // bluetoothreceiver commands
+        // BluetoothReceiver commands.
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FORWARD, () -> {
            this.driveSystem.setDirection(1);
         });
@@ -219,7 +212,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             //This is a block and call, but should only be used when the bot is stationary.
             while (reading) {
                 int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
-                //Stop signal
+                //Stop signal.
                 if (data == 126) {
                     reading = false;
                     //A length of 2 means that only the end point is received.
@@ -237,6 +230,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                     route = "";
                 } else {
                     route += ((char) data);
+                    //TODO: Check whether we should use StringBuilder for better performance. ; String concatenation.
                 }
             }
         });
@@ -244,7 +238,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
         });
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {
-            // this shouldn't do anything
+            // This shouldn't do anything.
+            //TODO: Check if this can be removed, and if so, remove it.
         });
     }
 
@@ -252,8 +247,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * Main run method for the BoeBot logic.
      * {@link #updatables}
      */
-    public void run() {
-        while (this.running) {
+    private void run() {
+        while (true) { //This used to be this.isRunning, but that always returned true.
             for (Updatable u : this.updatables) {
                 u.update();
             }
@@ -322,8 +317,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
     }
 
     /**
-     * Receives a valid button press from the infraredController and executes the command associated with it
-     * @param button
+     * Receives a valid button press from the infraredController and executes the command associated with it.
+     * @param button Int representing a button the remote.
      */
     @Override
     public void onInfraredControllerCommand(int button) {
@@ -344,7 +339,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * read the data. This will usually only take a couple ms. Then it will put the number in a string. That string will then be split into separate integers that are
      * used to create a new NavigationSystem object. (First int = x, second int = y)
      * TODO: Possible string length check, depends on if we want to use more coords.
-     * @param command
+     * @param command //TODO: SPECIFY THIS!
      */
     @Override
     public void onBlueToothControllerCommand(BluetoothReceiver.Commands command) {
