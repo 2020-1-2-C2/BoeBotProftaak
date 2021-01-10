@@ -220,10 +220,20 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             //This is a block and call, but should only be used when the bot is stationary.
             while (reading) {
                 int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
+                //Stop signal
                 if (data == 126) {
                     reading = false;
-                    NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
-                    navigationSystem.getRoute();
+                    //A length of 2 means that only the end point is received.
+                    if (route.length() == 2) {
+                        NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
+                        navigationSystem.getRoute();
+                        //A length of 4 means that there is a start and end point.
+                    } else if (route.length() == 4) {
+                        NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(3), route.charAt(4));
+                        navigationSystem.getRoute();
+                    } else {
+                        System.out.println("Invalid route data received.");
+                    }
                     System.out.println(route);
                     route = "";
                 } else {
