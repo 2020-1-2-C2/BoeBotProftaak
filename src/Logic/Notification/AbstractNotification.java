@@ -10,56 +10,99 @@ import java.util.ArrayList;
 
 /**
  * Class used by the BoeBot for handling notifications. All notification classes extend this class, and thus inherit attributes.
- * Every notification has it's own unique notificationSpecificMethod() used to give instructions to the Buzzer and NeoPixelLeds.
+ * Every notification has it's own unique <code>notificationSpecificMethod()</code> used to give instructions to the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s.
+ * @version 1.2
+ * @author Berend de Groot
  */
 public abstract class AbstractNotification {
 
-    //TODO: Check access-modifiers.
-    protected ArrayList<Buzzer> buzzers;
+    protected Buzzer buzzer;
     protected ArrayList<NeoPixelLed> neoPixelLeds;
-    protected NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
-    protected NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(128);
-    protected Color neoPixelLedColorA;
-    protected Color neoPixelLedColorB;
-    protected String lightColorPattern;
-
-    //TODO: Check access-modifiers.
+    NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
+    Color neoPixelLedColorA;
+    Color neoPixelLedColorB;
+    private String lightColorPattern;
+    private int blinkTime;
 
     /**
-     * Constructor for the AbstractNotification.java class.
-     * @param buzzers Takes in an Arraylist of Buzzers to handle the sound.
-     * @param neoPixelLeds Takes in an Arraylist of NeoPixelLeds to handle the lights.
+     * Constructor for the <code>AbstractNotification</code> class.
+     * @param buzzer Takes in an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> to handle the sound.
+     * @param neoPixelLeds Takes in an ArrayList of NeoPixelLeds to handle the lights.
      * @see Buzzer
      * @see NeoPixelLed
      */
-    public AbstractNotification(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
-        this.buzzers = buzzers;
+    public AbstractNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
+        this.buzzer = buzzer;
         this.neoPixelLeds = neoPixelLeds;
     }
 
     /**
-     * Abstract method all notifications have. Those methods contain instructions for the Buzzer and NeoPixelLeds on the BoeBot.
+     * Abstract method all notifications have. Those methods contain instructions for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and NeoPixelLeds on the BoeBot.
      * See classes in Logic.Notification for examples.
      * @see Logic.Notification.DisconnectedNotification
      */
     public abstract void notificationSpecificMethod();
 
     /**
-     * Auto-generated getter for the Buzzer arraylist.
-     * @return this.buzzers, the Buzzer arraylist.
+     * Auto-generated getter for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> instance.
+     * @return this.buzzer, the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a>.
      * @see Buzzer
      */
-    public ArrayList<Buzzer> getBuzzers() {
-        return this.buzzers;
+    public Buzzer getBuzzer() {
+        return this.buzzer;
     }
 
-    //TODO: Remove if never used!
     /**
-     * Auto-generated getter for the NeoPixelLed arraylist.
-     * @return this.neoPixelLeds, the NeoPixelLed arraylist.
+     * Auto-generated getter for the <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a> ArrayList.
+     * @return this.neoPixelLeds, the <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a> ArrayList.
      * @see NeoPixelLed
      */
     public ArrayList<NeoPixelLed> getNeoPixelLeds() {
         return this.neoPixelLeds;
     }
+
+    /**
+     * Auto-generated setter for the blinkTime attribute.
+     * @param blinkTime Changes <code>this.blinkTime</code> to the parameter's value.
+     */
+    void setBlinkTime(int blinkTime){
+        this.blinkTime = blinkTime;
+    }
+
+    /**
+     * Auto-generated setter for the lightColorPattern attribute.
+     * @param lightColorPattern Changes <code>this.lightColorPattern</code> to the parameter's value.
+     */
+    void setLightColorPattern(String lightColorPattern){
+        this.lightColorPattern = lightColorPattern;
+    }
+
+    /**
+     * Checks <code>this.lightColorPattern</code> and changes the <a href:"{@docRoot}/Hardware/NeoPixelLed">NeoPixelLed</a>s accordingly. <p>
+     * The properties of the Leds are based on the character in it's position (the first character is pinId(0), the second character is pinId(1) and so on)
+     * and can have the following properties:
+     * <ul>
+     * <li>A: Sets the Led to <code>this.neoPixelLedColorA</code>.
+     * <li>B: Sets the Led to <code>this.neoPixelLedColorB</code>.
+     * <li>X: Turns the Led off.
+     * </ul>
+     */
+    void useLightsBasedOnString(){
+        for (int i = 0; i < 6; i++) {
+            NeoPixelLed neoPixelLed = this.getNeoPixelLeds().get(i);
+
+            if (this.lightColorPattern.charAt(i) == 'A') {
+                neoPixelLed.on();
+                neoPixelLed.setColor(this.neoPixelLedColorA);
+                neoPixelLed.blink(this.blinkTime);
+            } else if (this.lightColorPattern.charAt(i) == 'B') {
+                neoPixelLed.on();
+                neoPixelLed.setColor(this.neoPixelLedColorB);
+                neoPixelLed.blink(this.blinkTime);
+            } else if (this.lightColorPattern.charAt(i) == 'X') {
+                neoPixelLed.off();
+            }
+        }
+    }
+
 }

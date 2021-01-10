@@ -7,36 +7,35 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Notification for when the Emergency break is activated. Extends AbstractNotification.
+ * Notification for when the Emergency break is activated. Extends <code>AbstractNotification</code>.
  * @see AbstractNotification
  * @author Berend de Groot
- * @version 1.0
+ * @version 1.2
  */
 public class EmergencyStopNotification extends AbstractNotification {
 
     /**
      * Constructor for this notification.
-     * Uses super, and refers to AbstractNotification with it.
-     * @param buzzers Takes an arraylist of Buzzers as a parameter.
-     * @param neoPixelLeds Takes an arraylist of NeoPixelLeds as a parameter.
-     * @see AbstractNotification#AbstractNotification(ArrayList, ArrayList)
+     * Uses super, and refers to <code>AbstractNotification</code> with it.
+     * @param buzzer Takes an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> as a parameter.
+     * @param neoPixelLeds Takes an ArrayList of <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s as a parameter.
+     * @see AbstractNotification#AbstractNotification(Buzzer, ArrayList)
      */
-    public EmergencyStopNotification(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
-        super(buzzers, neoPixelLeds);
+    public EmergencyStopNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
+        super(buzzer, neoPixelLeds);
         this.neoPixelLedColorA = Color.red;
     }
 
     /**
-     * Overrides notificationSpecificMethod() in AbstractNotification.java.
-     * Abstract method all notifications have. This method contain instructions for the Buzzer and NeoPixelLeds on the BoeBot.
+     * Overrides <code>notificationSpecificMethod()</code> in <code>AbstractNotification</code>.
+     * Abstract method all notifications have. This method contain instructions for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s on the BoeBot.
      * @see AbstractNotification#notificationSpecificMethod()
      */
     @Override
     public void notificationSpecificMethod() {
-        System.out.println("EmergencyStopNotification notificationSpecificMethod() has been called");
-        this.buzzers.get(0).buzz(1000, this.notePitchGenerator.getNote("C#", 5));
+        this.getBuzzer().buzz(1000, this.notePitchGenerator.getNote("C#", 5));
 
-        for (NeoPixelLed neoPixelLed : this.neoPixelLeds){
+        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()){
             neoPixelLed.setColor(this.neoPixelLedColorA);
             neoPixelLed.on();
         }

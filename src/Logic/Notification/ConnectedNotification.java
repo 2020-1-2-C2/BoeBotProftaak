@@ -8,51 +8,36 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Notification for when connection to the software has been established. Extends AbstractNotification.
+ * Notification for when connection to the software has been established. Extends <code>AbstractNotification</code>.
  * @author Berend de Groot
- * @version 1.0
+ * @version 1.2
  * @see AbstractNotification
  */
 public class ConnectedNotification extends AbstractNotification {
 
     /**
      * Constructor for this notification.
-     * Uses super, and refers to AbstractNotification with it.
-     * @param buzzers Takes an arraylist of Buzzers as a parameter.
-     * @param neoPixelLeds Takes an arraylist of NeoPixelLeds as a parameter.
-     * @see AbstractNotification#AbstractNotification(ArrayList, ArrayList)
+     * Uses super, and refers to <code>AbstractNotification</code> with it.
+     * @param buzzer Takes an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> as a parameter.
+     * @param neoPixelLeds Takes an ArrayList of <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s as a parameter.
+     * @see AbstractNotification#AbstractNotification(Buzzer, ArrayList)
      */
-    public ConnectedNotification(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
-        super(buzzers, neoPixelLeds);
+    public ConnectedNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
+        super(buzzer, neoPixelLeds);
         this.neoPixelLedColorA = Color.green;
         this.neoPixelLedColorB = Color.yellow;
-        this.lightColorPattern = "ABABAB";
+        this.setLightColorPattern("ABABAB");
     }
 
     /**
-     * Overrides notificationSpecificMethod() in AbstractNotification.java.
-     * Abstract method all notifications have. This method contain instructions for the Buzzer and NeoPixelLeds on the BoeBot.
+     * Overrides <code>notificationSpecificMethod()</code> in <code>AbstractNotification</code>.
+     * Abstract method all notifications have. This method contain instructions for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s on the BoeBot.
      * @see AbstractNotification#notificationSpecificMethod()
      */
     @Override
     public void notificationSpecificMethod() {
-        System.out.println("ConnectedNotification notificationSpecificMethod() has been called");
-        int blinkTime = 250;
-
-        this.getBuzzers().get(0).playSong(new Jingle().brotherJohn());
-
-        for (int i = 0; i < 6; i++) {
-            NeoPixelLed neoPixelLed = this.neoPixelLeds.get(i);
-
-            if (this.lightColorPattern.charAt(i) == 'A') {
-                neoPixelLed.on();
-                neoPixelLed.setColor(this.neoPixelLedColorA);
-                neoPixelLed.blink(blinkTime);
-            } else if (this.lightColorPattern.charAt(i) == 'B') {
-                neoPixelLed.on();
-                neoPixelLed.setColor(this.neoPixelLedColorB);
-                neoPixelLed.blink(blinkTime);
-            }
-        }
+        this.setBlinkTime(250);
+        this.getBuzzer().playSong(new Jingle().brotherJohn());
+        this.useLightsBasedOnString();
     }
 }

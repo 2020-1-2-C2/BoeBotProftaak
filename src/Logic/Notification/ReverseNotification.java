@@ -7,47 +7,35 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Notification for when the BoeBot is driving backwards. Extends AbstractNotification.
+ * Notification for when the BoeBot is driving backwards. Extends <code>AbstractNotification</code>.
  * @author Berend de Groot
- * @version 1.0
+ * @version 1.2
  * @see AbstractNotification
  */
 public class ReverseNotification extends AbstractNotification {
 
     /**
      * Constructor for this notification.
-     * Uses super, and refers to AbstractNotification with it.
-     * @param buzzers Takes an arraylist of Buzzers as a parameter.
-     * @param neoPixelLeds Takes an arraylist of NeoPixelLeds as a parameter.
-     * @see AbstractNotification#AbstractNotification(ArrayList, ArrayList)
+     * Uses super, and refers to <code>AbstractNotification</code> with it.
+     * @param buzzer Takes an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> as a parameter.
+     * @param neoPixelLeds Takes an ArrayList of <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s as a parameter.
+     * @see AbstractNotification#AbstractNotification(Buzzer, ArrayList)
      */
-    public ReverseNotification(ArrayList<Buzzer> buzzers, ArrayList<NeoPixelLed> neoPixelLeds) {
-        super(buzzers, neoPixelLeds);
+    public ReverseNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
+        super(buzzer, neoPixelLeds);
         this.neoPixelLedColorA = Color.orange;
-        this.lightColorPattern = "AXAAXA"; //Only uses the lights on the sides to simulate garbage truck lights
+        this.setLightColorPattern("AXAAXA"); //Only uses the lights on the sides to simulate garbage truck lights.
     }
 
     /**
-     * Overrides notificationSpecificMethod() in AbstractNotification.java.
-     * Abstract method all notifications have. This method contain instructions for the Buzzer and NeoPixelLeds on the BoeBot.
+     * Overrides <code>notificationSpecificMethod()</code> in <code>AbstractNotification</code>.
+     * Abstract method all notifications have. This method contain instructions for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s on the BoeBot.
      * @see AbstractNotification#notificationSpecificMethod()
      */
     @Override
     public void notificationSpecificMethod() {
-        int blinkTime = 250;
-
-        this.getBuzzers().get(0).buzz(1000, 1000);
-
-        for (int i = 0; i < 6; i++) {
-            NeoPixelLed neoPixelLed = this.neoPixelLeds.get(i);
-
-            if (this.lightColorPattern.charAt(i) == 'A') {
-                neoPixelLed.on();
-                neoPixelLed.setColor(this.neoPixelLedColorA);
-                neoPixelLed.blink(blinkTime);
-            } else if (this.lightColorPattern.charAt(i) == 'X') { //TODO: Check whether this messes with the other on/off code.
-                neoPixelLed.off();
-            }
-        }
+        this.setBlinkTime(250);
+        this.getBuzzer().buzz(1000, 1000);
+        this.useLightsBasedOnString();
     }
 }

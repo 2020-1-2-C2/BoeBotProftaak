@@ -98,7 +98,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         CollisionDetection collisionDetection = new CollisionDetection(this);
         LineFollowerController lineFollowerController = new LineFollowerController(driveSystem);
 
-        //Adds all the updatables to an arraylist.
+        //Adds all the updatables to an ArrayList.
         Collections.addAll(this.updatables, collisionDetection, this.driveSystem,
                 this.shapes, infraredController, this.notificationSystemController,
                 lineFollowerController, bluetoothController
@@ -126,15 +126,15 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         });
         this.onInfraredCommandMap.put(InfraredReceiver.ONE, () -> {
             this.driveSystem.setSpeed(10);
-            setNotification(new DisconnectedNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+            setNotification(new DisconnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
         });
         this.onInfraredCommandMap.put(InfraredReceiver.TWO, () -> {
             this.driveSystem.setSpeed(20);
-            setNotification(new ConnectedNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+            setNotification(new ConnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
         });
         this.onInfraredCommandMap.put(InfraredReceiver.THREE, () -> {
             this.driveSystem.setSpeed(30);
-            setNotification(new EmptyNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+            setNotification(new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
         });
         this.onInfraredCommandMap.put(InfraredReceiver.FOUR, () -> {
             this.driveSystem.setSpeed(40);
@@ -153,8 +153,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         });
         this.onInfraredCommandMap.put(InfraredReceiver.NINE, () -> {
             this.driveSystem.setSpeed(90);
-            //TODO dit ziet er uit als testcode, dit moet dus weg worden gehaald
-            System.out.println("9");
+            //TODO: Testcode, should be removed.
             this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
         });
         this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> {
@@ -264,7 +263,6 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
     /**
      * Receive the distance from the ultrasonic receiver and sets the bot to a certain max allowable speed or an emergency stop according to the distance.
-     *
      * @param distance Distance from collision in cm.
      */
     @Override
@@ -277,7 +275,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 this.driveSystem.setCurrentMaxSpeed(0);
                 this.driveSystem.emergencyStop();
                 //TODO: Consider putting this in DriveSystem.java?
-                setNotification(new EmergencyStopNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+                setNotification(new EmergencyStopNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
                 System.out.println("Emergency stop");
             }
         } else if (distance < 30) {
@@ -329,12 +327,12 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      */
     @Override
     public void onInfraredControllerCommand(int button) {
-        setNotification(new RemoteNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
-        setNotification(new EmptyNotification(this.notificationSystemController.getBuzzers(), this.notificationSystemController.getNeoPixelLeds()));
+        setNotification(new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+        setNotification(new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
 
         this.onInfraredCommandMap.get(button).Execute();
 
-        // if the received command is following a route, then the program should stop following the route and stop following lines
+        // If the received command is following a route, then the program should stop following the route and stop following lines.
         if (this.driveSystem.isFollowingRoute()) {
             this.driveSystem.followLine(false);
             this.driveSystem.stopFollowingRoute();

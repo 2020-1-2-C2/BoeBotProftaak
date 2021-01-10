@@ -2,30 +2,33 @@ package Logic.Notification;
 
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
-import Logic.Jingle;
+import Logic.Route;
 
 import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Notification that plays whenever a route is missing in <code>DriveSystem</code>. Extends <code>AbstractNotification</code>.
+ * Notification for when the bot is following a <a href="{@docRoot}/Logic/Route.html"></a>. Extends <code>AbstractNotification</code>.
+ * @see AbstractNotification
+ * @see Logic.Route
+ * @see Logic.DriveSystem#followRoute(Route)
  * @author Berend de Groot
  * @version 1.2
- * @see AbstractNotification#AbstractNotification(Buzzer, ArrayList)
  */
-public class MissingRouteNotification extends AbstractNotification {
+public class FollowingRoute extends AbstractNotification  {
     /**
-     * Constructor for the <code>MissingRouteNotification</code> class.
+     * Constructor for the <code>AbstractNotification</code> class.
      * @param buzzer      Takes in an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> to handle the sound.
      * @param neoPixelLeds Takes in an ArrayList of <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s to handle the lights.
      * @see Buzzer
      * @see NeoPixelLed
      */
-    public MissingRouteNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
+    public FollowingRoute(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzer, neoPixelLeds);
-        this.neoPixelLedColorA = Color.PINK;
-        this.neoPixelLedColorB = Color.red;
+        this.neoPixelLedColorA = Color.DARK_GRAY;
+        this.neoPixelLedColorB = Color.BLUE;
         this.setLightColorPattern("ABABAB");
+        this.setBlinkTime(500);
     }
 
     /**
@@ -35,9 +38,6 @@ public class MissingRouteNotification extends AbstractNotification {
      */
     @Override
     public void notificationSpecificMethod() {
-        this.setBlinkTime(250);
-        //TODO: Add Jingle for missing route.
-        this.getBuzzer().playSong(new Jingle().somebodyThatIUsedToKnow());
         this.useLightsBasedOnString();
     }
 }
