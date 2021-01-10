@@ -29,7 +29,7 @@ public class LineFollower implements Updatable {
     private LinePosition callBack;
     private int speedDefault;
 
-    private final int sensorTweak = 1200;
+    private int sensorTweak;    //editid for calibration function please check
     private boolean turning = false;
 
 
@@ -37,6 +37,7 @@ public class LineFollower implements Updatable {
         this.lineFollowCallback = lineFollowCallback;
         this.leftLineSensorPin = leftLineSensorPin;
         this.rightLineSensorPin = rightLineSensorPin;
+        this.sensorTweak = 1200; //editid for calibration function please check
 
         this.centralLineSensorPin = -1;
 
@@ -132,6 +133,16 @@ public class LineFollower implements Updatable {
             System.out.println("Kruispunt");
             this.callBack = LinePosition.CROSSING;
         }
+    }
+
+    //editid for calibration function please check
+    public void calibrate() {
+        this.sensorTweak = BoeBot.analogRead(this.centralLineSensorPin);
+    }
+
+    //editid for calibration function please check
+    public void calibrate(int value) {
+        this.sensorTweak = value;
     }
 
     /**
