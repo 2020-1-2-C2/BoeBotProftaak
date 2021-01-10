@@ -58,7 +58,6 @@ public class InfraredReceiver implements Updatable {
      * @return true when a start-signal has been read.
      */
     private boolean listenForStartSignal() {
-        // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
         int pulseLen = BoeBot.pulseIn(this.pinId, false, 6000);
         return pulseLen > 2000;
     }
@@ -70,7 +69,6 @@ public class InfraredReceiver implements Updatable {
     private int[] listenForBitSignal() {
         int[] lengths = new int[12];
         for (int i = 0; i < 12; i++) {
-            // TODO, kijken of de wachttijd van de pulsein te lang is of niet, kan misschien efficienter.
             lengths[i] = BoeBot.pulseIn(this.pinId, false, 20000);
         }
         return lengths;

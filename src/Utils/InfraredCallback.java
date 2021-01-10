@@ -8,8 +8,10 @@ package Utils;
  */
 public interface InfraredCallback {
     /**
-     * TODO WRITE PLEASE
-     * @param button TODO WRITE PLEASE
+     * callback on an object that implements the InfraredCallback interface
+     * is called upon when an object of InfraredReceiver receives an infrared signal
+     *
+     * @param button binary number that should correspond to one of the buttons on the infrared remote
      */
     void onInfraredButton(int button);
 }

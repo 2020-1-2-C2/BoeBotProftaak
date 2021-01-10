@@ -15,8 +15,7 @@ public class Configuration {
     static int servoMotor2PinId = 13;
 
     // ADC pins
-    static int lineFollowerLeftLineSensorADCPinId = 2;
-    static int lineFollowerRightLineSensorADCPinId = 1;
-    //TODO: implement the middle line sensor id.
-    public static int lineFollowerMiddleLineSensorADCPinId = -1;
+    static int lineFollowerLeftLineSensorADCPinId = 3;
+    static int lineFollowerRightLineSensorADCPinId = 2;
+    static int lineFollowerMiddleLineSensorADCPinId = 1;
 }

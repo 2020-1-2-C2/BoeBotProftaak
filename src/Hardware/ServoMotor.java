@@ -9,13 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * //TODO: Write documentation.
+ * Class which controls two DirectionServos
+ *
+ * Implements the Motor interface to ensure easy switching of hardware
+ *
+ * Contains methods to set the desired speed of the motors and to stop the motors
+ *
+ * Implements the Updatable interface,
+ * the update method incrementaly changes the speed of the DirectionServos towards the desired speed, untill the desired speed has been achieved
+ *
  * @see Motor
  * @see DirectionalServo
  * @version 1.0
  * @author Martijn de Kam, Berend de Groot, Meindert Kempe, Tom Martens, Lars Hoendervangers
  */
-public class ServoMotor implements Motor {
+public class ServoMotor implements Motor, Updatable {
     private DirectionalServo servoLeft;
     private DirectionalServo servoRight;
     private TimerWithState timerLeft;

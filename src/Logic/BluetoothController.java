@@ -6,6 +6,8 @@ import Utils.BluetoothCallback;
 import Utils.Updatable;
 
 /**
+ * Class which controls the BlueToothReceiver and sends the received signals to the IntelligentFoodAllocationDevice class
+ *
  * @author Martijn de Kam, Berend de Groot
  */
 public class BluetoothController implements Updatable, BluetoothCallback {

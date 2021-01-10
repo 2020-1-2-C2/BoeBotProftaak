@@ -8,8 +8,10 @@ package Utils;
  */
 public interface UltraSonicCallback {
     /**
-     * TODO WRITE PLEASE
-     * @param distance TODO WRITE PLEASE
+     * callback on an object that implements the UltraSonicCallback interface
+     * is called upon when an object of UltraSonicReceiver senses something
+     *
+     * @param distance distance in cm
      */
     void onUltraSonicPulse(Integer distance);
 }

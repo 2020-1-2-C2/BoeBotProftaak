@@ -9,6 +9,9 @@ package Hardware;
 public class DirectionalServo extends TI.Servo {
     private int orientation;
 
+    public final static int LEFTSIDESERVOORIENTATION = -1;
+    public final static int RIGHTSIDESERVOORIENTATION = 1;
+
     /**
      * Constructor initializing the pin and orientation.
      * @param pin         pinId

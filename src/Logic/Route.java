@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
+ * Class which can hold the values for a route to be followed
+ *
  * @author Berend de Groot, Martijn de Kam, Meindert Kampe, Lars Hoendervangers
  */
 public class Route {
@@ -41,7 +43,7 @@ public class Route {
 
 
     /**
-     * Reverse the route and continue from the end of the previous route. //TODO: Add backwards functionality.
+     * Reverse the route and continue from the end of the previous route.
      */
     void reverse() {
         for (int i = 0; i < this.route.size(); i++) {

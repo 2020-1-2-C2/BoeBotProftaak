@@ -9,6 +9,14 @@ import Utils.TimerWithState;
 import Utils.Updatable;
 
 /**
+ * Class which controls an object which implements the Motor interface
+ *
+ * Contains methods for controlling the Motor object and for following a route
+ *
+ * implements the Updatable interface, which updates the Motor object and allows for turning around at the end of a route
+ *
+ * implements the LineFollowCallback interface which allows it to receive the lineposition from the LineFollower sensors, which allows it to follow a route if so desired
+ *
  * @author Meindert Kempe, Berend de Groot, Martijn de Kam, Casper Lous
  */
 public class DriveSystem implements Updatable, LineFollowCallback {
@@ -39,8 +47,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private TimerWithState turnAtEndTimer = new TimerWithState(500, false);
 
     public DriveSystem() {
-        //TODO: Don't hardcode orientation like this.
-        this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, 1), new DirectionalServo(Configuration.servoMotor2PinId, -1));
+        this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, DirectionalServo.RIGHTSIDESERVOORIENTATION),
+                new DirectionalServo(Configuration.servoMotor2PinId, DirectionalServo.LEFTSIDESERVOORIENTATION));
     }
 
     /**
@@ -169,6 +177,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     @Override
     public void update() {
+        this.motor.update();
+
         this.debugToString();
         //TODO: if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly.
         if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
@@ -178,8 +188,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             this.turnAtEndTimer.setOn(false);
         } else if (this.routeTimer.isOn() && this.routeTimer.timeout()) {
             if (this.turnAtEnd) {
-                // Start driving backwards when then end of a route is reached and set a timer to stop this.
-                this.setSpeed(this.followSpeed);
+                // Start driving backwards at a minimal speed when then end of a route is reached and set a timer to stop this.
+                this.setSpeed(10);
                 this.setDirection(BACKWARD);
                 //TODO: notification for driving backwards?
                 this.turnAtEndTimer.mark();

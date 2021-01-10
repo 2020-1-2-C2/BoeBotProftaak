@@ -19,6 +19,7 @@ import java.util.Arrays;
 public class CollisionDetection implements Updatable, UltraSonicCallback {
 
     private CollisionDetectionCallback collisionDetectionCallback;
+    private UltraSonicReceiver ultraSonicReceiver;
 
     private int counter = 0;
     private int[] distances = new int[9];
@@ -29,8 +30,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
      */
     public CollisionDetection(CollisionDetectionCallback collisionDetectionCallback) {
         this.collisionDetectionCallback = collisionDetectionCallback;
-        //TODO: Should the UltroSonicReceiver be used?! Why is this never used?! Remove it if unnecessary.
-        UltraSonicReceiver ultraSonicReceiver = new UltraSonicReceiver(Configuration.ultraSonicReceiverTriggerPinId, Configuration.ultraSonicReceiverEchoPinId, this);
+        this.ultraSonicReceiver = new UltraSonicReceiver(Configuration.ultraSonicReceiverTriggerPinId, Configuration.ultraSonicReceiverEchoPinId, this);
     }
 
     /**
@@ -61,5 +61,6 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
      */
     @Override
     public void update() {
+        this.ultraSonicReceiver.update();
     }
 }

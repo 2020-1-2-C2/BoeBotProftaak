@@ -4,6 +4,8 @@ import TI.BoeBot;
 import Utils.LineFollowCallback;
 import Utils.Updatable;
 
+//TODO documentation for methods
+
 /**
  * Class for the LineFollower hardware component, used by the BoeBot to navigate using lines.
  *@see Utils.Updatable
@@ -32,13 +34,15 @@ public class LineFollower implements Updatable {
 
 
     public LineFollower(int leftLineSensorPin, int rightLineSensorPin, LineFollowCallback lineFollowCallback) {
+        this(leftLineSensorPin, rightLineSensorPin, -1, lineFollowCallback);
+    }
+
+    public LineFollower(int leftLineSensorPin, int rightLineSensorPin, int middleLineSensorPin, LineFollowCallback lineFollowCallback) {
         this.lineFollowCallback = lineFollowCallback;
         this.leftLineSensorPin = leftLineSensorPin;
         this.rightLineSensorPin = rightLineSensorPin;
+        this.centralLineSensorPin = middleLineSensorPin;
         this.sensorTweak = 1200; //editid for calibration function please check
-
-        this.centralLineSensorPin = -1;
-
     }
 
     private boolean leftSeesBlack() {
