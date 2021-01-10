@@ -21,7 +21,7 @@ public class BluetoothReceiver implements Updatable {
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
         ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
-        START_ROUTE, STOP_ROUTE
+        START_ROUTE, STOP_ROUTE, AUTO_CALIBRATE, CALIBRATE
     }
 
     /**
@@ -92,6 +92,10 @@ public class BluetoothReceiver implements Updatable {
                 case 126:
                     //Stop reading route information
                     return Commands.STOP_ROUTE;
+                case 37:
+                    return Commands.AUTO_CALIBRATE;
+                case 43:
+                    return Commands.CALIBRATE;
                 default:
                     return Commands.DEFAULT;
             }

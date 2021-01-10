@@ -208,8 +208,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.START_ROUTE, () -> {
             boolean reading = true;
             String route = "";
-            //TODO this is a big blocking call with the loop, is it possible to implement this in a different way using Updatable?
-            //This is a block and call, but should only be used when the bot is stationary.
+            //This is a block and call, but should only be used when the bot is stationary. This loop is only used for a maximum of 4 cycles.
             while (reading) {
                 int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
                 //Stop signal.
@@ -224,7 +223,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                         NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(2), route.charAt(3));
                         navigationSystem.getRoute();
                     } else {
-                        System.out.println("Invalid route data received.");
+                        System.out.println("Invalid route data received.\nReceived data: " + data);
                     }
                     System.out.println(route);
                     route = "";
@@ -234,13 +233,6 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 }
             }
         });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.STOP_ROUTE, () -> {
-
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {
-            // This shouldn't do anything.
-            //TODO: Check if this can be removed, and if so, remove it.
-        });
     }
 
     /**
@@ -248,7 +240,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * {@link #updatables}
      */
     private void run() {
-        while (true) { //This used to be this.isRunning, but that always returned true.
+        //This used to be this.isRunning, but that always returned true.
+        while (true) {
             for (Updatable u : this.updatables) {
                 u.update();
             }
