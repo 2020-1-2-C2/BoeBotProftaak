@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Class used to generate <a href="{@docRoot}/Logic/NavigationSystem.html">Route.java</a> instances, used by the BoeBot to drive.
  * The method <code>followRoute()</code> in <a href="{@docRoot}/Logic/DriveSystem.html">DriveSystem.java</a> takes in a <code>Route</code> as a parameter, and is used for the navigation of the robot.
- * @author Berend de Groot, Casper Lous
+ * @author Berend de Groot
  * @version 1.1
  * @see DriveSystem#followRoute(Route)
  */

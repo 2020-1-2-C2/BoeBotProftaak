@@ -4,17 +4,17 @@ import Hardware.UltraSonicReceiver;
 import Utils.CollisionDetectionCallback;
 import Utils.UltraSonicCallback;
 import Utils.Updatable;
-
 import java.util.Arrays;
 
 /**
  * Class used to avoid collision with other objects. The BoeBot should never collide.
- * This class implements <a href="{@docRoot}/Utils/Updatable.html">Updatable.java</a> and <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback.java</a>.
+ * This class implements <a href="{@docRoot}/Utils/Updatable.html">Updatable</a> and <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback</a>.
  * This class uses <a href="{@docRoot}/Utils/CollisionDetectionCallback.html">CollisionDetectionCallback</a>.
  * @see Utils.Updatable
  * @see Utils.UltraSonicCallback
  * @see CollisionDetectionCallback
  * @version 1.0
+ * @author Meindert Kempe, Berend de Groot, Martijn de Kam, Casper Lous, Lars Hoendervangers
  */
 public class CollisionDetection implements Updatable, UltraSonicCallback {
 
@@ -25,7 +25,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
 
     /**
      * Constructor for <code>CollisionDetection</code>.
-     * @param collisionDetectionCallback CollisionDetectionCallback object
+     * @param collisionDetectionCallback CollisionDetectionCallback object.
      */
     public CollisionDetection(CollisionDetectionCallback collisionDetectionCallback) {
         this.collisionDetectionCallback = collisionDetectionCallback;
@@ -34,9 +34,9 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     }
 
     /**
-     * Overrides the <code>onUltraSonicPulse()</code> method in <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback.java</a>.
-     * Receives the distance calculated using the ultrasonicsensor pulse and prints it.
-     * @param distance Calculated distance using an ultrasonsicsensor pulse.
+     * Overrides the <code>onUltraSonicPulse()</code> method in <a href="{@docRoot}/Utils/UltraSonicCallback.html">UltraSonicCallback</a>.
+     * Receives the distance calculated using the ultrasonic-sensor pulse and prints it.
+     * @param distance Calculated distance using an ultrasonic-sensor pulse.
      * @see Utils.UltraSonicCallback
      */
     @Override

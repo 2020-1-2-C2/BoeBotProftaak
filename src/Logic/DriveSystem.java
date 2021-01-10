@@ -8,6 +8,9 @@ import Utils.Motor;
 import Utils.TimerWithState;
 import Utils.Updatable;
 
+/**
+ * @author Meindert Kempe, Berend de Groot, Martijn de Kam, Casper Lous
+ */
 public class DriveSystem implements Updatable, LineFollowCallback {
     private Motor motor;
     private final int STEPS = 10;

@@ -9,6 +9,7 @@ import Utils.Updatable;
  * @see Utils.Updatable
  * @see Utils.BluetoothCallback
  * @see SerialConnection
+ * @author Lars Hoendervangers, Berend de Groot, Martijn de Kam, Meindert Kempe
  */
 public class BluetoothReceiver implements Updatable {
     private SerialConnection serialConnection;

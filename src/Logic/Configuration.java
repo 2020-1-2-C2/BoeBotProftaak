@@ -2,6 +2,7 @@ package Logic;
 
 /**
  * Contains all the PinIds for other classes to use.
+ * @author Martijn de Kam, Berend de Groot
  */
 public class Configuration {
 

@@ -13,6 +13,7 @@ import java.awt.*;
  * @see Utils.Led
  * Class is used by the notificationssystem.
  * @see Logic.Notification.AbstractNotification
+ * @author Berend de Groot, Martijn de Kam, Meindert Kempe
  */
 public class NeoPixelLed implements Led {
     private int id;

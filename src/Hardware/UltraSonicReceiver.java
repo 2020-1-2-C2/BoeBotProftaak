@@ -7,10 +7,11 @@ import Utils.UltraSonicCallback;
 import Utils.Updatable;
 
 /**
- * Class for the hardware part ultrasonicsensor, contains methods to receive and interprit the signal from the ultrasonicsensor.
+ * Class for the hardware part ultrasonic-sensor, contains methods to receive and interpret the signal from the ultrasonic-sensor.
  * @version 1.0
  * @see Updatable
  * @see UltraSonicCallback
+ * @author Martijn de Kam, Berend de Groot
  */
 public class UltraSonicReceiver implements Updatable {
 
@@ -20,10 +21,9 @@ public class UltraSonicReceiver implements Updatable {
     private UltraSonicCallback ultraSonicCallback;
 
     /**
-     * Constructor for the ultrasonicsensor.
-     *
-     * @param pinIdTrigger       ultrasonicsensor trigger pin id.
-     * @param pinIdEcho          ultrasonicsensor echo pin id.
+     * Constructor for the ultrasonic-sensor.
+     * @param pinIdTrigger       ultrasonic-sensor trigger pin id.
+     * @param pinIdEcho          ultrasonic-sensor echo pin id.
      * @param ultraSonicCallback ultrasoniccallback object.
      */
     public UltraSonicReceiver(int pinIdTrigger, int pinIdEcho, UltraSonicCallback ultraSonicCallback) {
@@ -37,7 +37,6 @@ public class UltraSonicReceiver implements Updatable {
     /**
      * Send an ultrasonic pulse and measure the time it takes to receive the pulse back in microseconds.
      * If the pulse length is less than 0 a null object is returned.
-     *
      * @return time in microseconds to send and receive back an ultrasonic pulse.
      */
     private Integer ultraSonicPulse() {
@@ -58,7 +57,6 @@ public class UltraSonicReceiver implements Updatable {
     /**
      * Using the pulse length in microseconds, calculate the distance of an ultrasonicpulse echo in cm.
      * The pulse length can be a null object, in which case a null object is directly returned
-     *
      * @return The distance an ultrasonicpulse has traveled one way, in cm.
      */
     private Integer distance() {

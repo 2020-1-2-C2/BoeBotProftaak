@@ -13,6 +13,7 @@ import java.util.List;
  * @see Motor
  * @see DirectionalServo
  * @version 1.0
+ * @author Martijn de Kam, Berend de Groot, Meindert Kempe, Tom Martens, Lars Hoendervangers
  */
 public class ServoMotor implements Motor {
     private DirectionalServo servoLeft;

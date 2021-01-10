@@ -3,6 +3,9 @@ package Logic;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * @author Berend de Groot, Martijn de Kam, Meindert Kampe, Lars Hoendervangers
+ */
 public class Route {
     static final int LEFT = -1;
     static final int FORWARD = 0;
@@ -13,7 +16,7 @@ public class Route {
     private int index;
 
     /**
-     * Constructor for the <code>Route.java</code> class.
+     * Constructor for the <code>Route</code> class.
      * @param route ArrayList of directions as integers.
      */
     Route(ArrayList<Integer> route) {

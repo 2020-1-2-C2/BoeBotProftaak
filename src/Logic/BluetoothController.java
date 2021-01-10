@@ -5,6 +5,9 @@ import Utils.BlueToothControllerCallback;
 import Utils.BluetoothCallback;
 import Utils.Updatable;
 
+/**
+ * @author Martijn de Kam, Berend de Groot
+ */
 public class BluetoothController implements Updatable, BluetoothCallback {
 
     private BlueToothControllerCallback blueToothControllerCallback;
@@ -22,7 +25,7 @@ public class BluetoothController implements Updatable, BluetoothCallback {
 
     /**
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
-     * Runs the <ocde>update()</code> method in <a href="{@docRoot}/Hardware/BluetoothReceiver.html">BluetoothReceiver</a>.
+     * Runs the <code>update()</code> method in <a href="{@docRoot}/Hardware/BluetoothReceiver.html">BluetoothReceiver</a>.
      * @see Updatable#update()
      * @see BluetoothReceiver#update()
      */

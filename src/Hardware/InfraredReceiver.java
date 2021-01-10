@@ -12,6 +12,7 @@ import java.util.Collections;
  * Class for the hardware part Infrared-sensor. Contains methods to receive and interpret the signal from the Infrared-sensor.
  * @see Utils.Updatable
  * @see Utils.InfraredCallback
+ * @author Berend de Groot, Martijn de Kam, Meindert Kempe, Casper Lous
  */
 public class InfraredReceiver implements Updatable {
 

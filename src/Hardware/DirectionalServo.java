@@ -1,9 +1,10 @@
 package Hardware;
 
 /**
- * serSubclass of <code>TI.Servo</code>.
- * Can store the orientation of the servo (right or left) so the pulse-width is auto-adjusted to both go forwards or backwards.
+ * Subclass of <code>TI.Servo</code>.
+ * Stores the orientation of the servo (right or left) so the pulse-width is auto-adjusted to both go forwards or backwards.
  * @see TI.Servo
+ * @author Martijn de Kam, Meindert Kempe, Berend de Groot, Lars Hoendervangers
  */
 public class DirectionalServo extends TI.Servo {
     private int orientation;

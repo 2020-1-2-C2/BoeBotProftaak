@@ -2,7 +2,6 @@ package Hardware;
 
 import Logic.AudioPlaySystem;
 import Logic.MusicNote;
-import Logic.NotePitchGenerator;
 import TI.BoeBot;
 import TI.PinMode;
 import TI.Timer;
@@ -14,7 +13,7 @@ import Utils.Updatable;
  * @see Utils.Updatable
  * @see Logic.NotePitchGenerator
  * @see Logic.AudioPlaySystem
- * @author Berend de Groot
+ * @author Berend de Groot, Lars Hoendervangers, Martijn de Kam, Meindert Kempe
  * @version 2.1
  */
 public class Buzzer implements Updatable {

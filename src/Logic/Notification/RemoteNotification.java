@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class RemoteNotification extends AbstractNotification{
 
     /**
-     * Constructor for the <code>RemoteNotification></code> class. Extends <code>AbstractNotification</code>.
+     * Constructor for the <code>RemoteNotification</code> class. Extends <code>AbstractNotification</code>.
      * @param buzzer      Takes in an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> to handle the sound.
      * @param neoPixelLeds Takes in an ArrayList of <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s to handle the lights.
      * @see Buzzer

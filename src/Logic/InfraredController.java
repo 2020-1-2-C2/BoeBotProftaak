@@ -5,6 +5,9 @@ import Utils.InfraredCallback;
 import Utils.InfraredControllerCallback;
 import Utils.Updatable;
 
+/**
+ * @author Martijn de Kam, Berend de Groot
+ */
 public class InfraredController implements Updatable, InfraredCallback {
 
     private InfraredReceiver infraredReceiver;
@@ -17,7 +20,7 @@ public class InfraredController implements Updatable, InfraredCallback {
 
     /**
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
-     * Runs the <ocde>update()</code> method in <a href="{@docRoot}/Hardware/InfraredReceiver.html">InfraredReceiver</a>.
+     * Runs the <code>update()</code> method in <a href="{@docRoot}/Hardware/InfraredReceiver.html">InfraredReceiver</a>.
      * @see Updatable#update()
      * @see InfraredReceiver#update()
      */

@@ -8,6 +8,7 @@ import java.util.Collections;
 
 /**
  * Manages the hardware updatable objects that are part of the notification system.
+ * @author Martijn de Kam, Berend de Groot
  */
 public class NotificationSystemController implements Updatable {
 

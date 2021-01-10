@@ -10,6 +10,7 @@ import Utils.Updatable;
  * @since 2.0
  * @see Updatable#update()
  * @see DriveSystem
+ * @author Meindert Kempe, Berend de Groot, Lars Hoendervangers, Tom Martens
  */
 public class Shapes implements Updatable {
     private DriveSystem driveSystem;
@@ -22,7 +23,6 @@ public class Shapes implements Updatable {
 
     /**
      * Constructor for <code>Shapes</code> class.
-     *
      * @param driveSystem <code>DriveSystem</code> object.
      * @see DriveSystem
      */

@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Empty notification intended to stop all ongoing notifications by replacing the original object, thus making it impossible for that object's code to run.
  * Extends <code>AbstractNotification</code>.
  * @author Berend de Groot
- * @version 1.0
+ * @version 1.1
  * @see AbstractNotification
  */
 public class EmptyNotification extends AbstractNotification {
