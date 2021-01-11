@@ -31,6 +31,7 @@ public class LineFollower implements Updatable {
     private LinePosition callBack;
 
     private int sensorTweak;    //editid for calibration function please check
+    private boolean onWhite = false;
 
 
     public LineFollower(int leftLineSensorPin, int rightLineSensorPin, LineFollowCallback lineFollowCallback) {
@@ -99,15 +100,36 @@ public class LineFollower implements Updatable {
         }
     }
 
-    //TODO: Remove if it remains unused on final release.
+
     //editid for calibration function please check
     public void calibrate() {
-        this.sensorTweak = BoeBot.analogRead(this.centralLineSensorPin);
+        //black surface
+        int blackCalibration = this.calibrateMeasurement();
+
+        //white surface
+        int whiteCalibration = 0;
+
+        //TODO: find reliable way to determine if bot is on white surface, likely through user input
+        if (onWhite){
+            whiteCalibration = this.calibrateMeasurement();
+        }
+        this.sensorTweak = (whiteCalibration + blackCalibration) / 2;
     }
 
     //editid for calibration function please check
     public void calibrate(int value) {
         this.sensorTweak = value;
+    }
+
+    private int calibrateMeasurement(){
+        int total = 0;
+        for (int i = 0; i < 10; i++){
+            total = total + BoeBot.analogRead(0);
+            total = total + BoeBot.analogRead(1);
+            total = total + BoeBot.analogRead(2);
+            BoeBot.wait(1);
+        }
+        return total / 30;
     }
 
     /**
