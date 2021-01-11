@@ -44,6 +44,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private boolean turningRight = false;
     private boolean turnAtEnd = false;
     private TimerWithState routeTimer = new TimerWithState(2000, false);
+    private TimerWithState routeWaitTimer = new TimerWithState(10000, false);
     private TimerWithState turnAtEndTimer = new TimerWithState(500, false);
 
     public DriveSystem() {
@@ -194,6 +195,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 //TODO: notification for driving backwards?
                 this.turnAtEndTimer.mark();
                 this.turnAtEndTimer.setOn(true);
+            } else if (routeWaitTimer.isOn() && routeWaitTimer.timeout()) {
+                this.followLine(true);
+                this.routeWaitTimer.setOn(false);
             } else {
                 // When the BoeBot is turned around, reverse the route and follow the new route, back to the starting position.
                 this.route.reverse();
@@ -238,6 +242,11 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.routeTimer.mark();
                 this.routeTimer.setOn(true);
                 break;
+            case Route.DESTINATION:
+                this.followLine(false);
+                this.stop();
+                this.routeWaitTimer.mark();
+                this.routeWaitTimer.setOn(true);
             default:
                 // If there are no valid instructions, stop following the route.
                 //TODO: Set the notification MissingRouteNotification.

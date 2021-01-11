@@ -12,6 +12,7 @@ public class Route {
     static final int LEFT = -1;
     static final int FORWARD = 0;
     static final int RIGHT = 1;
+    static final int DESTINATION = 3;
     static final int NONE = 2;
 
     private ArrayList<Integer> route;
