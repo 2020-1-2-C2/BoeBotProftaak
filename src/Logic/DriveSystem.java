@@ -287,6 +287,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         // Following the line normally while not turning
         if (this.followLine && !this.turningRight && !this.turningLeft) {
             switch (linePosition) {
+                case NOT_ON_LINE:
+                    this.stop();
                 case ON_LINE:
                     this.setSpeed(this.followSpeed);
                     break;

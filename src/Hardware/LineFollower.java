@@ -14,6 +14,7 @@ import Utils.Updatable;
 public class LineFollower implements Updatable {
 
     public enum LinePosition {
+        NOT_ON_LINE,
         LEFT_OF_LINE,
         JUST_LEFT_OF_LINE,
         RIGHT_OF_LINE,
@@ -79,7 +80,10 @@ public class LineFollower implements Updatable {
 
 
     private void detectLine3Sensors() {
-        if (!this.leftSeesBlack() && !this.rightSeesBlack() && this.centerSeesBlack()) {
+        if (!this.leftSeesBlack() && !this.rightSeesBlack() && !this.centerSeesBlack()) {
+            System.out.println("not on line");
+            this.callBack = LinePosition.NOT_ON_LINE;
+        } else if (!this.leftSeesBlack() && !this.rightSeesBlack() && this.centerSeesBlack()) {
             System.out.println("on line");
             this.callBack = LinePosition.ON_LINE;
         } else if (this.leftSeesBlack() && this.centerSeesBlack() && !this.rightSeesBlack()) {
