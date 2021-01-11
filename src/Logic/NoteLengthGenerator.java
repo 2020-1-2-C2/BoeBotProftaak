@@ -10,7 +10,7 @@ package Logic;
  * @see AudioPlaySystem
  * @see MusicNote#getNoteLength()
  */
-public class NoteLengthGenerator {
+class NoteLengthGenerator {
     //Source of information: https://musescore.org/en/node/22609
 
     //All attributes related to the timing are based on the BPM. You can see this in the constructor.
