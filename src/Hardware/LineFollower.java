@@ -124,9 +124,9 @@ public class LineFollower implements Updatable {
     private int calibrateMeasurement(){
         int total = 0;
         for (int i = 0; i < 10; i++){
-            total = total + BoeBot.analogRead(0);
-            total = total + BoeBot.analogRead(1);
-            total = total + BoeBot.analogRead(2);
+            total = total + BoeBot.analogRead(this.leftLineSensorPin);
+            total = total + BoeBot.analogRead(this.centralLineSensorPin);
+            total = total + BoeBot.analogRead(this.rightLineSensorPin);
             BoeBot.wait(1);
         }
         return total / 30;
