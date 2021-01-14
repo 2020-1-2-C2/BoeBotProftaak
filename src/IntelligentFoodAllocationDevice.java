@@ -60,6 +60,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
     private HashMap<Integer, Executable> onInfraredCommandMap;
     private HashMap<BluetoothReceiver.Commands, Executable> onBlueToothCommandMap;
+    private LineFollowerController lineFollowerController = new LineFollowerController(this.driveSystem);
 
 
     /**
@@ -89,12 +90,11 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
         InfraredController infraredController = new InfraredController(this);
         CollisionDetection collisionDetection = new CollisionDetection(this);
-        LineFollowerController lineFollowerController = new LineFollowerController(driveSystem);
 
         //Adds all the updatables to an ArrayList.
         Collections.addAll(this.updatables, collisionDetection, this.driveSystem,
                 shapes, infraredController, this.notificationSystemController,
-                lineFollowerController, bluetoothController
+                this.lineFollowerController, this.bluetoothController
         );
 
         // initialises the HashMaps which holds the commands to use.
@@ -232,6 +232,9 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                     //TODO: Check whether we should use StringBuilder for better performance. ; String concatenation.
                 }
             }
+        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.AUTO_CALIBRATE, () -> {
+            this.lineFollowerController.calibrate();
         });
     }
 
