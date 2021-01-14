@@ -2,6 +2,7 @@ package Hardware;
 
 import TI.BoeBot;
 import TI.PinMode;
+import TI.Timer;
 import Utils.InfraredCallback;
 import Utils.Updatable;
 
@@ -19,6 +20,7 @@ public class InfraredReceiver implements Updatable {
     private int pinId;
     private InfraredCallback infraredCallback;
     private ArrayList<Integer> possibleButtons;
+    private Timer infraredTimer = new Timer(50);
 
     // Binary representations of remote buttons.
     public static final int FORWARD  = 0b000010010000;
@@ -51,6 +53,7 @@ public class InfraredReceiver implements Updatable {
         this.possibleButtons = new ArrayList<>();
         Collections.addAll(this.possibleButtons, FORWARD, BACKWARD, RIGHT, LEFT, ONE, TWO, THREE, FOUR, FIVE, SIX,
                 SEVEN, EIGHT, NINE, ZERO, POWER, TRIANGLE, TVVCR);
+        this.infraredTimer.mark();
     }
 
     /**
@@ -103,7 +106,8 @@ public class InfraredReceiver implements Updatable {
      */
     @Override
     public void update() {
-        if (listenForStartSignal()) {
+        if (listenForStartSignal() && this.infraredTimer.timeout()) {
+            this.infraredTimer.mark();
             this.infraredCallback.onInfraredButton(convertBitSignalToBinary(listenForBitSignal()));
         }
     }

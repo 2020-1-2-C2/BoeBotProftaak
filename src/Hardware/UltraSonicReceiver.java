@@ -32,6 +32,7 @@ public class UltraSonicReceiver implements Updatable {
         this.pinIdEcho = pinIdEcho;
         BoeBot.setMode(this.pinIdEcho, PinMode.Input);
         this.ultraSonicCallback = ultraSonicCallback;
+        this.ultraSonicPulseTimer.mark();
     }
 
     /**
@@ -76,6 +77,7 @@ public class UltraSonicReceiver implements Updatable {
     @Override
     public void update() {
         if (this.ultraSonicPulseTimer.timeout()) {
+            this.ultraSonicPulseTimer.mark();
             this.ultraSonicCallback.onUltraSonicPulse(distance());
         }
     }

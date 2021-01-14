@@ -1,6 +1,7 @@
 package Hardware;
 
 import TI.BoeBot;
+import TI.Timer;
 import Utils.LineFollowCallback;
 import Utils.Updatable;
 
@@ -31,6 +32,8 @@ public class LineFollower implements Updatable {
     private int centralLineSensorPin;
     private LinePosition callBack;
 
+    private Timer lineFollowerTimer = new Timer(50);
+
     private int sensorTweak;    //editid for calibration function please check
     private boolean onWhite = false;
 
@@ -45,6 +48,7 @@ public class LineFollower implements Updatable {
         this.rightLineSensorPin = rightLineSensorPin;
         this.centralLineSensorPin = middleLineSensorPin;
         this.sensorTweak = 1200; //editid for calibration function please check
+        this.lineFollowerTimer.mark();
     }
 
     private boolean leftSeesBlack() {
@@ -60,6 +64,10 @@ public class LineFollower implements Updatable {
         return BoeBot.analogRead(this.centralLineSensorPin) > this.sensorTweak;
     }
 
+    /**
+     * Sends a callback saying where the robot is located relative to the line
+     * Used when 2 linefollower components are attached to breadboard
+     */
     private void detectLine2Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack()) {
             this.callBack = LinePosition.ON_LINE;
@@ -78,7 +86,10 @@ public class LineFollower implements Updatable {
         }
     }
 
-
+    /**
+     * Sends a callback saying where the robot is located relative to the line
+     * Used when 3 linefollower components are attached to breadboard
+     */
     private void detectLine3Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack() && !this.centerSeesBlack()) {
             System.out.println("not on line");
@@ -105,7 +116,9 @@ public class LineFollower implements Updatable {
     }
 
 
-    //editid for calibration function please check
+    /**
+     * Used to calibrate the linefollowers. Sets sensorTweak to new value calculated from measurements
+     */
     public void calibrate() {
         //black surface
         int blackCalibration = this.calibrateMeasurement();
@@ -125,15 +138,27 @@ public class LineFollower implements Updatable {
         this.sensorTweak = value;
     }
 
+    /**
+     * Used by calibrate method, to acquire a measurement to be used for calibration.
+     * This method is first called when the robot is positioned over a black surface, and next when over a white surface.
+     * @return Average of 10 measurements by each linefollower component
+     */
     private int calibrateMeasurement(){
         int total = 0;
         for (int i = 0; i < 10; i++){
             total = total + BoeBot.analogRead(this.leftLineSensorPin);
-            total = total + BoeBot.analogRead(this.centralLineSensorPin);
+            if (this.centralLineSensorPin != -1){
+                total = total + BoeBot.analogRead(this.centralLineSensorPin);
+            }
             total = total + BoeBot.analogRead(this.rightLineSensorPin);
             BoeBot.wait(1);
         }
-        return total / 30;
+        if (this.centralLineSensorPin != -1){
+            return total / 30;
+        } else {
+            return total / 20;
+        }
+
     }
 
     /**
@@ -142,11 +167,14 @@ public class LineFollower implements Updatable {
      */
     @Override
     public void update() {
-        if (this.centralLineSensorPin == -1) {
-            this.detectLine2Sensors();
-        } else {
-            this.detectLine3Sensors();
+        if (this.lineFollowerTimer.timeout()){
+            if (this.centralLineSensorPin == -1) {
+                this.detectLine2Sensors();
+            } else {
+                this.detectLine3Sensors();
+            }
         }
+
 
         this.lineFollowCallback.onLineFollow(this.callBack);
     }
