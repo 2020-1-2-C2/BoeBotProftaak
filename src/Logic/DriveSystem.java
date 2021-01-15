@@ -200,7 +200,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.routeWaitTimer.setOn(false);
             } else {
                 // When the BoeBot is turned around, reverse the route and follow the new route, back to the starting position.
-                this.route.reverse();
                 this.followRoute(this.route);
             }
             this.routeTimer.setOn(false);
@@ -234,6 +233,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.turnRight();
                 break;
             case Route.NONE:
+                this.route.reverse();
                 this.followLine(false);
                 this.setFollowingRoute(false);
                 this.stop();
@@ -273,6 +273,12 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.routeTimer.setOn(false);
     }
 
+    public void resumeRoute() {
+        if (this.route != null) {
+            followRoute(this.route);
+        }
+    }
+
     /**
      * Set the value of following route.
      * @param followingRoute value to set
@@ -281,15 +287,14 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.followingRoute = followingRoute;
     }
 
-    //TODO situation where the line stops, the robot should stop then
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
         // Following the line normally while not turning
         if (this.followLine && !this.turningRight && !this.turningLeft) {
             switch (linePosition) {
                 case NOT_ON_LINE:
-                    this.stop();
                     this.followLine(false);
+                    this.stop();
                 case ON_LINE:
                     this.setSpeed(this.followSpeed);
                     break;
