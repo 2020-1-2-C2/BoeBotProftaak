@@ -273,6 +273,10 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.routeTimer.setOn(false);
     }
 
+
+    /**
+     * Resume following of route after it is interrupted.
+     */
     public void resumeRoute() {
         if (this.route != null) {
             followRoute(this.route);
