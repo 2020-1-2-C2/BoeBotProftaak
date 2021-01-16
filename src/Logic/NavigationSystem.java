@@ -24,6 +24,9 @@ public class NavigationSystem {
     private int goalCoordX;
     private int goalCoordY;
 
+    private int counter;
+
+    private ArrayList<Character> completeRoute;
     private ArrayList<Integer> routeToNavigate;
 
     private int direction;
@@ -46,7 +49,9 @@ public class NavigationSystem {
         this.goalCoordY = goalCoordY;
         this.direction = FORWARD;
         this.routeToNavigate = new ArrayList<>();
+        this.completeRoute = new ArrayList<>();
         this.faceForward();
+        this.counter = 0;
     }
 
     /**
@@ -65,7 +70,22 @@ public class NavigationSystem {
     /**
      * Calculates the distance and adds instructions to this <code>routeToNavigate</code> ArrayList accordingly.
      */
-    private void calculateRoute (){
+    private void calculateRoute() {
+        if (!this.completeRoute.isEmpty() && this.counter == 0) {
+            this.currentCoordX = this.completeRoute.get(this.counter);
+            this.currentCoordY = this.completeRoute.get(this.counter + 1);
+            this.goalCoordX = this.completeRoute.get(this.counter + 2);
+            this.goalCoordY = this.completeRoute.get(this.counter + 3);
+            this.counter++;
+        } else if (!this.completeRoute.isEmpty() && this.counter >= 1) {
+            this.currentCoordX = this.completeRoute.get(this.counter + 1);
+            this.currentCoordY = this.completeRoute.get(this.counter + 2);
+            this.goalCoordX = this.completeRoute.get(this.counter + 3);
+            this.goalCoordY = this.completeRoute.get(this.counter + 4);
+            this.counter++;
+        }
+
+
         int differenceX =  this.goalCoordX - this.currentCoordX;
         int differenceY =  this.goalCoordY - this.currentCoordY;
 
@@ -112,6 +132,12 @@ public class NavigationSystem {
                 this.routeToNavigate.add(FORWARD);
             }
         }
+
+        if (!this.completeRoute.isEmpty()) {
+            if (this.goalCoordY != this.completeRoute.get(this.completeRoute.size() - 1)) {
+                calculateRoute();
+            }
+        }
     }
 
     /**
@@ -135,7 +161,22 @@ public class NavigationSystem {
      */
     public Route getRoute(){
         this.calculateRoute();
+        this.counter = 0;
+        System.out.println("Route to navigate: " + this.routeToNavigate);
         return new Route(this.routeToNavigate);
+    }
+
+    public void clearRoute() {
+        this.counter = 0;
+        this.completeRoute.clear();
+        this.currentCoordX = 0;
+        this.currentCoordY = 0;
+        this.goalCoordX = 0;
+        this.goalCoordY = 0;
+    }
+
+    public ArrayList<Character> getCompleteRoute() {
+        return this.completeRoute;
     }
 
 }

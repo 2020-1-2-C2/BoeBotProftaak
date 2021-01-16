@@ -102,21 +102,11 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onBlueToothCommandMap = new HashMap<>();
         // Fills the HashMaps with commands.
         // Infrared button commands:
-        this.onInfraredCommandMap.put(InfraredReceiver.POWER, () -> {
-            this.driveSystem.stop();
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.FORWARD, () -> {
-            this.driveSystem.setDirection(DriveSystem.FORWARD);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.BACKWARD, () -> {
-            this.driveSystem.setDirection(DriveSystem.BACKWARD);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.RIGHT, () -> {
-            this.driveSystem.turnRight();
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.LEFT, () -> {
-            this.driveSystem.turnLeft();
-        });
+        this.onInfraredCommandMap.put(InfraredReceiver.POWER, () -> this.driveSystem.stop());
+        this.onInfraredCommandMap.put(InfraredReceiver.FORWARD, () -> this.driveSystem.setDirection(DriveSystem.FORWARD));
+        this.onInfraredCommandMap.put(InfraredReceiver.BACKWARD, () -> this.driveSystem.setDirection(DriveSystem.BACKWARD));
+        this.onInfraredCommandMap.put(InfraredReceiver.RIGHT, () -> this.driveSystem.turnRight());
+        this.onInfraredCommandMap.put(InfraredReceiver.LEFT, () -> this.driveSystem.turnLeft());
         this.onInfraredCommandMap.put(InfraredReceiver.ONE, () -> {
             this.driveSystem.setSpeed(10);
             setNotification(new DisconnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
@@ -129,113 +119,71 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             this.driveSystem.setSpeed(30);
             setNotification(new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
         });
-        this.onInfraredCommandMap.put(InfraredReceiver.FOUR, () -> {
-            this.driveSystem.setSpeed(40);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.FIVE, () -> {
-            this.driveSystem.setSpeed(50);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.SIX, () -> {
-            this.driveSystem.setSpeed(60);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.SEVEN, () -> {
-            this.driveSystem.setSpeed(70);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.EIGHT, () -> {
-            this.driveSystem.setSpeed(80);
-        });
+        this.onInfraredCommandMap.put(InfraredReceiver.FOUR, () -> this.driveSystem.setSpeed(40));
+        this.onInfraredCommandMap.put(InfraredReceiver.FIVE, () -> this.driveSystem.setSpeed(50));
+        this.onInfraredCommandMap.put(InfraredReceiver.SIX, () -> this.driveSystem.setSpeed(60));
+        this.onInfraredCommandMap.put(InfraredReceiver.SEVEN, () -> this.driveSystem.setSpeed(70));
+        this.onInfraredCommandMap.put(InfraredReceiver.EIGHT, () -> this.driveSystem.setSpeed(80));
         this.onInfraredCommandMap.put(InfraredReceiver.NINE, () -> {
             this.driveSystem.setSpeed(90);
             //TODO: Test-code, should be removed once tested.
             this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
         });
-        this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> {
-            this.driveSystem.setSpeed(100);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> {
-            this.driveSystem.stop();
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> {
-            this.driveSystem.stop();
-        });
+        this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> this.driveSystem.setSpeed(100));
+        this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> this.driveSystem.stop());
+        this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> this.driveSystem.stop());
 
         // BluetoothReceiver commands.
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FORWARD, () -> {
-           this.driveSystem.setDirection(1);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.REVERSE, () -> {
-            this.driveSystem.setDirection(-1);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.STOP, () -> {
-            this.driveSystem.stop();
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.LEFT, () -> {
-            this.driveSystem.turnLeft();
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.RIGHT, () -> {
-            this.driveSystem.turnRight();
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.ONE, () -> {
-            this.driveSystem.setSpeed(10);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TWO, () -> {
-            this.driveSystem.setSpeed(20);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.THREE, () -> {
-            this.driveSystem.setSpeed(30);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FOUR, () -> {
-            this.driveSystem.setSpeed(40);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FIVE, () -> {
-            this.driveSystem.setSpeed(50);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.SIX, () -> {
-            this.driveSystem.setSpeed(60);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.SEVEN, () -> {
-            this.driveSystem.setSpeed(70);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.EIGHT, () -> {
-            this.driveSystem.setSpeed(80);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.NINE, () -> {
-            this.driveSystem.setSpeed(90);
-        });
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TEN, () -> {
-            this.driveSystem.setSpeed(100);
-        });
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FORWARD, () -> this.driveSystem.setDirection(1));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.REVERSE, () -> this.driveSystem.setDirection(-1));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.STOP, () -> this.driveSystem.stop());
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.LEFT, () -> this.driveSystem.turnLeft());
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.RIGHT, () -> this.driveSystem.turnRight());
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.ONE, () -> this.driveSystem.setSpeed(10));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TWO, () -> this.driveSystem.setSpeed(20));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.THREE, () -> this.driveSystem.setSpeed(30));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FOUR, () -> this.driveSystem.setSpeed(40));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FIVE, () -> this.driveSystem.setSpeed(50));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.SIX, () -> this.driveSystem.setSpeed(60));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.SEVEN, () -> this.driveSystem.setSpeed(70));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.EIGHT, () -> this.driveSystem.setSpeed(80));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.NINE, () -> this.driveSystem.setSpeed(90));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TEN, () -> this.driveSystem.setSpeed(100));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.START_ROUTE, () -> {
             boolean reading = true;
             String route = "";
-            //This is a block and call, but should only be used when the bot is stationary. This loop is only used for a maximum of 4 cycles.
             while (reading) {
                 int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
-                //Stop signal.
                 if (data == 126) {
-                    reading = false;
-                    //A length of 2 means that only the end point is received.
-                    if (route.length() == 2) {
-                        NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
-                        navigationSystem.getRoute();
-                        //A length of 4 means that there is a start and end point.
-                    } else if (route.length() == 4) {
-                        NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(2), route.charAt(3));
-                        navigationSystem.getRoute();
-                    } else {
-                        System.out.println("Invalid route data received.\nReceived data: " + data);
-                    }
-                    System.out.println(route);
-                    route = "";
-                } else {
-                    route += ((char) data);
-                    //TODO: Check whether we should use StringBuilder for better performance. ; String concatenation.
+                    break;
+                } else { route += (char) data; }
+            }
+
+            if (route.length() < 3) {
+                System.out.println("Route: (2) " + route);
+                NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
+                navigationSystem.getRoute();
+            } else if (route.length() > 2 && route.length() < 5) {
+                System.out.println("Route: (4) " + route);
+                NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(2), route.charAt(3));
+                navigationSystem.getRoute();
+            } else if (route.length() > 4) {
+                System.out.println("Route: (5+) " + route);
+                NavigationSystem navigationSystem = new NavigationSystem(0, 0);
+                navigationSystem.getCompleteRoute().clear();
+                for (int i = 0; i < route.length(); i++) {
+                    navigationSystem.getCompleteRoute().add(route.charAt(i));
                 }
+                System.out.println(navigationSystem.getCompleteRoute());
+                navigationSystem.getRoute();
             }
         });
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.AUTO_CALIBRATE, () -> {
             this.lineFollowerController.calibrate();
         });
+
+        /*TODO: NOTE: THE DEFAULT COMMAND IS REQUIRED TO PREVENT THE MAIN WHILE LOOP FROM THROWING A NULL POINTER EXCEPTION.*/
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {});
     }
 
     /**
@@ -334,8 +282,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * This method will listen for commands that are sent by bluetooth. If the START_ROUTE command is called it will start a while loop for how ever long it will take to
      * read the data. This will usually only take a couple ms. Then it will put the number in a string. That string will then be split into separate integers that are
      * used to create a new NavigationSystem object. (First int = x, second int = y)
-     * TODO: Possible string length check, depends on if we want to use more coords.
-     * @param command //TODO: SPECIFY THIS!
+     * @param command BluetoothReceiver.Commands
      */
     @Override
     public void onBlueToothControllerCommand(BluetoothReceiver.Commands command) {

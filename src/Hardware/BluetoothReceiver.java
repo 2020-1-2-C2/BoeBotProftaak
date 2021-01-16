@@ -113,5 +113,4 @@ public class BluetoothReceiver implements Updatable {
     public void update() {
         this.bluetoothCallback.onBluetoothReceive(listenForSignal());
     }
-
 }
