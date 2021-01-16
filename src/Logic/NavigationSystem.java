@@ -36,6 +36,7 @@ public class NavigationSystem {
     private static final int RIGHT = 1;
     private static final int BACKWARDS = 3;
 
+    //TODO consider if this should even be implemented, if everything works correctly then the start should always be given, not assumed
     /**
      * Constructor which only takes the destination's coordinates. The <code>currentCoord</code>s will be set to 0.
      * @param goalCoordX X-coordinate of destination. Think about this like your car's GPS.

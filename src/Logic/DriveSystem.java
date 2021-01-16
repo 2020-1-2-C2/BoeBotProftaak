@@ -43,9 +43,13 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private boolean turningLeft = false;
     private boolean turningRight = false;
     private boolean turnAtEnd = false;
-    private TimerWithState routeTimer = new TimerWithState(2000, false);
-    private TimerWithState routeWaitTimer = new TimerWithState(10000, false);
-    private TimerWithState turnAtEndTimer = new TimerWithState(500, false);
+    private TimerWithState routeTimer = new TimerWithState(10000, false);
+    private TimerWithState routeWaitTimer = new TimerWithState(2000, false);
+    private TimerWithState turnAtEndTimer = new TimerWithState(1000, false);
+    private boolean hasTurnedAroundAtTheEndOfRoute = false;
+    private boolean getReadyForNextRoute = false;
+
+    private boolean ridingUntillTheNextCrossroad = false;
 
     public DriveSystem() {
         this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, DirectionalServo.RIGHTSIDESERVOORIENTATION),
@@ -182,27 +186,54 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
         this.debugToString();
         //TODO: if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly.
-        if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
-            // Stop driving backwards and start turning around.
-            this.stop();
-            this.turnLeft(50);
-            this.turnAtEndTimer.setOn(false);
-        } else if (this.routeTimer.isOn() && this.routeTimer.timeout()) {
-            if (this.turnAtEnd) {
+        if (!this.hasTurnedAroundAtTheEndOfRoute) {
+            if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
+                // Stop driving backwards and start turning around.
+                this.stop();
+                // always turn to the left
+                this.setDirection(FORWARD);
+                this.turnLeft(50);
+                this.turnAtEndTimer.setOn(false);
+            } else if (this.turnAtEnd && this.routeTimer.isOn() && this.routeTimer.timeout()) {
                 // Start driving backwards at a minimal speed when then end of a route is reached and set a timer to stop this.
                 this.setSpeed(10);
                 this.setDirection(BACKWARD);
                 //TODO: notification for driving backwards?
                 this.turnAtEndTimer.mark();
                 this.turnAtEndTimer.setOn(true);
+                this.routeTimer.setOn(false);
             } else if (routeWaitTimer.isOn() && routeWaitTimer.timeout()) {
+                // When the BoeBot is turned around and has waited 10 seconds, follow the new reversed route back to the starting position.
                 this.followLine(true);
                 this.routeWaitTimer.setOn(false);
-            } else {
-                // When the BoeBot is turned around, reverse the route and follow the new route, back to the starting position.
                 this.followRoute(this.route);
+                this.hasTurnedAroundAtTheEndOfRoute = true;
             }
-            this.routeTimer.setOn(false);
+        }
+        // logic for getting ready for the next route when the previous has finished
+        if (this.hasTurnedAroundAtTheEndOfRoute && this.getReadyForNextRoute) {
+            if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
+                // Stop driving forwards and start turning around.
+                this.stop();
+                // always turn to the left
+                this.turnLeft(50);
+                this.turnAtEndTimer.setOn(false);
+            } else if (this.turnAtEnd && this.routeTimer.isOn() && this.routeTimer.timeout()) {
+                // Start driving forwards slowly to pass the crossroad.
+                this.setSpeed(10);
+                this.setDirection(FORWARD);
+                this.turnAtEndTimer.mark();
+                this.turnAtEndTimer.setOn(true);
+                this.routeTimer.setOn(false);
+            } else if (routeWaitTimer.isOn()) {
+                // When the bot has turned around it can then stop and wait for further instructions, doesn't have to wait the 10 seconds here
+                this.routeWaitTimer.setOn(false);
+                this.hasTurnedAroundAtTheEndOfRoute = false;
+                this.getReadyForNextRoute = false;
+                // Follow the line untill the next crossroad, then stop
+                this.followingRoute = true;
+                this.ridingUntillTheNextCrossroad = true;
+            }
         }
     }
 
@@ -233,15 +264,19 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.turnRight();
                 break;
             case Route.NONE:
-                this.route.reverse();
                 this.followLine(false);
                 this.setFollowingRoute(false);
                 this.stop();
-                // Start the process of turning around and following the route back.
                 this.turnAtEnd = true;
                 this.routeTimer.mark();
                 this.routeTimer.setOn(true);
-                break;
+                if (!this.hasTurnedAroundAtTheEndOfRoute) {
+                    this.route.reverse();
+                    break;
+                } else {
+                    this.getReadyForNextRoute = true;
+                    break;
+                }
             case Route.DESTINATION:
                 this.followLine(false);
                 this.stop();
@@ -318,6 +353,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     break;
                 case CROSSING:
                     this.stop();
+                    if (this.ridingUntillTheNextCrossroad) {
+                        this.followingRoute = false;
+                    }
                     // If a route is being followed detect crossroads to determine the next step in the route.
                     if (this.isFollowingRoute()) {
                         this.routeNextStep();
@@ -342,17 +380,13 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             // Once the turn has been completed it stops and waits for a new timer to expire before following the new route.
         } else if (this.turnAtEnd) {
             switch (linePosition) {
+                // Turning can only happen in one direction, otherwise it will stop almost immediately.
+                // For now it turns leftwards.
                 case RIGHT_OF_LINE:
                     this.turnAtEnd = false;
                     this.stop();
-                    this.routeTimer.mark();
-                    this.routeTimer.setOn(true);
-                    break;
-                case LEFT_OF_LINE:
-                    this.turnAtEnd = false;
-                    this.stop();
-                    this.routeTimer.mark();
-                    this.routeTimer.setOn(true);
+                    this.routeWaitTimer.mark();
+                    this.routeWaitTimer.setOn(true);
                     break;
             }
         }

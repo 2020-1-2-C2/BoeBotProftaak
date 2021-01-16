@@ -130,6 +130,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
         });
         this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> this.driveSystem.setSpeed(100));
+
+        //TODO actually do the shapes here instead of just stopping
         this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> this.driveSystem.stop());
         this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> this.driveSystem.stop());
 
@@ -155,7 +157,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             while (reading) {
                 int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
                 if (data == 126) {
-                    break;
+                    reading = false;
                 } else { route += (char) data; }
             }
 

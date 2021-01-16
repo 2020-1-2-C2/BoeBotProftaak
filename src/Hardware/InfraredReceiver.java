@@ -106,7 +106,7 @@ public class InfraredReceiver implements Updatable {
      */
     @Override
     public void update() {
-        if (listenForStartSignal() && this.infraredTimer.timeout()) {
+        if (this.infraredTimer.timeout() && listenForStartSignal()) {
             this.infraredTimer.mark();
             this.infraredCallback.onInfraredButton(convertBitSignalToBinary(listenForBitSignal()));
         }

@@ -51,7 +51,7 @@ public class Route {
             if (route.get(i) == LEFT) {
                 this.route.set(i, RIGHT);
             } else if (this.route.get(i) == RIGHT) {
-                this.route.set(i,LEFT);
+                this.route.set(i, LEFT);
             }
         }
         Collections.reverse(this.route);

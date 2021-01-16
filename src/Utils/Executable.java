@@ -5,6 +5,5 @@ package Utils;
  * @author Martijn de Kam
  */
 public interface Executable {
-
     void Execute();
 }
