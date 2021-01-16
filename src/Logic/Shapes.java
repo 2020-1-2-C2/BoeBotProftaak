@@ -55,7 +55,7 @@ public class Shapes implements Updatable {
                 this.driveSystem.stop();
                 this.triangleTimer.setInterval(1350);
                 this.triangleSegmentBoolean = false;
-                this.driveSystem.turnLeft(60);
+                this.driveSystem.turn(DriveSystem.LEFT, 50);
                 this.triangleCounter++;
             } else {
                 this.driveSystem.setSpeed(20);

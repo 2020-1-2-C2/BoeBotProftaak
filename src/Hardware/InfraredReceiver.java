@@ -20,7 +20,7 @@ public class InfraredReceiver implements Updatable {
     private int pinId;
     private InfraredCallback infraredCallback;
     private ArrayList<Integer> possibleButtons;
-    private Timer infraredTimer = new Timer(50);
+    private Timer infraredTimer = new Timer(20);
 
     // Binary representations of remote buttons.
     public static final int FORWARD  = 0b000010010000;

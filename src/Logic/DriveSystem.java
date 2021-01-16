@@ -33,10 +33,10 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private boolean followLine = false;
     private int followSpeed;
 
-    public static final int FORWARD = 1;
-    public static final int BACKWARD = -1;
-    private static final boolean RIGHT = true;
-    private static final boolean LEFT = false;
+    public static final int FORWARD = -1;
+    public static final int BACKWARD = 1;
+    public static final boolean RIGHT = true;
+    public static final boolean LEFT = false;
 
     private boolean followingRoute = false;
     private Route route;
@@ -83,26 +83,25 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         }
     }
 
+    /**
+     * Turn left at the lowest speed
+     */
     public void turnLeft() {
-        turn(LEFT, this.MAX_SPEED / this.STEPS * 2);
-    }
-
-    public void turnRight() {
-        turn(RIGHT, this.MAX_SPEED / this.STEPS * 2);
+        turn(LEFT, this.MAX_SPEED / this.STEPS);
     }
 
     /**
-     * @param speed speed in percent.
+     * Turn right at the lowest speed
      */
-    void turnLeft(int speed) {
-        turn(LEFT, speed);
+    public void turnRight() {
+        turn(RIGHT, this.MAX_SPEED / this.STEPS);
     }
 
     /**
      * @param direction true = right, false = left.
      * @param speed     speed in percent.
      */
-    private void turn(boolean direction, int speed) {
+    public void turn(boolean direction, int speed) {
         if (direction) {
             this.currentSpeedRight = this.currentSpeed - speed / 2;
             this.currentSpeedLeft = this.currentSpeed + speed / 2;
@@ -121,7 +120,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
         this.motor.goToSpeedRight(this.currentSpeedRight * this.direction, this.ACCELERATION_TIME);
         this.motor.goToSpeedLeft(this.currentSpeedLeft * this.direction, this.ACCELERATION_TIME);
-
     }
 
     /**
@@ -192,7 +190,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.stop();
                 // always turn to the left
                 this.setDirection(FORWARD);
-                this.turnLeft(50);
+                this.turn(LEFT, 50);
                 this.turnAtEndTimer.setOn(false);
             } else if (this.turnAtEnd && this.routeTimer.isOn() && this.routeTimer.timeout()) {
                 // Start driving backwards at a minimal speed when then end of a route is reached and set a timer to stop this.
@@ -216,7 +214,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 // Stop driving forwards and start turning around.
                 this.stop();
                 // always turn to the left
-                this.turnLeft(50);
+                this.turn(LEFT, 50);
                 this.turnAtEndTimer.setOn(false);
             } else if (this.turnAtEnd && this.routeTimer.isOn() && this.routeTimer.timeout()) {
                 // Start driving forwards slowly to pass the crossroad.

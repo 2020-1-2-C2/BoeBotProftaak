@@ -17,7 +17,7 @@ public class UltraSonicReceiver implements Updatable {
 
     private int pinIdTrigger;
     private int pinIdEcho;
-    private Timer ultraSonicPulseTimer = new Timer(50);
+    private Timer ultraSonicPulseTimer = new Timer(65);
     private UltraSonicCallback ultraSonicCallback;
 
     /**
