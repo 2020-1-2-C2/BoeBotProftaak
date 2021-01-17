@@ -16,11 +16,13 @@ public class NotificationSystemController implements Updatable {
 
     private ArrayList<NeoPixelLed> neoPixelLeds;
     private Buzzer buzzer;
+    private DriveSystem driveSystem;
 
-    public NotificationSystemController() {
+    public NotificationSystemController(DriveSystem driveSystem) {
         this.updatables = new ArrayList<>();
         this.neoPixelLeds = new ArrayList<>();
         this.buzzer = new Buzzer(Configuration.buzzerPinId);
+        this.driveSystem = driveSystem;
 
         // Filling the NeoPixelLeds ArrayList.
         Collections.addAll(this.neoPixelLeds, new NeoPixelLed(0), new NeoPixelLed(1), new NeoPixelLed(2),
@@ -44,5 +46,12 @@ public class NotificationSystemController implements Updatable {
         for (Updatable u : this.updatables) {
             u.update();
         }
+
+        if (this.driveSystem.getDirection() == DriveSystem.BACKWARD){
+            //TODO: Activate reverse notification.
+            // TODO: Create boolean to see whether a notification is active.
+            //TODO: If direction == FORWARD, turn off notification (create new EmptyNotification).
+        }
+
     }
 }

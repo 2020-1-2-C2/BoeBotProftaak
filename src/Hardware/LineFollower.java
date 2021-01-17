@@ -32,7 +32,7 @@ public class LineFollower implements Updatable {
     private int centralLineSensorPin;
     private LinePosition callBack;
 
-    private Timer lineFollowerTimer = new Timer(50);
+    private Timer lineFollowerTimer = new Timer(100);
 
     private int sensorTweak;    //editid for calibration function please check
     private boolean onWhite = false;
@@ -73,15 +73,15 @@ public class LineFollower implements Updatable {
             this.callBack = LinePosition.ON_LINE;
 
         } else if (this.rightSeesBlack() && !this.leftSeesBlack()) {
-            System.out.println("Left of line");
+//            System.out.println("Left of line");
             this.callBack = LinePosition.LEFT_OF_LINE;
 
         } else if (this.leftSeesBlack() && !this.rightSeesBlack()) {
-            System.out.println("Right of line");
+//            System.out.println("Right of line");
             this.callBack = LinePosition.RIGHT_OF_LINE;
 
         } else {
-            System.out.println("kruispunt");
+//            System.out.println("kruispunt");
             this.callBack = LinePosition.CROSSING;
         }
     }
@@ -175,8 +175,9 @@ public class LineFollower implements Updatable {
             }
         }
 
-
-        this.lineFollowCallback.onLineFollow(this.callBack);
+        if (this.callBack != null){
+            this.lineFollowCallback.onLineFollow(this.callBack);
+        }
     }
 }
 

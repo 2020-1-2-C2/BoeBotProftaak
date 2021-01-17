@@ -36,6 +36,35 @@ public class Shapes implements Updatable {
     }
 
     /**
+     * Enums to define which shape to drive.
+     * This can either be a circle or a triangle.
+     */
+    public enum Shape {
+        CIRCLE, TRIANGLE
+    }
+
+
+    /**
+     * This method is a setup for the shape.
+     * @param shape Shape enum/object
+     * //TODO: Put beginShape code in shapes themselves to remove unnecessary methods.
+     */
+    public void beginShape(Shape shape) {
+        this.driveSystem.stop();
+        this.driveSystem.setDirection(1);
+        this.driveSystem.setSpeed(20);
+        if (shape.equals(Shape.CIRCLE)) {
+            this.circleTimerEnabled = true;
+            this.circleTimer.setInterval(20000);
+            circle();
+        } else if (shape.equals(Shape.TRIANGLE)) {
+            this.triangleTimerEnabled = true;
+            this.triangleSegmentBoolean = false;
+            triangle();
+        }
+    }
+
+    /**
      * Drives in a circle.
      */
     private void circle() {
@@ -50,7 +79,7 @@ public class Shapes implements Updatable {
      * Drives in a triangle.
      */
     private void triangle() {
-        if (this.triangleCounter < 3) {
+        if (this.triangleCounter < 4) {
             if (this.triangleSegmentBoolean) {
                 this.driveSystem.stop();
                 this.triangleTimer.setInterval(1350);

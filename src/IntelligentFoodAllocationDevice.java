@@ -60,8 +60,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
     private HashMap<Integer, Executable> onInfraredCommandMap;
     private HashMap<BluetoothReceiver.Commands, Executable> onBlueToothCommandMap;
-    private LineFollowerController lineFollowerController = new LineFollowerController(this.driveSystem);
-
+    private LineFollowerController lineFollowerController;
 
     /**
      * Creates an instance of itself, and then initializes the attributes. After this has happened it goes through all the updatables in an endless loop. <p>
@@ -85,8 +84,9 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         // Creating all the different objects which will be used.
         this.driveSystem = new DriveSystem();
         Shapes shapes = new Shapes(this.driveSystem);
-        this.notificationSystemController = new NotificationSystemController();
+        this.notificationSystemController = new NotificationSystemController(this.driveSystem);
         this.bluetoothController = new BluetoothController(this);
+        this.lineFollowerController = new LineFollowerController(this.driveSystem);
 
         InfraredController infraredController = new InfraredController(this);
         CollisionDetection collisionDetection = new CollisionDetection(this);
@@ -109,15 +109,12 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onInfraredCommandMap.put(InfraredReceiver.LEFT, () -> this.driveSystem.turnLeft());
         this.onInfraredCommandMap.put(InfraredReceiver.ONE, () -> {
             this.driveSystem.setSpeed(10);
-            setNotification(new DisconnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
         });
         this.onInfraredCommandMap.put(InfraredReceiver.TWO, () -> {
             this.driveSystem.setSpeed(20);
-            setNotification(new ConnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
         });
         this.onInfraredCommandMap.put(InfraredReceiver.THREE, () -> {
             this.driveSystem.setSpeed(30);
-            setNotification(new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
         });
         this.onInfraredCommandMap.put(InfraredReceiver.FOUR, () -> this.driveSystem.setSpeed(40));
         this.onInfraredCommandMap.put(InfraredReceiver.FIVE, () -> this.driveSystem.setSpeed(50));
@@ -127,17 +124,17 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onInfraredCommandMap.put(InfraredReceiver.NINE, () -> {
             this.driveSystem.setSpeed(90);
             //TODO: Test-code, should be removed once tested.
-            this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
+//            this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
         });
         this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> this.driveSystem.setSpeed(100));
 
         //TODO actually do the shapes here instead of just stopping
-        this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> this.driveSystem.stop());
-        this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> this.driveSystem.stop());
+        this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> shapes.beginShape(Shapes.Shape.TRIANGLE));
+        this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> shapes.beginShape(Shapes.Shape.CIRCLE));
 
         // BluetoothReceiver commands.
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FORWARD, () -> this.driveSystem.setDirection(1));
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.REVERSE, () -> this.driveSystem.setDirection(-1));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FORWARD, () -> this.driveSystem.setDirection(DriveSystem.FORWARD));
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.REVERSE, () -> this.driveSystem.setDirection(DriveSystem.BACKWARD));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.STOP, () -> this.driveSystem.stop());
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.LEFT, () -> this.driveSystem.turnLeft());
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.RIGHT, () -> this.driveSystem.turnRight());
@@ -152,6 +149,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.NINE, () -> this.driveSystem.setSpeed(90));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TEN, () -> this.driveSystem.setSpeed(100));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.START_ROUTE, () -> {
+            this.setNotification(new FollowingRouteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
             boolean reading = true;
             String route = "";
             while (reading) {
@@ -164,11 +162,11 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             if (route.length() < 3) {
                 System.out.println("Route: (2) " + route);
                 NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
-                navigationSystem.getRoute();
+                this.driveSystem.followRoute(navigationSystem.getRoute());
             } else if (route.length() > 2 && route.length() < 5) {
                 System.out.println("Route: (4) " + route);
                 NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(2), route.charAt(3));
-                navigationSystem.getRoute();
+                this.driveSystem.followRoute(navigationSystem.getRoute());
             } else if (route.length() > 4) {
                 System.out.println("Route: (5+) " + route);
                 NavigationSystem navigationSystem = new NavigationSystem(0, 0);
@@ -177,7 +175,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                     navigationSystem.getCompleteRoute().add(route.charAt(i));
                 }
                 System.out.println(navigationSystem.getCompleteRoute());
-                navigationSystem.getRoute();
+                this.driveSystem.followRoute(navigationSystem.getRoute());
             }
         });
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.AUTO_CALIBRATE, () -> {
@@ -208,7 +206,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      */
     @Override
     public void onCollisionDetection(int distance) {
-        if (distance < 20) {
+        if (distance < 30) {
             // Prevent calling emergency stop if the speed is already 0, otherwise turning of the BoeBot is also prevented.
             if (this.driveSystem.getCurrentSpeed() != 0 && this.driveSystem.getCurrentMaxSpeed() != 0) {
                 this.driveSystem.followLine(false);
@@ -219,23 +217,23 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 setNotification(new EmergencyStopNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
                 System.out.println("Emergency stop");
             }
-        } else if (distance < 30) {
-            this.driveSystem.setCurrentMaxSpeed(10);
         } else if (distance < 40) {
-            this.driveSystem.setCurrentMaxSpeed(20);
+            this.driveSystem.setCurrentMaxSpeed(10);
         } else if (distance < 50) {
-            this.driveSystem.setCurrentMaxSpeed(30);
+            this.driveSystem.setCurrentMaxSpeed(20);
         } else if (distance < 60) {
-            this.driveSystem.setCurrentMaxSpeed(40);
+            this.driveSystem.setCurrentMaxSpeed(30);
         } else if (distance < 70) {
-            this.driveSystem.setCurrentMaxSpeed(50);
+            this.driveSystem.setCurrentMaxSpeed(40);
         } else if (distance < 80) {
-            this.driveSystem.setCurrentMaxSpeed(60);
+            this.driveSystem.setCurrentMaxSpeed(50);
         } else if (distance < 90) {
-            this.driveSystem.setCurrentMaxSpeed(70);
+            this.driveSystem.setCurrentMaxSpeed(60);
         } else if (distance < 100) {
-            this.driveSystem.setCurrentMaxSpeed(80);
+            this.driveSystem.setCurrentMaxSpeed(70);
         } else if (distance < 110) {
+            this.driveSystem.setCurrentMaxSpeed(80);
+        } else if (distance < 120) {
             this.driveSystem.setCurrentMaxSpeed(90);
         } else {
             this.driveSystem.setCurrentMaxSpeed(100);

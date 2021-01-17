@@ -33,8 +33,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private boolean followLine = false;
     private int followSpeed;
 
-    public static final int FORWARD = -1;
-    public static final int BACKWARD = 1;
+    public static final int FORWARD = 1;
+    public static final int BACKWARD = -1;
     public static final boolean RIGHT = true;
     public static final boolean LEFT = false;
 
@@ -81,6 +81,14 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             this.direction = direction;
             setSpeed(this.MAX_SPEED / this.STEPS);
         }
+    }
+
+    /**
+     * Auto-generated getter for <code>direction</code>.
+     * @return
+     */
+    public int getDirection() {
+        return this.direction;
     }
 
     /**
@@ -147,7 +155,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void followLine(boolean follow) {
         this.followLine = follow;
-        this.followSpeed = 50;
+        this.followSpeed = 25;
         this.setDirection(FORWARD);
     }
 
