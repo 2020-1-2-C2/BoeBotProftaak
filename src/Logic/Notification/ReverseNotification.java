@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Notification for when the BoeBot is driving backwards. Extends <code>AbstractNotification</code>.
  * @author Berend de Groot
- * @version 1.2
+ * @version 1.3
  * @see AbstractNotification
  */
 public class ReverseNotification extends AbstractNotification {
@@ -34,7 +34,7 @@ public class ReverseNotification extends AbstractNotification {
     @Override
     public void notificationSpecificMethod() {
         this.setBlinkTime(250);
-        this.getBuzzer().buzz(1000, 1000);
+        this.getBuzzer().buzz(1000, 500);
         this.useLightsBasedOnString();
     }
 }

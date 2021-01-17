@@ -2,6 +2,8 @@ package Logic.Notification;
 
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
+import Logic.Jingle;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -32,7 +34,7 @@ public class EmergencyStopNotification extends AbstractNotification {
      */
     @Override
     public void notificationSpecificMethod() {
-        this.getBuzzer().buzz(1000, this.notePitchGenerator.getNote("C#", 5));
+        this.getBuzzer().playSong(new Jingle().emergencyJingle());
         for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()){
             neoPixelLed.setColor(this.neoPixelLedColorA);
             neoPixelLed.on();

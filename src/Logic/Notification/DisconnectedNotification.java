@@ -36,7 +36,7 @@ public class DisconnectedNotification extends AbstractNotification {
     @Override
     public void notificationSpecificMethod() {
         this.setBlinkTime(250);
-        this.getBuzzer().playSong(new Jingle().somebodyThatIUsedToKnow());
+        this.getBuzzer().playSong(new Jingle().disconnectedJingle());
         this.useLightsBasedOnString();
     }
 }

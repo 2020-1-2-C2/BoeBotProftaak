@@ -44,7 +44,7 @@ public class Route {
 
 
     /**
-     * Reverse the route and continue from the end of the previous route.
+     * Reverses the route and continue from the end of the previous route.
      */
     void reverse() {
         for (int i = 0; i < this.route.size(); i++) {

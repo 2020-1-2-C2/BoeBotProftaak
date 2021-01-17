@@ -65,6 +65,7 @@ public class Buzzer implements Updatable {
                 if (this.noteDelayTimer.timeout()){
                     buzz(this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNoteLengthInMS(),
                             this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNotePitch());
+                    System.out.println(this.toString(this.selectedSong.getNotesToPlay().get(this.currentNoteCount)));
                     this.currentNoteCount++;
                         if (this.selectedSong.getNotesToPlay().size() - 1 > this.currentNoteCount){
                             this.noteDelayTimer.setInterval(this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNoteDelayInMS()

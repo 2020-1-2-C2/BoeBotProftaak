@@ -3,7 +3,6 @@ import Logic.*;
 import Logic.Notification.*;
 import TI.BoeBot;
 import Utils.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,13 +12,9 @@ import java.util.HashMap;
 //TODO: Add latency compensation for the Buzzer.
 //TODO: Fix grammar + spelling in the documentation & comments.
 //TODO: Make sure we use UK-English instead of US-English in all classes.
-//TODO: Check versions.
 //TODO: Make sure all "direction" attributes share common values across the whole program. Consistency makes everything clearer.
-//TODO: Remove .java and use <code> </code> and <a href=""> </a> instead.
-//TODO: Use "this" instead of "the" when talking about a specific instance on comments.
 
 //Class specific TODO-list:
-//TODO: Look at version-control and decide on the software's version.
 //TODO: Add backwards functionality for NavigationSystem.java and Route.java.
 //TODO: Write documentation for BluetoothCallback.java.
 //TODO: Write documentation for InfraredCallback.java.
@@ -33,34 +28,24 @@ import java.util.HashMap;
 //TODO: Improve documentation for NavigationSystem.java.
 
 //For Berend
-//TODO: Finish Jingles (Make them short and easy to recognize!)
-//TODO: Pick a different shade of green, since it looks too much like yellow.
-//TODO: Make notifications play automatically.
 //TODO: Final grammar check before submitting.
 
 /** Main class of the BoeBot, often described as being the brain of the robot.
- *
  * @author Projectgroep C2 - Berend de Groot, Lars Hoendervangers, Capser Lous, Martijn de Kam, Meindert Kempe, Tom Martens
  * @version 1.0
  */
 public class IntelligentFoodAllocationDevice implements CollisionDetectionCallback, BlueToothControllerCallback, InfraredControllerCallback {
 
-    //TODO: Check whether you can use "Whom" when talking about code.
-    /**
-     * ArrayList containing all the hardware components' instances whom all implement the <a href="{@docRoot}/Util/Updatable.html">Updatable.java</a> interface.
-     * The <code>update()</code> method in that interface is being run constantly in the <code>run()</code> method in this class.
-     * @see #run()
-     * @see Updatable#update()
-     */
-
     private ArrayList<Updatable> updatables = new ArrayList<>();
     private DriveSystem driveSystem;
     private NotificationSystemController notificationSystemController;
     private BluetoothController bluetoothController;
+    private LineFollowerController lineFollowerController;
 
+    //Hashmaps containing commands for Infrared-handling and Bluetooth-handling.
     private HashMap<Integer, Executable> onInfraredCommandMap;
     private HashMap<BluetoothReceiver.Commands, Executable> onBlueToothCommandMap;
-    private LineFollowerController lineFollowerController;
+
 
     /**
      * Creates an instance of itself, and then initializes the attributes. After this has happened it goes through all the updatables in an endless loop. <p>
@@ -97,7 +82,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 this.lineFollowerController, this.bluetoothController
         );
 
-        // initialises the HashMaps which holds the commands to use.
+        // Initialises the HashMaps which holds the commands to use.
         this.onInfraredCommandMap = new HashMap<>();
         this.onBlueToothCommandMap = new HashMap<>();
         // Fills the HashMaps with commands.
@@ -107,28 +92,17 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onInfraredCommandMap.put(InfraredReceiver.BACKWARD, () -> this.driveSystem.setDirection(DriveSystem.BACKWARD));
         this.onInfraredCommandMap.put(InfraredReceiver.RIGHT, () -> this.driveSystem.turnRight());
         this.onInfraredCommandMap.put(InfraredReceiver.LEFT, () -> this.driveSystem.turnLeft());
-        this.onInfraredCommandMap.put(InfraredReceiver.ONE, () -> {
-            this.driveSystem.setSpeed(10);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.TWO, () -> {
-            this.driveSystem.setSpeed(20);
-        });
-        this.onInfraredCommandMap.put(InfraredReceiver.THREE, () -> {
-            this.driveSystem.setSpeed(30);
-        });
+        this.onInfraredCommandMap.put(InfraredReceiver.ONE, () -> this.driveSystem.setSpeed(10));
+        this.onInfraredCommandMap.put(InfraredReceiver.TWO, () -> this.driveSystem.setSpeed(20));
+        this.onInfraredCommandMap.put(InfraredReceiver.THREE, () -> this.driveSystem.setSpeed(30));
         this.onInfraredCommandMap.put(InfraredReceiver.FOUR, () -> this.driveSystem.setSpeed(40));
         this.onInfraredCommandMap.put(InfraredReceiver.FIVE, () -> this.driveSystem.setSpeed(50));
         this.onInfraredCommandMap.put(InfraredReceiver.SIX, () -> this.driveSystem.setSpeed(60));
         this.onInfraredCommandMap.put(InfraredReceiver.SEVEN, () -> this.driveSystem.setSpeed(70));
         this.onInfraredCommandMap.put(InfraredReceiver.EIGHT, () -> this.driveSystem.setSpeed(80));
-        this.onInfraredCommandMap.put(InfraredReceiver.NINE, () -> {
-            this.driveSystem.setSpeed(90);
-            //TODO: Test-code, should be removed once tested.
-//            this.driveSystem.followRoute(new NavigationSystem(0, 0, 3, 3).getRoute());
-        });
+        this.onInfraredCommandMap.put(InfraredReceiver.NINE, () -> this.driveSystem.setSpeed(90));
         this.onInfraredCommandMap.put(InfraredReceiver.ZERO, () -> this.driveSystem.setSpeed(100));
 
-        //TODO actually do the shapes here instead of just stopping
         this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> shapes.beginShape(Shapes.Shape.TRIANGLE));
         this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> shapes.beginShape(Shapes.Shape.CIRCLE));
 
@@ -149,7 +123,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.NINE, () -> this.driveSystem.setSpeed(90));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TEN, () -> this.driveSystem.setSpeed(100));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.START_ROUTE, () -> {
-            this.setNotification(new FollowingRouteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+            this.notificationSystemController.setNotification(new FollowingRouteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
             boolean reading = true;
             String route = "";
             while (reading) {
@@ -183,7 +157,9 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         });
 
         /*TODO: NOTE: THE DEFAULT COMMAND IS REQUIRED TO PREVENT THE MAIN WHILE LOOP FROM THROWING A NULL POINTER EXCEPTION.*/
-        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {});
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {
+            //Do nothing.
+        });
     }
 
     /**
@@ -191,7 +167,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * {@link #updatables}
      */
     private void run() {
-        //This used to be this.isRunning, but that always returned true.
+        //This used to be this.isRunning, but that always returned true so it has been replaced with "true".
         while (true) {
             for (Updatable u : this.updatables) {
                 u.update();
@@ -214,7 +190,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 this.driveSystem.setCurrentMaxSpeed(0);
                 this.driveSystem.emergencyStop();
                 //TODO: Consider putting this in DriveSystem.java?
-                setNotification(new EmergencyStopNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+                this.notificationSystemController.setNotification(new EmergencyStopNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
                 System.out.println("Emergency stop");
             }
         } else if (distance < 40) {
@@ -245,20 +221,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         }
     }
 
-    /**
-     * Used to execute <code>notificationsSpecificMethod()</code> for the notification given in its parameter. <p>
-     * This method also sets <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLeds' setShouldBeOn()</a> to <code>true</code>.
-     * @param notification Notification that should have its <code>notificationSpecificMethod()</code> executed.
-     * @see AbstractNotification#notificationSpecificMethod()
-     * @see NeoPixelLed#setShouldBeOn(boolean)
-     */
-    public void setNotification(AbstractNotification notification) {
-        //TODO why is this inside the main and not somewhere in logic?
-        for (NeoPixelLed neoPixelLed : this.notificationSystemController.getNeoPixelLeds()) {
-            neoPixelLed.setShouldBeOn(true);
-        }
-        notification.notificationSpecificMethod();
-    }
+
 
     /**
      * Receives a valid button press from the infraredController and executes the command associated with it.
@@ -266,8 +229,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      */
     @Override
     public void onInfraredControllerCommand(int button) {
-        setNotification(new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
-        setNotification(new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+        this.notificationSystemController.setNotification(new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+        this.notificationSystemController.setNotification(new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
 
         this.onInfraredCommandMap.get(button).Execute();
 

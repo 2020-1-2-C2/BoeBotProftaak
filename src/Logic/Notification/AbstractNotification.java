@@ -99,6 +99,8 @@ public abstract class AbstractNotification {
                 neoPixelLed.setColor(this.neoPixelLedColorB);
                 neoPixelLed.blink(this.blinkTime);
             } else if (this.lightColorPattern.charAt(i) == 'X') {
+                //TODO: Make sure the light is off and STAYS off.
+                neoPixelLed.blink(this.blinkTime); //TODO: Remove once the bug is fixed.
                 neoPixelLed.off();
             }
         }

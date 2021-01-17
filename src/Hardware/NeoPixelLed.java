@@ -4,7 +4,6 @@ import TI.BoeBot;
 import TI.Timer;
 import Utils.Led;
 import Utils.Updatable;
-
 import java.awt.*;
 
 /**
@@ -24,7 +23,7 @@ public class NeoPixelLed implements Led {
     private boolean shouldBeOn = false;
 
     /**
-     * Constructor for the NeoPixelLed.
+     * Constructor for the <code>NeoPixelLed</code>.
      * @param id Takes a pinId so that we now which LED is which.
      */
     public NeoPixelLed(int id) {
@@ -55,7 +54,7 @@ public class NeoPixelLed implements Led {
     public void off() {
         BoeBot.setStatusLed(false);
         BoeBot.rgbSet(this.id, Color.black);
-        BoeBot.rgbShow(); //Nani?
+        BoeBot.rgbShow();
         this.isOn = false;
     }
 

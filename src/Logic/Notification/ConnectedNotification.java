@@ -36,7 +36,7 @@ public class ConnectedNotification extends AbstractNotification {
     @Override
     public void notificationSpecificMethod() {
         this.setBlinkTime(250);
-        this.getBuzzer().playSong(new Jingle().brotherJohn());
+        this.getBuzzer().playSong(new Jingle().connectedJingle());
         this.useLightsBasedOnString();
     }
 }

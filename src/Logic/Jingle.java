@@ -34,21 +34,66 @@ public class Jingle {
         return audioPlaySystem;
     }
 
-
     /**
-     * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the first part of the melody of <i>Brother John</i>.
+     * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the first part of the melody
+     * of <i>Electro019-5</i>, an unfinished track by Berend de Groot. <p>
+     * This <code>AudioPlaySystem</code> is used by <a href="{@docRoot}/Logic/Notification/ConnectedNotification.html">ConnectedNotification</a>.
      * @return audioPlaySystem
      */
-    public AudioPlaySystem brotherJohn(){
-        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(150);
+    public AudioPlaySystem connectedJingle(){
+        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(128);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
 
-        for (int i = 0; i < 2; i++ ){ //First part of the melody repeats itself
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("G", 4)));
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("A", 4)));
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("B", 4)));
-            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("G", 4)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("D#", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("F#", 5),
+                noteLengthGenerator.getQuarterNote() + noteLengthGenerator.getSixteenthNote()));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("C#", 5),
+                noteLengthGenerator.getSixteenthNote()));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("G#", 5),
+                noteLengthGenerator.getQuarterNote()));
+        return audioPlaySystem;
+    }
+
+    /**
+     * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the first part of the melody
+     * of <i>Electro018-3</i>, an unfinished track by Berend de Groot. <p>
+     * This <code>AudioPlaySystem</code> is used by <a href="{@docRoot}/Logic/Notification/DisconnectedNotification.html">DisconnectedNotification</a>.
+     * @return audioPlaySystem
+     */
+    public AudioPlaySystem disconnectedJingle(){
+        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(128);
+        AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
+
+        for (int i = 0; i < 4; i++ ) { //First part of the melody repeats itself
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("F", 4)));
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("G#", 4)));
+            audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("C", 4)));
         }
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("F", 4)));
+        return audioPlaySystem;
+    }
+
+    /**
+     * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the jingle used by
+     * <a href="{@docRoot}/Logic/Notification/EmergencyStopNotification.html">EmergencyStopNotification</a>.
+     * @return audioPlaySystem
+     * @see DriveSystem#emergencyStop()
+     */
+    public AudioPlaySystem emergencyJingle(){
+        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(119);
+        AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
+
+        //Don't worry about the duplicate code here.
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 4)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("B", 4)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("C", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 4)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("E", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 4), noteLengthGenerator.getHalfNote()));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("B", 4)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("C", 5)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 4)));
+        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getQuarterNote(), this.notePitchGenerator.getNote("E", 5)));
         return audioPlaySystem;
     }
 

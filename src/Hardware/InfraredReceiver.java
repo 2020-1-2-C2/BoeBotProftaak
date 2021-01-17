@@ -100,7 +100,7 @@ public class InfraredReceiver implements Updatable {
     }
 
     /**
-     * If a start signal is received and then a bit signal is received, this signal is then converted to an integer and passed to the callback.
+     * If a start signal is received and then a bit signal is received, this signal is then converted to an integer and passed to the callback. <p>
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
      * @see Updatable#update()
      */

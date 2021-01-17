@@ -99,6 +99,7 @@ public class Shapes implements Updatable {
     }
 
     /**
+     * Checks whether the timer for one of the <code>Shapes</code> has <code>timeout()</code>. If the times has timed-out it'll drive the shape accordingly.
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
      * @see Updatable#update()
      */
