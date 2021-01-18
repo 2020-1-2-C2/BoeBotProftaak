@@ -133,10 +133,13 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 System.out.println("Route: (5+) " + route);
                 NavigationSystem navigationSystem = new NavigationSystem(0, 0);
                 navigationSystem.getCompleteRoute().clear();
+                //Add every integer from the received string and put it in an ArrayList.
                 for (int i = 0; i < route.length(); i++) {
-                    navigationSystem.getCompleteRoute().add(route.charAt(i)); //TODO: What is this? This is not how you're supposed to make routes.
+                    navigationSystem.getCompleteRoute().add(route.charAt(i));
                 }
-                System.out.println("getCompleteRoute: " + navigationSystem.getCompleteRoute()); //Because for some reason we use this.
+                //The next system out is used for debugging:
+                System.out.println("getCompleteRoute: " + navigationSystem.getCompleteRoute());
+                //Start driving the route
                 this.driveSystem.followRoute(navigationSystem.getRoute());
                 System.out.println("HERE WE GO");
                 navigationSystem.printRoute();
