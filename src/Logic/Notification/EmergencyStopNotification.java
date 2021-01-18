@@ -29,13 +29,14 @@ public class EmergencyStopNotification extends AbstractNotification {
 
     /**
      * Overrides <code>notificationSpecificMethod()</code> in <code>AbstractNotification</code>.
-     * Abstract method all notifications have. This method contain instructions for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s on the BoeBot.
+     * Abstract method all notifications have. This method contain instructions for the
+     * <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s on the BoeBot.
      * @see AbstractNotification#notificationSpecificMethod()
      */
     @Override
     public void notificationSpecificMethod() {
         this.getBuzzer().playSong(new Jingle().emergencyJingle());
-        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()){
+        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()) {
             neoPixelLed.setColor(this.neoPixelLedColorA);
             neoPixelLed.on();
         }

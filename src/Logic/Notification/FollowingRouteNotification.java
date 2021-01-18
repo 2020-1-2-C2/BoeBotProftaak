@@ -12,10 +12,8 @@ import java.util.ArrayList;
  * @see AbstractNotification
  * @see Logic.Route
  * @see Logic.DriveSystem#followRoute(Route)
- * @author Berend de Groot
- * @version 1.2
  */
-public class FollowingRouteNotification extends AbstractNotification  {
+public class FollowingRouteNotification extends AbstractNotification {
     /**
      * Constructor for the <code>AbstractNotification</code> class.
      * @param buzzer      Takes in an instance of <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> to handle the sound.
