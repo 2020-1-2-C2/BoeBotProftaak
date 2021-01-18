@@ -17,7 +17,7 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Enums for the bluetooth communication.
-     * This enumerator consists of FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT and the numbers 1 - 10.
+     * This enumerator consists of driving directions, speeds and settings/functions.
      */
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
@@ -37,7 +37,7 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Will return the int that is received via bluetooth. Only used to get route coords.
-     * @return int //TODO: Specify what this is.
+     * @return int this is the integer that is received via bluetooth.
      */
     public int listenForCoords() {
         if (this.serialConnection.available() > 0) {
@@ -49,7 +49,7 @@ public class BluetoothReceiver implements Updatable {
 
     /**
      * Will listen for input.
-     * @return Commands
+     * @return Bluetooth Command
      */
     private Commands listenForSignal() {
         if (this.serialConnection.available() > 0) {
