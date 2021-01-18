@@ -16,6 +16,6 @@ public class Configuration {
 
     // ADC pins
     static int lineFollowerLeftLineSensorADCPinId = 3;
-    static int lineFollowerRightLineSensorADCPinId = 2;
-    static int lineFollowerMiddleLineSensorADCPinId = 1;
+    static int lineFollowerRightLineSensorADCPinId = 1;
+    static int lineFollowerMiddleLineSensorADCPinId = 2;
 }
