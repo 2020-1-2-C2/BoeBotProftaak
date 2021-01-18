@@ -62,7 +62,7 @@ public class LineFollower implements Updatable {
 
     /**
      * Sends a callback saying where the robot is located relative to the line
-     * Used when 2 linefollower components are attached to breadboard
+     * Used when 2 line follower components are attached to breadboard
      */
     private void detectLine2Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack()) {
@@ -81,7 +81,7 @@ public class LineFollower implements Updatable {
 
     /**
      * Sends a callback saying where the robot is located relative to the line
-     * Used when 3 linefollower components are attached to breadboard
+     * Used when 3 line follower components are attached to breadboard
      */
     private void detectLine3Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack() && !this.centerSeesBlack()) {
@@ -110,7 +110,7 @@ public class LineFollower implements Updatable {
 
 
     /**
-     * Used to calibrate the linefollowers. Sets sensorTweak to new value calculated from measurements
+     * Used to calibrate the line followers. Sets sensorTweak to new value calculated from measurements
      */
     public void calibrate() {
         //black surface
@@ -119,7 +119,6 @@ public class LineFollower implements Updatable {
         //white surface
         int whiteCalibration = 0;
 
-        //TODO: find reliable way to determine if bot is on white surface, likely through user input
         if (onWhite){
             whiteCalibration = this.calibrateMeasurement();
         }
@@ -129,7 +128,7 @@ public class LineFollower implements Updatable {
     /**
      * Used by calibrate method, to acquire a measurement to be used for calibration.
      * This method is first called when the robot is positioned over a black surface, and next when over a white surface.
-     * @return Average of 10 measurements by each linefollower component
+     * @return Average of 10 measurements by each line follower component
      */
     private int calibrateMeasurement() {
         int total = 0;
