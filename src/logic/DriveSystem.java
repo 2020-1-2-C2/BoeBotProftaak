@@ -152,7 +152,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void followLine(boolean follow) {
         this.followLine = follow;
-        System.out.println("Volgt nu een lijn" + follow);
+        System.out.println("Volgt nu een lijn " + follow);
         this.followSpeed = 20;
         setDirection(FORWARD);
     }
@@ -277,6 +277,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         System.out.println("Next direction: " + nextDirection);
         switch (nextDirection) {
             case Route.FORWARD:
+                System.out.println("reaching this print should mean it has started moving");
                 this.setSpeed(this.followSpeed);
                 break;
             case Route.LEFT:
