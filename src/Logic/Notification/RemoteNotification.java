@@ -2,6 +2,7 @@ package Logic.Notification;
 
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * @author Berend de Groot
  * @version 1.3
  */
-public class RemoteNotification extends AbstractNotification{
+public class RemoteNotification extends AbstractNotification {
 
     /**
      * Constructor for the <code>RemoteNotification</code> class. Extends <code>AbstractNotification</code>.
@@ -34,7 +35,7 @@ public class RemoteNotification extends AbstractNotification{
      */
     @Override
     public void notificationSpecificMethod() {
-        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()){
+        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()) {
             neoPixelLed.on();
             neoPixelLed.setColor(this.neoPixelLedColorA);
             neoPixelLed.setBlinkingTimer(1);

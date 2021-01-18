@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 /**
  * Class used by the BoeBot for handling notifications. All notification classes extend this class, and thus inherit attributes.
- * Every notification has it's own unique <code>notificationSpecificMethod()</code> used to give instructions to the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s.
+ * Every notification has it's own unique <code>notificationSpecificMethod()</code> used to give instructions to the
+ * <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s.
  * @version 1.2
  * @author Berend de Groot
  */
@@ -17,6 +18,7 @@ public abstract class AbstractNotification {
 
     protected Buzzer buzzer;
     protected ArrayList<NeoPixelLed> neoPixelLeds;
+    //TODO: unused? remove?
     NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
     Color neoPixelLedColorA;
     Color neoPixelLedColorB;
@@ -36,7 +38,8 @@ public abstract class AbstractNotification {
     }
 
     /**
-     * Abstract method all notifications have. Those methods contain instructions for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and NeoPixelLeds on the BoeBot.
+     * Abstract method all notifications have. Those methods contain instructions for the
+     * <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and NeoPixelLeds on the BoeBot.
      * See classes in Logic.Notification for examples.
      * @see Logic.Notification.DisconnectedNotification
      */
@@ -64,7 +67,7 @@ public abstract class AbstractNotification {
      * Auto-generated setter for the blinkTime attribute.
      * @param blinkTime Changes <code>this.blinkTime</code> to the parameter's value.
      */
-    void setBlinkTime(int blinkTime){
+    void setBlinkTime(int blinkTime) {
         this.blinkTime = blinkTime;
     }
 
@@ -72,7 +75,7 @@ public abstract class AbstractNotification {
      * Auto-generated setter for the lightColorPattern attribute.
      * @param lightColorPattern Changes <code>this.lightColorPattern</code> to the parameter's value.
      */
-    void setLightColorPattern(String lightColorPattern){
+    void setLightColorPattern(String lightColorPattern) {
         this.lightColorPattern = lightColorPattern;
     }
 
@@ -86,7 +89,8 @@ public abstract class AbstractNotification {
      * <li>X: Turns the Led off.
      * </ul>
      */
-    void useLightsBasedOnString(){
+    void useLightsBasedOnString() {
+        //TODO: replace magic number (6)
         for (int i = 0; i < 6; i++) {
             NeoPixelLed neoPixelLed = this.getNeoPixelLeds().get(i);
 

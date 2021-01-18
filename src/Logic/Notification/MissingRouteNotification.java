@@ -3,11 +3,13 @@ package Logic.Notification;
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
 import Logic.Jingle;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 /**
  * Notification that plays whenever a route is missing in <code>DriveSystem</code>. Extends <code>AbstractNotification</code>.
+ *
  * @author Berend de Groot
  * @version 1.2
  * @see AbstractNotification#AbstractNotification(Buzzer, ArrayList)
@@ -29,7 +31,8 @@ public class MissingRouteNotification extends AbstractNotification {
 
     /**
      * Overrides <code>notificationSpecificMethod()</code> in <code>AbstractNotification</code>.
-     * Abstract method all notifications have. This method contain instructions for the <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s on the BoeBot.
+     * Abstract method all notifications have. This method contain instructions for the
+     * <a href="{@docRoot}/Hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/Hardware/NeoPixelLed.html">NeoPixelLed</a>s on the BoeBot.
      * @see AbstractNotification#notificationSpecificMethod()
      */
     @Override

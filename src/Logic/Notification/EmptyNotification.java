@@ -2,6 +2,7 @@ package Logic.Notification;
 
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
+
 import java.util.ArrayList;
 
 /**
@@ -23,7 +24,7 @@ public class EmptyNotification extends AbstractNotification {
      */
     public EmptyNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzer, neoPixelLeds);
-        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()){
+        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()) {
             neoPixelLed.setBlinkingTimer(1000);
             neoPixelLed.setShouldBeOn(false);
         }
@@ -38,7 +39,7 @@ public class EmptyNotification extends AbstractNotification {
     @Override
     public void notificationSpecificMethod() {
         this.getBuzzer().off();
-        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()){
+        for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()) {
             neoPixelLed.setShouldBeOn(false);
             neoPixelLed.off();
         }
