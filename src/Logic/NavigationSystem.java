@@ -106,7 +106,7 @@ public class NavigationSystem {
             }
         }
 
-        if (differenceY > 0){
+        if (differenceY > 0) {
             if (this.direction != FORWARD) {
                 this.faceForward();
             }
