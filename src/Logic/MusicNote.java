@@ -47,8 +47,8 @@ public class MusicNote {
      * This is because the <code>Buzzer</code> uses an integer (representing MS) for the timing.
      * @return noteLength * 1000 as an integer (so decimals might be lost).
      */
-    public int getNoteLengthInMS(){
-        return ((int)(this.getNoteLength() * 1000));
+    public int getNoteLengthInMS() {
+        return ((int) (this.getNoteLength() * 1000));
     }
 
     /**
@@ -64,7 +64,7 @@ public class MusicNote {
      * @return this.noteDelay * 1000 as an integer.
      */
     public int getNoteDelayInMS() {
-        return ((int)(this.noteDelay * 1000));
+        return ((int) (this.noteDelay * 1000));
     }
 
     /**

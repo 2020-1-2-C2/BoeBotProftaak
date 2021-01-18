@@ -14,7 +14,7 @@ public class AudioPlaySystem {
     /**
      * Constructor that creates a new instance of AudioPlaySystem.
      */
-    AudioPlaySystem(){
+    AudioPlaySystem() {
         this.notesToPlay = new ArrayList<>();
     }
 
@@ -22,10 +22,10 @@ public class AudioPlaySystem {
      * Adds the <a href="{@docRoot}/Logic/MusicNote.html">MusicNote</a> to the list and edits the timing to fit the whole <a href="{@docRoot}/Logic/Jingle.html">jingle</a>.
      * @param musicNote Adds this note to <code>this.notesToPlay</code>.
      */
-    void addNote(MusicNote musicNote){
-        if (!this.notesToPlay.isEmpty()){
+    void addNote(MusicNote musicNote) {
+        if (!this.notesToPlay.isEmpty()) {
             this.notesToPlay.add(new MusicNote(musicNote.getNoteLength(), musicNote.getNotePitch(),
-                            + this.notesToPlay.get(this.notesToPlay.size() - 1).getNoteLength()
+                    +this.notesToPlay.get(this.notesToPlay.size() - 1).getNoteLength()
                             + musicNote.getNoteDelay()
             ));
         } else {
@@ -34,7 +34,7 @@ public class AudioPlaySystem {
     }
 
     /**
-     * Auto-generated getter for the notesToPlay attribute
+     * Auto-generated getter for the notesToPlay attribute.
      * @return notesToPlay
      */
     public ArrayList<MusicNote> getNotesToPlay() {

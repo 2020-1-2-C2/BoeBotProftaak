@@ -81,21 +81,21 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     /**
      * Auto-generated getter for <code>direction</code>.
-     * @return
+     * @return direction of BoeBot as integer.
      */
     public int getDirection() {
         return this.direction;
     }
 
     /**
-     * Turn left at the lowest speed
+     * Turn left at the lowest speed.
      */
     public void turnLeft() {
         turn(LEFT, this.MAX_SPEED / this.STEPS);
     }
 
     /**
-     * Turn right at the lowest speed
+     * Turn right at the lowest speed.
      */
     public void turnRight() {
         turn(RIGHT, this.MAX_SPEED / this.STEPS);
@@ -152,7 +152,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void followLine(boolean follow) {
         this.followLine = follow;
         this.followSpeed = 25;
-        this.setDirection(FORWARD);
+        setDirection(FORWARD);
     }
 
     /**
@@ -240,7 +240,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     * Start following the provided route
+     * Start following the provided route.
+     *
      * @param route Route object to use
      */
     public void followRoute(Route route) {
@@ -400,9 +401,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * Called in <code>update()</code> to print out useful information.
      * @see #update()
      */
-    private void debugToString(){
-        if (this.route != null && this.route.nextDirection() != Route.NONE){
-            for (int i : this.route.getRoute()){
+    private void debugToString() {
+        if (this.route != null && this.route.nextDirection() != Route.NONE) {
+            for (int i : this.route.getRoute()) {
                 System.out.println("Next move: " + i);
             }
             System.out.println("\n");

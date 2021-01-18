@@ -22,7 +22,7 @@ public class BluetoothController implements Updatable, BluetoothCallback {
 
     @Override
     public void onBluetoothReceive(BluetoothReceiver.Commands commands) {
-        if (commands != BluetoothReceiver.Commands.DEFAULT){
+        if (commands != BluetoothReceiver.Commands.DEFAULT) {
             System.out.println(commands.toString());
         }
         this.blueToothControllerCallback.onBlueToothControllerCommand(commands);

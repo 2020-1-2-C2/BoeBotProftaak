@@ -18,7 +18,7 @@ public class Jingle {
      * melody of <i>Somebody That I Used To Know</i> by <i>Gotye</i>.
      * @return audioPlaySystem
      */
-    public AudioPlaySystem somebodyThatIUsedToKnow(){
+    public AudioPlaySystem somebodyThatIUsedToKnow() {
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
 
@@ -40,7 +40,7 @@ public class Jingle {
      * This <code>AudioPlaySystem</code> is used by <a href="{@docRoot}/Logic/Notification/ConnectedNotification.html">ConnectedNotification</a>.
      * @return audioPlaySystem
      */
-    public AudioPlaySystem connectedJingle(){
+    public AudioPlaySystem connectedJingle() {
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(128);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
 
@@ -60,11 +60,11 @@ public class Jingle {
      * This <code>AudioPlaySystem</code> is used by <a href="{@docRoot}/Logic/Notification/DisconnectedNotification.html">DisconnectedNotification</a>.
      * @return audioPlaySystem
      */
-    public AudioPlaySystem disconnectedJingle(){
+    public AudioPlaySystem disconnectedJingle() {
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(128);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
 
-        for (int i = 0; i < 4; i++ ) { //First part of the melody repeats itself
+        for (int i = 0; i < 4; i++) { //First part of the melody repeats itself
             audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("F", 4)));
             audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("G#", 4)));
             audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("C", 4)));
@@ -79,7 +79,7 @@ public class Jingle {
      * @return audioPlaySystem
      * @see DriveSystem#emergencyStop()
      */
-    public AudioPlaySystem emergencyJingle(){
+    public AudioPlaySystem emergencyJingle() {
         NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(119);
         AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
 
