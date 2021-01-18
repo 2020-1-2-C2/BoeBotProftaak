@@ -30,7 +30,8 @@ public class Buzzer implements Updatable {
         this.pinId = pinId;
         BoeBot.setMode(pinId, PinMode.Output);
         this.selectedSong = null;
-        this.noteDelayTimer = new Timer(0); //Note: This is infinite.
+        //Note: Line below is infinite.
+        this.noteDelayTimer = new Timer(0);
         this.currentNoteCount = 0;
     }
 
@@ -46,7 +47,8 @@ public class Buzzer implements Updatable {
 
     /**
      * Method used to turn the buzzer off. <p>
-     * This will interrupt the <a href="{@docRoot}/Logic/Jingle.html">jingle</a>. It does this by setting <code>this.selectedSong</code> to <code>null</code>. <p>
+     * This will interrupt the <a href="{@docRoot}/Logic/Jingle.html">jingle</a>.
+     * It does this by setting <code>this.selectedSong</code> to <code>null</code>. <p>
      * If the user wants to play the <code>jingle</code> again he has to start over from the beginning by initiating it again.
      * @see Logic.Jingle
      */

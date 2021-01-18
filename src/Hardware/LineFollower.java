@@ -34,20 +34,16 @@ public class LineFollower implements Updatable {
 
     private Timer lineFollowerTimer = new Timer(100);
 
-    private int sensorTweak;    //editid for calibration function please check
-    private boolean onWhite = false;
-
-
-    public LineFollower(int leftLineSensorPin, int rightLineSensorPin, LineFollowCallback lineFollowCallback) {
-        this(leftLineSensorPin, rightLineSensorPin, -1, lineFollowCallback);
-    }
+    private int sensorTweak;
+    private boolean onWhite;
 
     public LineFollower(int leftLineSensorPin, int rightLineSensorPin, int middleLineSensorPin, LineFollowCallback lineFollowCallback) {
         this.lineFollowCallback = lineFollowCallback;
         this.leftLineSensorPin = leftLineSensorPin;
         this.rightLineSensorPin = rightLineSensorPin;
         this.centralLineSensorPin = middleLineSensorPin;
-        this.sensorTweak = 1200; //editid for calibration function please check
+        this.sensorTweak = 1200;
+        this.onWhite = false;
         this.lineFollowerTimer.mark();
     }
 
@@ -73,15 +69,12 @@ public class LineFollower implements Updatable {
             this.callBack = LinePosition.ON_LINE;
 
         } else if (this.rightSeesBlack() && !this.leftSeesBlack()) {
-//            System.out.println("Left of line");
             this.callBack = LinePosition.LEFT_OF_LINE;
 
         } else if (this.leftSeesBlack() && !this.rightSeesBlack()) {
-//            System.out.println("Right of line");
             this.callBack = LinePosition.RIGHT_OF_LINE;
 
         } else {
-//            System.out.println("kruispunt");
             this.callBack = LinePosition.CROSSING;
         }
     }
@@ -92,10 +85,10 @@ public class LineFollower implements Updatable {
      */
     private void detectLine3Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack() && !this.centerSeesBlack()) {
-            System.out.println("not on line");
+            System.out.println("Not on line");
             this.callBack = LinePosition.NOT_ON_LINE;
         } else if (!this.leftSeesBlack() && !this.rightSeesBlack() && this.centerSeesBlack()) {
-            System.out.println("on line");
+            System.out.println("On line");
             this.callBack = LinePosition.ON_LINE;
         } else if (this.leftSeesBlack() && this.centerSeesBlack() && !this.rightSeesBlack()) {
             System.out.println("Slightly right of line");
@@ -133,27 +126,22 @@ public class LineFollower implements Updatable {
         this.sensorTweak = (whiteCalibration + blackCalibration) / 2;
     }
 
-    //editid for calibration function please check
-    public void calibrate(int value) {
-        this.sensorTweak = value;
-    }
-
     /**
      * Used by calibrate method, to acquire a measurement to be used for calibration.
      * This method is first called when the robot is positioned over a black surface, and next when over a white surface.
      * @return Average of 10 measurements by each linefollower component
      */
-    private int calibrateMeasurement(){
+    private int calibrateMeasurement() {
         int total = 0;
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 10; i++) {
             total = total + BoeBot.analogRead(this.leftLineSensorPin);
-            if (this.centralLineSensorPin != -1){
+            if (this.centralLineSensorPin != -1) {
                 total = total + BoeBot.analogRead(this.centralLineSensorPin);
             }
             total = total + BoeBot.analogRead(this.rightLineSensorPin);
             BoeBot.wait(1);
         }
-        if (this.centralLineSensorPin != -1){
+        if (this.centralLineSensorPin != -1) {
             return total / 30;
         } else {
             return total / 20;
@@ -167,7 +155,7 @@ public class LineFollower implements Updatable {
      */
     @Override
     public void update() {
-        if (this.lineFollowerTimer.timeout()){
+        if (this.lineFollowerTimer.timeout()) {
             if (this.centralLineSensorPin == -1) {
                 this.detectLine2Sensors();
             } else {
@@ -175,7 +163,7 @@ public class LineFollower implements Updatable {
             }
         }
 
-        if (this.callBack != null){
+        if (this.callBack != null) {
             this.lineFollowCallback.onLineFollow(this.callBack);
         }
     }
