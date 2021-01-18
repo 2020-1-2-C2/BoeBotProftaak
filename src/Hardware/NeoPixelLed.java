@@ -28,7 +28,7 @@ public class NeoPixelLed implements Led {
      */
     public NeoPixelLed(int id) {
         this.id = id;
-        this.blinkingTimer = new Timer(0); //TODO: Check value.
+        this.blinkingTimer = new Timer(0);
         this.color = Color.white;
     }
 

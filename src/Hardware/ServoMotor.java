@@ -16,7 +16,8 @@ import java.util.List;
  * Contains methods to set the desired speed of the motors and to stop the motors
  *
  * Implements the Updatable interface,
- * the update method incrementaly changes the speed of the DirectionServos towards the desired speed, untill the desired speed has been achieved
+ * the update method incrementaly changes the speed of the DirectionServos towards the desired speed,
+ * untill the desired speed has been achieved
  *
  * @see Motor
  * @see DirectionalServo
@@ -263,4 +264,3 @@ public class ServoMotor implements Motor, Updatable {
         }
     }
 }
-

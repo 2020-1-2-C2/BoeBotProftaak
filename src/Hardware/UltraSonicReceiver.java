@@ -45,7 +45,7 @@ public class UltraSonicReceiver implements Updatable {
         BoeBot.wait(1);
         BoeBot.digitalWrite(this.pinIdTrigger, false);
 
-        // pulse lengte in microseconden
+        //Pulse length in micro seconds.
         int pulse = BoeBot.pulseIn(this.pinIdEcho, true, 10000);
 
         if (pulse < 0) {
@@ -71,7 +71,8 @@ public class UltraSonicReceiver implements Updatable {
 
     /**
      * Overrides the <code>update()</code> method.
-     * If enough time has elapsed for the timer, then an ultrasonic pulse is sent, of which the distance is calculated and then sent to the callback object.
+     * If enough time has elapsed for the timer, then an ultrasonic pulse is sent, of which the distance is
+     * calculated and then sent to the callback object.
      * @see Updatable#update()
      */
     @Override
