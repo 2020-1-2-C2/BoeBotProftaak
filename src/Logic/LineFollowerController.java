@@ -32,7 +32,9 @@ public class LineFollowerController implements Updatable {
      * @see LineFollower#update()
      */
 
-    public void calibrate() { this.lineFollower.calibrate(); }
+    public void calibrate() {
+        this.lineFollower.calibrate();
+    }
 
     @Override
     public void update() {
