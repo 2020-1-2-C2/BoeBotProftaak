@@ -156,6 +156,13 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
             this.lineFollowerController.calibrate();
         });
 
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.CONNECT, () -> this.notificationSystemController.setNotification(
+                new ConnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())));
+
+        this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DISCONNECT, () -> this.notificationSystemController.setNotification(
+                new DisconnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
+        ));
+
         /*TODO: NOTE: THE DEFAULT COMMAND IS REQUIRED TO PREVENT THE MAIN WHILE LOOP FROM THROWING A NULL POINTER EXCEPTION.*/
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {
             //Do nothing.

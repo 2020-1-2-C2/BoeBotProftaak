@@ -22,7 +22,8 @@ public class BluetoothReceiver implements Updatable {
     public enum Commands {
         FORWARD, REVERSE, LEFT, RIGHT, STOP, DEFAULT,
         ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN,
-        START_ROUTE, STOP_ROUTE, AUTO_CALIBRATE, CALIBRATE
+        START_ROUTE, STOP_ROUTE, AUTO_CALIBRATE, CALIBRATE,
+        CONNECT, DISCONNECT
     }
 
     /**
@@ -58,14 +59,19 @@ public class BluetoothReceiver implements Updatable {
 
             switch (data) {
                 case 87:
+                    //Key: W
                     return Commands.FORWARD;
                 case 65:
+                    //Key: A
                     return Commands.LEFT;
                 case 83:
+                    //Key: S
                     return Commands.REVERSE;
                 case 68:
+                    //Key: D
                     return Commands.RIGHT;
                 case 16:
+                    //Key: DLE (Data Link Escape, the GUI sends this as an integer rather than a character/string.)
                     return Commands.STOP;
                 case 1:
                     return Commands.ONE;
@@ -88,15 +94,25 @@ public class BluetoothReceiver implements Updatable {
                 case 10:
                     return Commands.TEN;
                 case 32:
+                    //Key: Space bar
                     //Start reading route information
                     return Commands.START_ROUTE;
                 case 126:
+                    //Key: ~
                     //Stop reading route information
                     return Commands.STOP_ROUTE;
                 case 37:
+                    //Key: %
                     return Commands.AUTO_CALIBRATE;
                 case 43:
+                    //Key: +
                     return Commands.CALIBRATE;
+                case 17:
+                    //Key: DC1 (Device Control 1, the GUI sends this as an integer rather than a character/string.)
+                    return Commands.CONNECT;
+                case 24:
+                    //Key: CAN (Cancel, the GUI sends this as an integer rather than a character/string.
+                    return Commands.DISCONNECT;
                 default:
                     return Commands.DEFAULT;
             }
