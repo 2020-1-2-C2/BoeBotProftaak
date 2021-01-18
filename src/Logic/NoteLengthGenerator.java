@@ -36,7 +36,7 @@ public class NoteLengthGenerator {
      * @param BPM Beats-Per-Minute (double). This is used to calculate the timing for all notes.
      * @see Jingle
      */
-    public NoteLengthGenerator(double BPM){
+    public NoteLengthGenerator(double BPM) {
         this.halfNote = 120.00 / BPM;
         this.quarterNote = 60.00 / BPM;
         this.eightNote = 30.00 / BPM;

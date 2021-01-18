@@ -61,7 +61,7 @@ public class NotificationSystemController implements Updatable {
      * @see AbstractNotification#notificationSpecificMethod()
      * @see NeoPixelLed#setShouldBeOn(boolean)
      */
-    public void setNotification(AbstractNotification notification){
+    public void setNotification(AbstractNotification notification) {
         this.notificationActive = notification instanceof EmptyNotification;
 
         for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()) {
