@@ -188,7 +188,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void update() {
         this.motor.update();
 
-        this.debugToString();
+//        this.debugToString();
         //TODO: if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly.
         if (!this.hasTurnedAroundAtTheEndOfRoute) {
             if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {

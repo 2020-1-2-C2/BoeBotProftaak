@@ -22,7 +22,6 @@ public class LineFollower implements Updatable {
         JUST_RIGHT_OF_LINE,
         ON_LINE,
         CROSSING
-
     }
 
     private LineFollowCallback lineFollowCallback;
@@ -49,7 +48,6 @@ public class LineFollower implements Updatable {
 
     private boolean leftSeesBlack() {
         return BoeBot.analogRead(this.leftLineSensorPin) > this.sensorTweak;
-
     }
 
     private boolean rightSeesBlack() {
