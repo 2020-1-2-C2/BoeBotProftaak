@@ -1,8 +1,8 @@
-import Hardware.*;
-import Logic.*;
-import Logic.Notification.*;
+import hardware.*;
+import logic.*;
+import logic.notification.*;
 import TI.BoeBot;
-import Utils.*;
+import utils.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
