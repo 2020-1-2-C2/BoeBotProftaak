@@ -42,6 +42,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private TimerWithState routeTimer = new TimerWithState(10000, false);
     private TimerWithState routeWaitTimer = new TimerWithState(2000, false);
     private TimerWithState turnAtEndTimer = new TimerWithState(1000, false);
+    private TimerWithState crossRoadTimer = new TimerWithState(1000, true);
     private boolean hasTurnedAroundAtTheEndOfRoute = false;
     private boolean getReadyForNextRoute = false;
 
@@ -343,8 +344,10 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         if (this.followLine && !this.turningRight && !this.turningLeft) {
             switch (linePosition) {
                 case NOT_ON_LINE:
+                    /*
                     this.followLine(false);
                     this.stop();
+                    */
                 case ON_LINE:
                     this.setSpeed(this.followSpeed);
                     break;
@@ -368,8 +371,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                         this.followingRoute = false;
                     }
                     // If a route is being followed detect crossroads to determine the next step in the route.
-                    if (this.isFollowingRoute()) {
+                    if (this.isFollowingRoute() && this.crossRoadTimer.timeout()) {
                         this.routeNextStep();
+                        this.crossRoadTimer.mark();
                     }
             }
             // Turning while following line so it turns to the next corner (usually a 90 degree turn).
