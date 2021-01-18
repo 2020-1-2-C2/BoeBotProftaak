@@ -39,7 +39,7 @@ public class NavigationSystem {
      * @param goalCoordX X-coordinate of destination. Think about this like your car's GPS.
      * @param goalCoordY Y-coordinate of destination. Think about this like your car's GPS.
      */
-    public NavigationSystem(int goalCoordX, int goalCoordY){
+    public NavigationSystem(int goalCoordX, int goalCoordY) {
         this.currentCoordX = 0;
         this.currentCoordY = 0;
 
@@ -59,7 +59,7 @@ public class NavigationSystem {
      * @param goalCoordX X-coordinate of destination. Think about this like your car's GPS.
      * @param goalCoordY Y-coordinate of destination. Think about this like your car's GPS.
      */
-    public NavigationSystem(int currentCoordX, int currentCoordY, int goalCoordX, int goalCoordY){
+    public NavigationSystem(int currentCoordX, int currentCoordY, int goalCoordX, int goalCoordY) {
         this(goalCoordX, goalCoordY);
         this.currentCoordX = currentCoordX;
         this.currentCoordY = currentCoordY;
@@ -86,40 +86,40 @@ public class NavigationSystem {
         int differenceX =  this.goalCoordX - this.currentCoordX;
         int differenceY =  this.goalCoordY - this.currentCoordY;
 
-        if (differenceX > 0){
-            if (this.direction != RIGHT){
+        if (differenceX > 0) {
+            if (this.direction != RIGHT) {
                 this.faceForward();
                 this.routeToNavigate.add(RIGHT);
                 this.direction = RIGHT;
             }
-            for (int i = 0; i < differenceX; i++){
+            for (int i = 0; i < differenceX; i++) {
                 this.routeToNavigate.add(FORWARD);
             }
-        } else if (differenceX < 0){
-            if (this.direction != LEFT){
+        } else if (differenceX < 0) {
+            if (this.direction != LEFT) {
                 this.faceForward();
                 this.routeToNavigate.add(LEFT);
                 this.direction = LEFT;
             }
-            for (int i = 0; i > differenceX; i--){
+            for (int i = 0; i > differenceX; i--) {
                 this.routeToNavigate.add(FORWARD);
             }
         }
 
         if (differenceY > 0){
-            if (this.direction != FORWARD){
+            if (this.direction != FORWARD) {
                 this.faceForward();
             }
-            for (int i = 0; i < differenceY; i++){
+            for (int i = 0; i < differenceY; i++) {
                 this.routeToNavigate.add(FORWARD);
             }
-        } else if (differenceY < 0){
-            if (this.direction == BACKWARDS){
+        } else if (differenceY < 0) {
+            if (this.direction == BACKWARDS) {
                 this.faceForward();
                 this.routeToNavigate.add(LEFT);
                 this.routeToNavigate.add(LEFT);
             }
-            for (int i = 0; i > differenceY; i--){
+            for (int i = 0; i > differenceY; i--) {
                 this.routeToNavigate.add(FORWARD);
             }
         }
@@ -134,13 +134,13 @@ public class NavigationSystem {
     /**
      * Turns the BoeBot so that it has the same orientation as when it was turned on.
      */
-    private void faceForward(){
-        if (this.direction == BACKWARDS){
+    private void faceForward() {
+        if (this.direction == BACKWARDS) {
             this.routeToNavigate.add(RIGHT);
             this.routeToNavigate.add(RIGHT);
-        } else if (this.direction == RIGHT){
+        } else if (this.direction == RIGHT) {
             this.routeToNavigate.add(LEFT);
-        } else if (this.direction == LEFT){
+        } else if (this.direction == LEFT) {
             this.routeToNavigate.add(RIGHT);
         }
     }
@@ -150,7 +150,7 @@ public class NavigationSystem {
      * @return <code>Route</code> containing instructions for the BoeBot, so that it can navigate on white paper with black tape.
      * @see Route#Route(ArrayList)
      */
-    public Route getRoute(){
+    public Route getRoute() {
         this.calculateRoute();
         this.counter = 0;
         System.out.println("Route to navigate: " + this.routeToNavigate);
