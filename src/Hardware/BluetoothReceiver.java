@@ -5,7 +5,8 @@ import Utils.BluetoothCallback;
 import Utils.Updatable;
 
 /**
- * <code>BluetoothReceiver</code> class, which should only have one instance. The methods are used to process received commands from the PC using the GUI.
+ * <code>BluetoothReceiver</code> class, which should only have one instance.
+ * The methods are used to process received commands from the PC using the GUI.
  * @see Utils.Updatable
  * @see Utils.BluetoothCallback
  * @see SerialConnection

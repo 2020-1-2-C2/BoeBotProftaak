@@ -10,13 +10,9 @@ import Utils.Updatable;
 
 /**
  * Class which controls an object which implements the Motor interface
- *
  * Contains methods for controlling the Motor object and for following a route
- *
  * implements the Updatable interface, which updates the Motor object and allows for turning around at the end of a route
- *
  * implements the LineFollowCallback interface which allows it to receive the lineposition from the LineFollower sensors, which allows it to follow a route if so desired
- *
  * @author Meindert Kempe, Berend de Groot, Martijn de Kam, Casper Lous
  */
 public class DriveSystem implements Updatable, LineFollowCallback {
@@ -52,8 +48,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private boolean ridingUntillTheNextCrossroad = false;
 
     public DriveSystem() {
-        this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, DirectionalServo.RIGHTSIDESERVOORIENTATION),
-                new DirectionalServo(Configuration.servoMotor2PinId, DirectionalServo.LEFTSIDESERVOORIENTATION));
+        this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, DirectionalServo.RIGHT_SIDE_SERVO_ORIENTATION),
+                new DirectionalServo(Configuration.servoMotor2PinId, DirectionalServo.LEFT_SIDE_SERVO_ORIENTATION));
     }
 
     /**

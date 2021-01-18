@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Class for the hardware part Infrared-sensor. Contains methods to receive and interpret the signal from the Infrared-sensor.
+ * Class for the hardware part Infrared-sensor. Contains methods to receive and interpret the signal
+ * from the Infrared-sensor.
  * @see Utils.Updatable
  * @see Utils.InfraredCallback
  * @author Berend de Groot, Martijn de Kam, Meindert Kempe, Casper Lous
@@ -96,11 +97,12 @@ public class InfraredReceiver implements Updatable {
     }
 
     public ArrayList<Integer> getPossibleButtons() {
-        return possibleButtons;
+        return this.possibleButtons;
     }
 
     /**
-     * If a start signal is received and then a bit signal is received, this signal is then converted to an integer and passed to the callback. <p>
+     * If a start signal is received and then a bit signal is received, this signal is then converted to an integer
+     * and passed to the callback. <p>
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
      * @see Updatable#update()
      */
