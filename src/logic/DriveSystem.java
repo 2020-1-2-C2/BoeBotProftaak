@@ -152,8 +152,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void followLine(boolean follow) {
         this.followLine = follow;
-        System.out.println("Volgt nu route");
-        this.followSpeed = 25;
+        System.out.println("Volgt nu een lijn" + follow);
+        this.followSpeed = 20;
         setDirection(FORWARD);
     }
 
