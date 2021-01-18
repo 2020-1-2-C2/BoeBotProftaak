@@ -9,9 +9,6 @@ import java.util.HashMap;
 
 //General software TODO-list:
 //TODO: Add latency compensation for the Buzzer.
-//TODO: Fix grammar + spelling in the documentation & comments.
-//TODO: Make sure we use UK-English instead of US-English in all classes.
-//TODO: Make sure all "direction" attributes share common values across the whole program. Consistency makes everything clearer.
 
 //For Berend
 //TODO: Final grammar check before submitting.
@@ -154,7 +151,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 new DisconnectedNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
         ));
 
-        /*TODO: NOTE: THE DEFAULT COMMAND IS REQUIRED TO PREVENT THE MAIN WHILE LOOP FROM THROWING A NULL POINTER EXCEPTION.*/
+        //NOTE: THE DEFAULT COMMAND IS REQUIRED TO PREVENT THE MAIN WHILE LOOP FROM THROWING A NULL POINTER EXCEPTION.
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.DEFAULT, () -> {
             //Do nothing.
         });
@@ -188,7 +185,6 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 this.driveSystem.stopFollowingRoute();
                 this.driveSystem.setCurrentMaxSpeed(0);
                 this.driveSystem.emergencyStop();
-                //TODO: Consider putting this in DriveSystem.java?
                 this.notificationSystemController.setNotification(
                         new EmergencyStopNotification(
                                 this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()
