@@ -18,4 +18,7 @@ public class Configuration {
     public static int lineFollowerLeftLineSensorADCPinId = 3;
     public static int lineFollowerRightLineSensorADCPinId = 1;
     public static int lineFollowerMiddleLineSensorADCPinId = 2;
+
+    // NeoPixel leds
+    public static int neoPixelLEDCount = 6;
 }

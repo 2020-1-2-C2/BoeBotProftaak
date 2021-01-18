@@ -2,6 +2,7 @@ package Logic.Notification;
 
 import Hardware.Buzzer;
 import Hardware.NeoPixelLed;
+import Logic.Configuration;
 import Logic.NotePitchGenerator;
 
 import java.awt.*;
@@ -90,8 +91,7 @@ public abstract class AbstractNotification {
      * </ul>
      */
     void useLightsBasedOnString() {
-        //TODO: replace magic number (6)
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < Configuration.neoPixelLEDCount; i++) {
             NeoPixelLed neoPixelLed = this.getNeoPixelLeds().get(i);
 
             if (this.lightColorPattern.charAt(i) == 'A') {
