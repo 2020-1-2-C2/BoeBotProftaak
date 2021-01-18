@@ -22,6 +22,13 @@ public class Shapes implements Updatable {
     private boolean triangleSegmentBoolean;
 
     /**
+     * Enums to define which shape to drive.
+     * This can either be a circle or a triangle.
+     */
+    public enum Shape {
+        CIRCLE, TRIANGLE
+    }
+    /**
      * Constructor for <code>Shapes</code> class.
      * @param driveSystem <code>DriveSystem</code> object.
      * @see DriveSystem
@@ -36,18 +43,8 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Enums to define which shape to drive.
-     * This can either be a circle or a triangle.
-     */
-    public enum Shape {
-        CIRCLE, TRIANGLE
-    }
-
-
-    /**
      * This method is a setup for the shape.
      * @param shape Shape enum/object
-     * //TODO: Put beginShape code in shapes themselves to remove unnecessary methods.
      */
     public void beginShape(Shape shape) {
         this.driveSystem.stop();

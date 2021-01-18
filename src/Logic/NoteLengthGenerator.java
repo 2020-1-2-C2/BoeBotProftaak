@@ -1,7 +1,8 @@
 package Logic;
 
 /**
- * Class to generate timing for all notes. It does this by calculating how long a specific note (for example: quarterNote) would be in ms at a given BPM (beats per minute). <p>
+ * Class to generate timing for all notes. It does this by calculating how long a specific note
+ * (for example: quarterNote) would be in ms at a given BPM (beats per minute). <p>
  * This class is mainly used by the <a href="{@docRoot}/Logic/Jingle.html">Jingle</a> class, which has a couple of
  * <a href="{@docRoot}/Logic/AudioPlaySystem.html">AudioPlaySystem</a> objects containing jingles used by the notificationssystem.
  * @author Berend de Groot

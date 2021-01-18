@@ -9,11 +9,11 @@ import java.util.Collections;
  * @author Berend de Groot, Martijn de Kam, Meindert Kampe, Lars Hoendervangers
  */
 public class Route {
-    static final int LEFT = -1;
-    static final int FORWARD = 0;
-    static final int RIGHT = 1;
-    static final int DESTINATION = 3;
-    static final int NONE = 2;
+    public static final int LEFT = -1;
+    public static final int FORWARD = 0;
+    public static final int RIGHT = 1;
+    public static final int DESTINATION = 3;
+    public static final int NONE = 2;
 
     private ArrayList<Integer> route;
     private int index;
@@ -22,7 +22,7 @@ public class Route {
      * Constructor for the <code>Route</code> class.
      * @param route ArrayList of directions as integers.
      */
-    Route(ArrayList<Integer> route) {
+    public Route(ArrayList<Integer> route) {
         this.route = route;
         this.index = 0;
     }
@@ -30,10 +30,10 @@ public class Route {
     /**
      * @return Returns the next direction as an integer.
      */
-    Integer nextDirection() {
-        if (route.size() < 1) {
+    public Integer nextDirection() {
+        if (this.route.size() < 1) {
             return null;
-        } else if(index >= this.route.size()) {
+        } else if(this.index >= this.route.size()) {
             return NONE;
         } else {
             int result = this.route.get(index);
@@ -42,13 +42,12 @@ public class Route {
         }
     }
 
-
     /**
      * Reverses the route and continue from the end of the previous route.
      */
-    void reverse() {
+    public void reverse() {
         for (int i = 0; i < this.route.size(); i++) {
-            if (route.get(i) == LEFT) {
+            if (this.route.get(i) == LEFT) {
                 this.route.set(i, RIGHT);
             } else if (this.route.get(i) == RIGHT) {
                 this.route.set(i, LEFT);
@@ -58,7 +57,7 @@ public class Route {
         this.index = 0;
     }
 
-    ArrayList<Integer> getRoute() {
+    public ArrayList<Integer> getRoute() {
         return this.route;
     }
 }

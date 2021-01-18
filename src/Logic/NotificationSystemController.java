@@ -72,8 +72,9 @@ public class NotificationSystemController implements Updatable {
 
     /**
      * Runs <code>update()</code> all <b>this.</b>updatables. <p>
-     * This method also checks whether the BoeBot is driving (<code>this.drivesystem.getDirection()</code>) backwards, and if it is it
-     * sets (<code>this.setNotification</code>) an <a href="{@docRoot}/Logic/Notification/EmptyNotification.html">EmptyNotification</a> as the current active notification.
+     * This method also checks whether the BoeBot is driving (<code>this.drivesystem.getDirection()</code>) backwards,
+     * and if it is, it sets (<code>this.setNotification</code>) an
+     * <a href="{@docRoot}/Logic/Notification/EmptyNotification.html">EmptyNotification</a> as the current active notification.
      * The <code>update()</code> method from <a href="{@docRoot}/Util/Updatable.html">Updatable</a>.
      * @see #setNotification(AbstractNotification)
      * @see Updatable#update()

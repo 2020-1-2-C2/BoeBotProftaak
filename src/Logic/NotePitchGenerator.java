@@ -10,7 +10,8 @@ package Logic;
 public class NotePitchGenerator {
 
     /**
-     * Method that returns an integer resembling the pitch (Hz). This is not completely accurate since it is an integer, and not a double or float.
+     * Method that returns an integer resembling the pitch (Hz). This is not completely accurate since it is an
+     * integer, and not a double or float.
      * <p>
      * Frequencies are calculated using the following formula: <em>2^N/12 * 440</em>
      * <p>
