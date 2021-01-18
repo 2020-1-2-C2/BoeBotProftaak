@@ -125,11 +125,13 @@ public class NavigationSystem {
             }
         }
 
-        if (!this.completeRoute.isEmpty()) {
+        //Commented for testing purposes.
+/*        if (!this.completeRoute.isEmpty()) {
             if (this.goalCoordY != this.completeRoute.get(this.completeRoute.size() - 1)) {
-                calculateRoute(); //TODO: WTF?! What is this even supposed to do?!
+            //Calculate the next step for the route.
+                calculateRoute();
             }
-        }
+        }*/
     }
 
     /**
