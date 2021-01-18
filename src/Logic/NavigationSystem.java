@@ -2,12 +2,10 @@ package Logic;
 
 import java.util.ArrayList;
 
-//TODO: Rename class and functions to more accurately represent its functionality.
-//TODO: Add more and better documentation.
-
 /**
  * Class used to generate <a href="{@docRoot}/Logic/NavigationSystem.html">Route.java</a> instances, used by the BoeBot to drive.
- * The method <code>followRoute()</code> in <a href="{@docRoot}/Logic/DriveSystem.html">DriveSystem.java</a> takes in a <code>Route</code> as a parameter, and is used for the navigation of the robot.
+ * The method <code>followRoute()</code> in <a href="{@docRoot}/Logic/DriveSystem.html">DriveSystem.java</a> takes
+ * in a <code>Route</code> as a parameter, and is used for the navigation of the robot.
  * @author Berend de Groot
  * @version 1.1
  * @see DriveSystem#followRoute(Route)
@@ -36,7 +34,6 @@ public class NavigationSystem {
     private static final int RIGHT = 1;
     private static final int BACKWARDS = 3;
 
-    //TODO consider if this should even be implemented, if everything works correctly then the start should always be given, not assumed
     /**
      * Constructor which only takes the destination's coordinates. The <code>currentCoord</code>s will be set to 0.
      * @param goalCoordX X-coordinate of destination. Think about this like your car's GPS.
@@ -86,7 +83,6 @@ public class NavigationSystem {
             this.counter++;
         }
 
-
         int differenceX =  this.goalCoordX - this.currentCoordX;
         int differenceY =  this.goalCoordY - this.currentCoordY;
 
@@ -118,12 +114,6 @@ public class NavigationSystem {
                 this.routeToNavigate.add(FORWARD);
             }
         } else if (differenceY < 0){
-            //TODO: Add backwards functionality.
-            /* NOTE: DON'T DO THIS!!!!
-            TODO: This was done to ensure all emergency functionality works; the UltraSonicSensor is on the front of the bot!!!
-
-            TODO: TEST! This should be added.
-             */
             if (this.direction == BACKWARDS){
                 this.faceForward();
                 this.routeToNavigate.add(LEFT);
@@ -167,17 +157,7 @@ public class NavigationSystem {
         return new Route(this.routeToNavigate);
     }
 
-    public void clearRoute() {
-        this.counter = 0;
-        this.completeRoute.clear();
-        this.currentCoordX = 0;
-        this.currentCoordY = 0;
-        this.goalCoordX = 0;
-        this.goalCoordY = 0;
-    }
-
     public ArrayList<Character> getCompleteRoute() {
         return this.completeRoute;
     }
-
 }

@@ -11,7 +11,7 @@ package Logic;
  * @see AudioPlaySystem
  * @see MusicNote#getNoteLength()
  */
-class NoteLengthGenerator {
+public class NoteLengthGenerator {
     //Source of information: https://musescore.org/en/node/22609
 
     //All attributes related to the timing are based on the BPM. You can see this in the constructor.
@@ -36,7 +36,7 @@ class NoteLengthGenerator {
      * @param BPM Beats-Per-Minute (double). This is used to calculate the timing for all notes.
      * @see Jingle
      */
-    NoteLengthGenerator(double BPM){
+    public NoteLengthGenerator(double BPM){
         this.halfNote = 120.00 / BPM;
         this.quarterNote = 60.00 / BPM;
         this.eightNote = 30.00 / BPM;
@@ -53,7 +53,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the halfNote variable.
      * @return halfnote
      */
-    double getHalfNote() {
+    public double getHalfNote() {
         return this.halfNote;
     }
 
@@ -61,7 +61,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the quarterNote variable.
      * @return quarterNote
      */
-    double getQuarterNote() {
+    public double getQuarterNote() {
         return this.quarterNote;
     }
 
@@ -69,7 +69,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the eightNote variable.
      * @return eightNote
      */
-    double getEightNote() {
+    public double getEightNote() {
         return this.eightNote;
     }
 
@@ -77,7 +77,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the sixteenthNote variable.
      * @return sixteenthNote
      */
-    double getSixteenthNote() {
+    public double getSixteenthNote() {
         return this.sixteenthNote;
     }
 
@@ -85,7 +85,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the dottedQuarterNote variable.
      * @return dottedQuarterNote
      */
-    double getDottedQuarterNote() {
+    public double getDottedQuarterNote() {
         return this.dottedQuarterNote;
     }
 
@@ -93,7 +93,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the dottedEightNote variable.
      * @return dottedEightNote
      */
-    double getDottedEightNote() {
+    public double getDottedEightNote() {
         return this.dottedEightNote;
     }
 
@@ -101,7 +101,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the dottedSixteenthNote variable.
      * @return dottedSixteenthNote
      */
-    double getDottedSixteenthNote() {
+    public double getDottedSixteenthNote() {
         return this.dottedSixteenthNote;
     }
 
@@ -109,7 +109,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the tripletQuarterNote variable.
      * @return tripletQuarterNote
      */
-    double getTripletQuarterNote() {
+    public double getTripletQuarterNote() {
         return this.tripletQuarterNote;
     }
 
@@ -117,7 +117,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the tripletEightNote variable.
      * @return tripletEightNote
      */
-    double getTripletEightNote() {
+    public double getTripletEightNote() {
         return this.tripletEightNote;
     }
 
@@ -125,7 +125,7 @@ class NoteLengthGenerator {
      * Auto-generated getter for the tripletSixteenthNote variable.
      * @return tripletSixteenthNote
      */
-    double getTripletSixteenthNote() {
+    public double getTripletSixteenthNote() {
         return this.tripletSixteenthNote;
     }
 }
