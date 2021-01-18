@@ -8,8 +8,8 @@ package Utils;
  */
 public interface InfraredCallback {
     /**
-     * callback on an object that implements the InfraredCallback interface
-     * is called upon when an object of InfraredReceiver receives an infrared signal
+     * Callback on an object that implements the InfraredCallback interface
+     * is called upon when an object of InfraredReceiver receives an infrared signal.
      *
      * @param button binary number that should correspond to one of the buttons on the infrared remote
      */

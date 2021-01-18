@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 //General software TODO-list:
-//TODO: Put annotations in the documentation in the right order.
 //TODO: Add latency compensation for the Buzzer.
 //TODO: Fix grammar + spelling in the documentation & comments.
 //TODO: Make sure we use UK-English instead of US-English in all classes.
