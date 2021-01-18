@@ -11,10 +11,10 @@ import Hardware.LineFollower;
  */
 public interface LineFollowCallback {
     /**
-     * callback on an object that implements the LineFollowCallback interface
-     * is called upon when an object of LineFollower senses something
+     * Callback on an object that implements the LineFollowCallback interface
+     * is called upon when an object of LineFollower senses something.
      *
-     * @param linePosition enumerator for different linepositions
+     * @param linePosition enumerator for different line positions
      */
     void onLineFollow(LineFollower.LinePosition linePosition);
 }

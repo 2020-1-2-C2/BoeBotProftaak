@@ -157,6 +157,10 @@ public class NavigationSystem {
         return new Route(this.routeToNavigate);
     }
 
+    /**
+     * Get the list for all the stops the bot needs to do.
+     * @return an ArrayList with all the coordinates.
+     */
     public ArrayList<Character> getCompleteRoute() {
         return this.completeRoute;
     }

@@ -9,7 +9,7 @@ import Utils.Updatable;
 
 /**
  * Class for the LineFollower hardware component, used by the BoeBot to navigate using lines.
- *@see Utils.Updatable
+ * @see Utils.Updatable
  * @author Casper Lous, Berend de Groot, Lars Hoendervangers, Tom Martens, Meindert Kempe
  */
 public class LineFollower implements Updatable {

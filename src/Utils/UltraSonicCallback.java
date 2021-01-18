@@ -8,8 +8,8 @@ package Utils;
  */
 public interface UltraSonicCallback {
     /**
-     * callback on an object that implements the UltraSonicCallback interface
-     * is called upon when an object of UltraSonicReceiver senses something
+     * Callback on an object that implements the UltraSonicCallback interface
+     * is called upon when an object of UltraSonicReceiver senses something.
      *
      * @param distance distance in cm
      */

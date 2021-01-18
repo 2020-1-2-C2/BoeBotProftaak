@@ -16,8 +16,8 @@ import java.util.List;
  * Contains methods to set the desired speed of the motors and to stop the motors
  *
  * Implements the Updatable interface,
- * the update method incrementaly changes the speed of the DirectionServos towards the desired speed,
- * untill the desired speed has been achieved
+ * the update method incrementally changes the speed of the DirectionServos towards the desired speed,
+ * until the desired speed has been achieved.
  *
  * @see Motor
  * @see DirectionalServo
@@ -118,6 +118,12 @@ public class ServoMotor implements Motor, Updatable {
         this.goToSpeedSide(speed, time, "Right");
     }
 
+    /**
+     * Set the servo motor on the given side to the given speed.
+     * @param speed wanted speed
+     * @param time duration of the acceleration
+     * @param side side of the servo motor
+     */
     private void goToSpeedSide(int speed, int time, String side){
         if (speed > 100) {
             speed = 100;

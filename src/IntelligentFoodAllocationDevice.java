@@ -14,19 +14,6 @@ import java.util.HashMap;
 //TODO: Make sure we use UK-English instead of US-English in all classes.
 //TODO: Make sure all "direction" attributes share common values across the whole program. Consistency makes everything clearer.
 
-//Class specific TODO-list:
-//TODO: Add backwards functionality for NavigationSystem.java and Route.java.
-//TODO: Write documentation for BluetoothCallback.java.
-//TODO: Write documentation for InfraredCallback.java.
-//TODO: Write documentation for LineFollowCallback.java.
-//TODO: Write documentation for UltraSonicCallback.java.
-//TODO: Write documentation for ServoMotor.java.
-//TODO: Write documentation for UltraSonicReceiver.java.
-//TODO: Write documentation for Updatable.java.
-//TODO: Write documentation for DriveSystem.java.
-//TODO: Improve documentation for Shapes.java.
-//TODO: Improve documentation for NavigationSystem.java.
-
 //For Berend
 //TODO: Final grammar check before submitting.
 
