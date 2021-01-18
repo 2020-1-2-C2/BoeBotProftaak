@@ -63,6 +63,7 @@ public class NavigationSystem {
         this(goalCoordX, goalCoordY);
         this.currentCoordX = currentCoordX;
         this.currentCoordY = currentCoordY;
+        System.out.println("NavigationSystem: " + "" + currentCoordX + "" + currentCoordY + "" + goalCoordX + "" + goalCoordY);
     }
 
     /**
@@ -126,7 +127,7 @@ public class NavigationSystem {
 
         if (!this.completeRoute.isEmpty()) {
             if (this.goalCoordY != this.completeRoute.get(this.completeRoute.size() - 1)) {
-                calculateRoute();
+                calculateRoute(); //TODO: WTF?! What is this even supposed to do?!
             }
         }
     }
@@ -153,7 +154,6 @@ public class NavigationSystem {
     public Route getRoute() {
         this.calculateRoute();
         this.counter = 0;
-        System.out.println("Route to navigate: " + this.routeToNavigate);
         return new Route(this.routeToNavigate);
     }
 
@@ -163,5 +163,11 @@ public class NavigationSystem {
      */
     public ArrayList<Character> getCompleteRoute() {
         return this.completeRoute;
+    }
+
+    public void printRoute(){
+        for (Integer i : this.routeToNavigate){
+            System.out.println("RouteToNavigate: " + i);
+        }
     }
 }

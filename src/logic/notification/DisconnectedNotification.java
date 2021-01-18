@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * notification for when connection to the software is lost. Extends <code>AbstractNotification</code>.
  * @author Berend de Groot
- * @version 1.2
+ * @version 1.3
  * @see AbstractNotification
  */
 public class DisconnectedNotification extends AbstractNotification {
@@ -27,6 +27,7 @@ public class DisconnectedNotification extends AbstractNotification {
         this.neoPixelLedColorA = Color.red;
         this.neoPixelLedColorB = Color.yellow;
         this.setLightColorPattern("ABABAB");
+        this.setDisableAfterTime(2000);
     }
 
     /**
@@ -36,6 +37,7 @@ public class DisconnectedNotification extends AbstractNotification {
      */
     @Override
     public void notificationSpecificMethod() {
+        System.out.println("HAHAHAHAH");
         this.setBlinkTime(250);
         this.getBuzzer().playSong(new Jingle().disconnectedJingle());
         this.useLightsBasedOnString();

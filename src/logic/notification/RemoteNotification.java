@@ -24,6 +24,7 @@ public class RemoteNotification extends AbstractNotification {
     public RemoteNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzer, neoPixelLeds);
         this.neoPixelLedColorA = Color.CYAN;
+        this.setDisableAfterTime(100);
     }
 
     /**

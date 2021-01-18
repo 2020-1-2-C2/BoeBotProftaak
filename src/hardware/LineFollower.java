@@ -85,25 +85,25 @@ public class LineFollower implements Updatable {
      */
     private void detectLine3Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack() && !this.centerSeesBlack()) {
-            System.out.println("Not on line");
+//            System.out.println("Not on line");
             this.callBack = LinePosition.NOT_ON_LINE;
         } else if (!this.leftSeesBlack() && !this.rightSeesBlack() && this.centerSeesBlack()) {
-            System.out.println("On line");
+//            System.out.println("On line");
             this.callBack = LinePosition.ON_LINE;
         } else if (this.leftSeesBlack() && this.centerSeesBlack() && !this.rightSeesBlack()) {
-            System.out.println("Slightly right of line");
+//            System.out.println("Slightly right of line");
             this.callBack = LinePosition.JUST_RIGHT_OF_LINE;
         } else if (this.rightSeesBlack() && this.centerSeesBlack() && !this.leftSeesBlack()) {
-            System.out.println("Slightly left of line");
+//            System.out.println("Slightly left of line");
             this.callBack = LinePosition.JUST_LEFT_OF_LINE;
         } else if (this.leftSeesBlack() && !this.centerSeesBlack() && !this.rightSeesBlack()) {
-            System.out.println("Right of Line");
+//            System.out.println("Right of Line");
             this.callBack = LinePosition.RIGHT_OF_LINE;
         } else if (this.rightSeesBlack() && !this.centerSeesBlack() && !this.leftSeesBlack()) {
-            System.out.println("Left of line");
+//            System.out.println("Left of line");
             this.callBack = LinePosition.LEFT_OF_LINE;
         } else {
-            System.out.println("Kruispunt");
+//            System.out.println("Kruispunt");
             this.callBack = LinePosition.CROSSING;
         }
     }

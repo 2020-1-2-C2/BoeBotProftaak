@@ -85,7 +85,7 @@ public class NeoPixelLed implements Led {
      */
     @Override
     public void blink(int interval) {
-        System.out.println("NeoPixelLed (" + this.id + ") is blinking at interval " + interval + ".");
+//        System.out.println("NeoPixelLed (" + this.id + ") is blinking at interval " + interval + ".");
         this.interval = interval;
         if (interval > 0) {
             this.blinkingTimer.setInterval(interval);

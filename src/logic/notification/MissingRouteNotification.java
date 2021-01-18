@@ -27,6 +27,7 @@ public class MissingRouteNotification extends AbstractNotification {
         this.neoPixelLedColorA = Color.PINK;
         this.neoPixelLedColorB = Color.red;
         this.setLightColorPattern("ABABAB");
+        this.setDisableAfterTime(5000);
     }
 
     /**

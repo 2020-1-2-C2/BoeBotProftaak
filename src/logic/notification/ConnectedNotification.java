@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * notification for when connection to the software has been established. Extends <code>AbstractNotification</code>.
  * @author Berend de Groot
- * @version 1.2
+ * @version 1.3
  * @see AbstractNotification
  */
 public class ConnectedNotification extends AbstractNotification {
@@ -27,6 +27,7 @@ public class ConnectedNotification extends AbstractNotification {
         this.neoPixelLedColorA = Color.green;
         this.neoPixelLedColorB = Color.yellow;
         this.setLightColorPattern("ABABAB");
+        this.setDisableAfterTime(4000);
     }
 
     /**

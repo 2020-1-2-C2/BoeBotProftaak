@@ -3,7 +3,6 @@ package logic.notification;
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
 import logic.Configuration;
-import logic.NotePitchGenerator;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,19 +11,18 @@ import java.util.ArrayList;
  * Class used by the BoeBot for handling notifications. All notification classes extend this class, and thus inherit attributes.
  * Every notification has it's own unique <code>notificationSpecificMethod()</code> used to give instructions to the
  * <a href="{@docRoot}/hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/hardware/NeoPixelLed.html">NeoPixelLed</a>s.
- * @version 1.2
+ * @version 1.4
  * @author Berend de Groot
  */
 public abstract class AbstractNotification {
 
     protected Buzzer buzzer;
     protected ArrayList<NeoPixelLed> neoPixelLeds;
-    //TODO: unused? remove?
-    NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
     Color neoPixelLedColorA;
     Color neoPixelLedColorB;
     private String lightColorPattern;
     private int blinkTime;
+    private int disableAfterTime;
 
     /**
      * Constructor for the <code>AbstractNotification</code> class.
@@ -81,6 +79,21 @@ public abstract class AbstractNotification {
     }
 
     /**
+     * Auto-generated getter for the disableAfterTime attribute.
+     */
+    public int getDisableAfterTime() {
+        return this.disableAfterTime;
+    }
+
+    /**
+     * Auto-generated setter for the disableAfterTime attribute.
+     * @param disableAfterTime Changes <code>this.disableAfterTime</code> to the parameter's value.
+     */
+    public void setDisableAfterTime(int disableAfterTime) {
+        this.disableAfterTime = disableAfterTime;
+    }
+
+    /**
      * Checks <code>this.lightColorPattern</code> and changes the <a href:"{@docRoot}/hardware/NeoPixelLed">NeoPixelLed</a>s accordingly. <p>
      * The properties of the Leds are based on the character in it's position (the first character is pinId(0), the second character is pinId(1) and so on)
      * and can have the following properties:
@@ -104,7 +117,7 @@ public abstract class AbstractNotification {
                 neoPixelLed.blink(this.blinkTime);
             } else if (this.lightColorPattern.charAt(i) == 'X') {
                 //TODO: Make sure the light is off and STAYS off.
-                neoPixelLed.blink(this.blinkTime); //TODO: Remove once the bug is fixed.
+                neoPixelLed.blink(0); //TODO: Remove once the bug is fixed.
                 neoPixelLed.off();
             }
         }

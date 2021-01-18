@@ -25,6 +25,7 @@ public class EmergencyStopNotification extends AbstractNotification {
     public EmergencyStopNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzer, neoPixelLeds);
         this.neoPixelLedColorA = Color.red;
+        this.setDisableAfterTime(20000);
     }
 
     /**

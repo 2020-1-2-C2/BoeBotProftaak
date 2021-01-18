@@ -113,7 +113,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                     )
             );
             boolean reading = true;
-            String route = "";
+            String route = ""; //Contains raw coords, so "1,1" + "2,2" becomes 1122.
             while (reading) {
                 int data = this.bluetoothController.getBluetoothReceiver().listenForCoords();
                 if (data == 126) {
@@ -123,21 +123,23 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
             if (route.length() < 3) {
                 System.out.println("Route: (2) " + route);
-                NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1));
+                NavigationSystem navigationSystem = new NavigationSystem(Character.getNumericValue(route.charAt(0)), Character.getNumericValue(route.charAt(1)));
                 this.driveSystem.followRoute(navigationSystem.getRoute());
             } else if (route.length() > 2 && route.length() < 5) {
                 System.out.println("Route: (4) " + route);
-                NavigationSystem navigationSystem = new NavigationSystem(route.charAt(0), route.charAt(1), route.charAt(2), route.charAt(3));
+                NavigationSystem navigationSystem = new NavigationSystem(Character.getNumericValue(route.charAt(0)), Character.getNumericValue(route.charAt(1)), Character.getNumericValue(route.charAt(2)), Character.getNumericValue(route.charAt(3)));
                 this.driveSystem.followRoute(navigationSystem.getRoute());
             } else if (route.length() > 4) {
                 System.out.println("Route: (5+) " + route);
                 NavigationSystem navigationSystem = new NavigationSystem(0, 0);
                 navigationSystem.getCompleteRoute().clear();
                 for (int i = 0; i < route.length(); i++) {
-                    navigationSystem.getCompleteRoute().add(route.charAt(i));
+                    navigationSystem.getCompleteRoute().add(route.charAt(i)); //TODO: Wtf is this? This is not how you're supposed to make routes.
                 }
-                System.out.println(navigationSystem.getCompleteRoute());
+                System.out.println("getCompleteRoute: " + navigationSystem.getCompleteRoute()); //Because for some reason we use this.
                 this.driveSystem.followRoute(navigationSystem.getRoute());
+                System.out.println("HERE WE GO");
+                navigationSystem.printRoute();
             }
         });
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.AUTO_CALIBRATE, () -> {
@@ -231,9 +233,9 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.notificationSystemController.setNotification(
                 new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
         );
-        this.notificationSystemController.setNotification(
-                new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
-        );
+//        this.notificationSystemController.setNotification(
+//                new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
+//        );
 
         this.onInfraredCommandMap.get(button).Execute();
 

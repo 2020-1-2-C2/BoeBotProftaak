@@ -1,5 +1,6 @@
 package logic;
 
+import TI.Timer;
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
 import logic.notification.AbstractNotification;
@@ -12,7 +13,7 @@ import java.util.Collections;
 /**
  * Manages the hardware updatable objects that are part of the notification system.
  * @author Martijn de Kam, Berend de Groot
- * @version 1.3
+ * @version 1.4
  */
 public class NotificationSystemController implements Updatable {
 
@@ -21,13 +22,17 @@ public class NotificationSystemController implements Updatable {
     private ArrayList<NeoPixelLed> neoPixelLeds;
     private Buzzer buzzer;
     private DriveSystem driveSystem;
-    private boolean notificationActive;
+    private AbstractNotification notification;
+
+    private Timer timer;
+    private boolean timerIsEnabled;
 
     public NotificationSystemController(DriveSystem driveSystem) {
         this.updatables = new ArrayList<>();
         this.neoPixelLeds = new ArrayList<>();
         this.buzzer = new Buzzer(Configuration.buzzerPinId);
         this.driveSystem = driveSystem;
+        this.timer = new Timer(0);
 
         // Filling the NeoPixelLeds ArrayList.
         Collections.addAll(this.neoPixelLeds, new NeoPixelLed(0), new NeoPixelLed(1), new NeoPixelLed(2),
@@ -62,12 +67,31 @@ public class NotificationSystemController implements Updatable {
      * @see NeoPixelLed#setShouldBeOn(boolean)
      */
     public void setNotification(AbstractNotification notification) {
-        this.notificationActive = notification instanceof EmptyNotification;
+        this.notification = notification;
+
+        if (this.notification.getDisableAfterTime() != 0){
+            this.timer = new Timer(this.notification.getDisableAfterTime());
+            this.timerIsEnabled = true;
+        } else {
+            this.timerIsEnabled = false;
+        }
 
         for (NeoPixelLed neoPixelLed : this.getNeoPixelLeds()) {
             neoPixelLed.setShouldBeOn(true);
         }
-        notification.notificationSpecificMethod();
+        this.notification.notificationSpecificMethod();
+    }
+
+    /**
+     * Returns a boolean which is: <p> <ul>
+     * <li><i>True</i>: if <code><b>this.</b>notification</code> is an
+     * instance of <a href="{@docRoot}/logic/notification/EmptyNotification.html">EmptyNotification</a>.
+     * <li><i>False</i>: if <code><b>this.</b>notification</code> is NOT an instance of <code>EmptyNotification</code>.
+     * </ul>
+     * @return If the last set instance that implements AbstractNotification is an instance of EmptyNotification true, else it returns false.
+     */
+    private boolean isNotificationEmpty(){
+        return this.notification instanceof EmptyNotification;
     }
 
     /**
@@ -85,11 +109,20 @@ public class NotificationSystemController implements Updatable {
             u.update();
         }
 
-        //Handling the DriveSystem notifications.
-        if (this.driveSystem.getDirection() == DriveSystem.BACKWARD){
-            this.setNotification(new ReverseNotification(this.getBuzzer(), this.getNeoPixelLeds()));
-        } else if (this.driveSystem.getDirection() == DriveSystem.FORWARD){
-            this.setNotification(new EmptyNotification(this.getBuzzer(), this.getNeoPixelLeds()));
+        if (this.timerIsEnabled){
+            if (this.timer.timeout()){
+                this.setNotification(new EmptyNotification(this.getBuzzer(), this.getNeoPixelLeds()));
+            }
         }
+
+
+        //TODO: Handling the DriveSystem notifications.
+//        if (this.driveSystem.getDirection() == DriveSystem.BACKWARD && this.driveSystem.getCurrentSpeed() != 0 && this.isNotificationEmpty()){
+//            this.setNotification(new ReverseNotification(this.getBuzzer(), this.getNeoPixelLeds()));
+//        } else if (this.driveSystem.getDirection() != DriveSystem.BACKWARD && this.notification instanceof ReverseNotification){
+//            this.setNotification(new EmptyNotification(this.getBuzzer(), this.getNeoPixelLeds()));
+//        } else if (this.driveSystem.isFollowingRoute() == false){
+//            this.setNotification(new EmptyNotification(this.getBuzzer(), this.getNeoPixelLeds()));
+//        }
     }
 }

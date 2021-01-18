@@ -23,7 +23,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     private UltraSonicReceiver ultraSonicReceiver;
 
     private int counter = 0;
-    private int[] distances = new int[9];
+    private int[] distances = new int[5];
 
     /**
      * Constructor for <code>CollisionDetection</code>.

@@ -151,6 +151,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void followLine(boolean follow) {
         this.followLine = follow;
+        System.out.println("Volgt nu route");
         this.followSpeed = 25;
         setDirection(FORWARD);
     }
@@ -200,7 +201,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 // Start driving backwards at a minimal speed when then end of a route is reached and set a timer to stop this.
                 this.setSpeed(10);
                 this.setDirection(BACKWARD);
-                //TODO: notification for driving backwards?
                 this.turnAtEndTimer.mark();
                 this.turnAtEndTimer.setOn(true);
                 this.routeTimer.setOn(false);
@@ -245,6 +245,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @param route Route object to use
      */
     public void followRoute(Route route) {
+        //TODO: TEST TEST TEST
+        System.out.println("FollowRoute: " + route.getRoute());
         this.setFollowingRoute(true);
         this.route = route;
         this.followLine(true);
@@ -254,6 +256,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * Get the next step of the route and take the appropriate action to follow it.
      */
     private void routeNextStep() {
+        System.out.println("Next direction: " + this.route.nextDirection());
         switch (this.route.nextDirection()) {
             case Route.FORWARD:
                 this.setSpeed(this.followSpeed);
