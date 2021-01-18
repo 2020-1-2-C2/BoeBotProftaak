@@ -256,14 +256,26 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.setFollowingRoute(true);
         this.route = route;
         this.followLine(true);
+        // reset old values in case of an unexpected ending of the route
+        this.turningLeft = false;
+        this.turningRight = false;
+        this.turnAtEnd = false;
+        this.routeTimer.setOn(false);
+        this.routeWaitTimer.setOn(false);
+        this.turnAtEndTimer.setOn(false);
+        this.crossRoadTimer.setOn(false);
+        this.hasTurnedAroundAtTheEndOfRoute = false;
+        this.getReadyForNextRoute = false;
+        this.ridingUntillTheNextCrossroad = false;
     }
 
     /**
      * Get the next step of the route and take the appropriate action to follow it.
      */
     private void routeNextStep() {
-        System.out.println("Next direction: " + this.route.nextDirection());
-        switch (this.route.nextDirection()) {
+        int nextDirection = this.route.nextDirection();
+        System.out.println("Next direction: " + nextDirection);
+        switch (nextDirection) {
             case Route.FORWARD:
                 this.setSpeed(this.followSpeed);
                 break;
