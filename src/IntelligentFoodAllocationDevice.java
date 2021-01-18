@@ -48,7 +48,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
 
     /**
-     * Creates an instance of itself, and then initializes the attributes. After this has happened it goes through all the updatables in an endless loop. <p>
+     * Creates an instance of itself, and then initializes the attributes.
+     * After this has happened it goes through all the updatables in an endless loop. <p>
      * This method is static, and is the default-generated <code>"main"</code> function.
      * @param args Default parameter.
      * @see #initialise()
@@ -123,7 +124,11 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.NINE, () -> this.driveSystem.setSpeed(90));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.TEN, () -> this.driveSystem.setSpeed(100));
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.START_ROUTE, () -> {
-            this.notificationSystemController.setNotification(new FollowingRouteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+            this.notificationSystemController.setNotification(
+                    new FollowingRouteNotification(
+                            this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()
+                    )
+            );
             boolean reading = true;
             String route = "";
             while (reading) {
@@ -184,7 +189,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
     }
 
     /**
-     * Receive the distance from the ultrasonic receiver and sets the bot to a certain max allowable speed or an emergency stop according to the distance.
+     * Receive the distance from the ultrasonic receiver
+     * and sets the bot to a certain max allowable speed or an emergency stop according to the distance.
      * @param distance Distance from collision in cm.
      */
     @Override
@@ -197,7 +203,11 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 this.driveSystem.setCurrentMaxSpeed(0);
                 this.driveSystem.emergencyStop();
                 //TODO: Consider putting this in DriveSystem.java?
-                this.notificationSystemController.setNotification(new EmergencyStopNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+                this.notificationSystemController.setNotification(
+                        new EmergencyStopNotification(
+                                this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()
+                        )
+                );
                 System.out.println("Emergency stop");
             }
         } else if (distance < 40) {
@@ -236,8 +246,12 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      */
     @Override
     public void onInfraredControllerCommand(int button) {
-        this.notificationSystemController.setNotification(new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
-        this.notificationSystemController.setNotification(new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds()));
+        this.notificationSystemController.setNotification(
+                new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
+        );
+        this.notificationSystemController.setNotification(
+                new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
+        );
 
         this.onInfraredCommandMap.get(button).Execute();
 
@@ -249,8 +263,10 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
     }
 
     /**
-     * This method will listen for commands that are sent by bluetooth. If the START_ROUTE command is called it will start a while loop for how ever long it will take to
-     * read the data. This will usually only take a couple ms. Then it will put the number in a string. That string will then be split into separate integers that are
+     * This method will listen for commands that are sent by bluetooth.
+     * If the START_ROUTE command is called it will start a while loop for how ever long it will take to
+     * read the data. This will usually only take a couple ms. Then it will put the number in a string.
+     * That string will then be split into separate integers that are
      * used to create a new NavigationSystem object. (First int = x, second int = y)
      * @param command BluetoothReceiver.Commands
      */
