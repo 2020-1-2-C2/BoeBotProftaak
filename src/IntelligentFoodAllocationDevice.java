@@ -228,8 +228,6 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         }
     }
 
-
-
     /**
      * Receives a valid button press from the infraredController and executes the command associated with it.
      * @param button Int representing a button the remote.

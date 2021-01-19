@@ -24,6 +24,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private int turningSpeed = 50;
     // Time in ms.
     private final int ACCELERATION_TIME = 500;
+    private final int STOPPING_TIME = 5;
     private int currentSpeed = 0;
     private int currentSpeedRight = 0;
     private int currentSpeedLeft = 0;
@@ -136,7 +137,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.currentSpeed = 0;
         this.currentSpeedLeft = this.currentSpeed;
         this.currentSpeedRight = this.currentSpeed;
-        this.motor.goToSpeed(0, this.ACCELERATION_TIME);
+        this.motor.goToSpeed(0, this.STOPPING_TIME);
     }
 
     /**
@@ -391,7 +392,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     this.turnLeft();
                     break;
                 case CROSSING:
-                    this.immediateStop();
+                    this.stop();
                     if (this.ridingUntillTheNextCrossroad) {
                         this.followingRoute = false;
                     }
