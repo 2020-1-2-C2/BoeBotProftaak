@@ -140,7 +140,7 @@ public class ServoMotor implements Motor, Updatable {
         }
 
         if (side.equals(RIGHT_SIDE_STRINGID)){
-            System.out.println("SIDE: " + RIGHT_SIDE_STRINGID);
+//            System.out.println("SIDE: " + RIGHT_SIDE_STRINGID);
             this.wantedSpeedRight = percentToValue(speed);
             int diff = this.wantedSpeedRight - this.servoRight.getPulseWidth();
             int steps = diff / this.STEP_SIZE_RIGHT;
@@ -156,7 +156,7 @@ public class ServoMotor implements Motor, Updatable {
                 this.timerRight.setOn(true);
             }
         } else if (side.equals(LEFT_SIDE_STRINGID)) {
-            System.out.println("SIDE: " + LEFT_SIDE_STRINGID);
+//            System.out.println("SIDE: " + LEFT_SIDE_STRINGID);
             this.wantedSpeedLeft = percentToValue(speed);
             int diff = this.wantedSpeedLeft - this.servoLeft.getPulseWidth();
             int steps = diff / this.STEP_SIZE_LEFT;
@@ -183,7 +183,7 @@ public class ServoMotor implements Motor, Updatable {
      * @param wantedSpeed Desired speed to change to.
      */
     private void goToSpeedStep(List<Servo> servos, int stepSize, int wantedSpeed) {
-        System.out.println("Buiten lus");
+//        System.out.println("Buiten lus");
         for (Servo servo : servos) {
             int step;
             // If the current speed is greater then it needs to be decreased, else it needs to be increased.
@@ -200,7 +200,7 @@ public class ServoMotor implements Motor, Updatable {
                 newSpeed = this.MAX_BACKWARD_SPEED;
             }
             servo.update(newSpeed);
-            System.out.println("Servos going to new speed: " + newSpeed);
+//            System.out.println("Servos going to new speed: " + newSpeed);
         }
     }
 
@@ -288,7 +288,7 @@ public class ServoMotor implements Motor, Updatable {
 
         // If both timers are enabled then they should both be on synchronous timeout, so if one has a timeout then both motors can be updated.
         if (this.timerLeft.isOn() && this.timerRight.isOn() && this.timerRight.timeout()) {
-            System.out.println("this.timerLeft.isOn() && this.timerRight.isOn() && this.timerRight.timeout()");
+//            System.out.println("this.timerLeft.isOn() && this.timerRight.isOn() && this.timerRight.timeout()");
             this.timerLeft.mark();
             this.timerRight.mark();
             if (this.servoRight.getPulseWidth() == this.wantedSpeedRight) {
@@ -296,7 +296,7 @@ public class ServoMotor implements Motor, Updatable {
             } else if (this.servoLeft.getPulseWidth() == this.wantedSpeedLeft) {
                 this.timerLeft.setOn(false);
             } else {
-                System.out.println("ELSE02 this.timerLeft.isOn() && this.timerRight.isOn() && this.timerRight.timeout()");
+//                System.out.println("ELSE02 this.timerLeft.isOn() && this.timerRight.isOn() && this.timerRight.timeout()");
                 List<Servo> servos = new ArrayList<>();
                 servos.add(this.servoLeft);
                 servos.add(this.servoRight);
@@ -305,22 +305,22 @@ public class ServoMotor implements Motor, Updatable {
 
             // Update just the right motor if the timer is enabled and timed out.
         } else if (this.timerRight.isOn() && this.timerRight.timeout()) {
-            System.out.println("this.timerRight.isOn() && this.timerRight.timeout()");
+//            System.out.println("this.timerRight.isOn() && this.timerRight.timeout()");
             if (this.servoRight.getPulseWidth() != this.wantedSpeedRight) {
-                System.out.println("this.servoRight.getPulseWidth() != this.wantedSpeedRight");
+//                System.out.println("this.servoRight.getPulseWidth() != this.wantedSpeedRight");
                 List<Servo> servos = new ArrayList<>();
                 servos.add(this.servoRight);
                 goToSpeedStep(servos, this.STEP_SIZE_RIGHT, this.wantedSpeedRight);
             } else {
-                System.out.println("ELSE03");
+//                System.out.println("ELSE03");
                 this.timerRight.setOn(false);
             }
 
             // Update just the left motor if the timer is enabled and timed out.
         } else if (this.timerLeft.isOn() && this.timerLeft.timeout()) {
-            System.out.println("this.timerLeft.isOn() && this.timerLeft.timeout()");
+//            System.out.println("this.timerLeft.isOn() && this.timerLeft.timeout()");
             if (this.servoLeft.getPulseWidth() != this.wantedSpeedLeft) {
-                System.out.println("this.servoLeft.getPulseWidth() != this.wantedSpeedLeft");
+//                System.out.println("this.servoLeft.getPulseWidth() != this.wantedSpeedLeft");
                 List<Servo> servos = new ArrayList<>();
                 servos.add(this.servoLeft);
                 goToSpeedStep(servos, this.STEP_SIZE_LEFT, this.wantedSpeedLeft);
