@@ -68,7 +68,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.currentSpeed = speed;
         this.currentSpeedLeft = this.currentSpeed;
         this.currentSpeedRight = this.currentSpeed;
-        System.out.println("Going to speed: " + speed);
+//        System.out.println("Going to speed: " + speed);
         this.motor.goToSpeed(speed, this.ACCELERATION_TIME);
     }
 
@@ -359,13 +359,13 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         if (this.followLine && !this.turningRight && !this.turningLeft) {
             switch (linePosition) {
                 case NOT_ON_LINE:
-                    /*
+
                     this.followLine(false);
                     this.stop();
-                    */
+
                 case ON_LINE:
                     this.setSpeed(this.followSpeed);
-                    System.out.println("Reaching the statement that should make it go forwards at speed: " + this.followSpeed);
+//                    System.out.println("Reaching the statement that should make it go forwards at speed: " + this.followSpeed);
                     break;
                 case LEFT_OF_LINE:
                     this.stop();
