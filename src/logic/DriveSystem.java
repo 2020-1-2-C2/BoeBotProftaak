@@ -167,7 +167,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void followLine(boolean follow) {
         this.followLine = follow;
 //        System.out.println("Volgt nu een lijn " + follow);
-        this.followSpeed = 20;
+        this.followSpeed = 10;
         setDirection(FORWARD);
     }
 
@@ -204,7 +204,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
         // When seeing a crossroads while following a route and the next step is left or right, then the bot first drives forwards a little bit
         // After a timer expires it stops and starts turning the appropriate direction
-        if (this.drivingSlightlyForwardsBeforeTurningTimer.timeout()) {
+        if (this.drivingSlightlyForwardsBeforeTurningTimer.isOn() && this.drivingSlightlyForwardsBeforeTurningTimer.timeout()) {
             immediateStop();
             if (this.turningLeft) {
                 turnLeft();
@@ -426,11 +426,13 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             switch (linePosition) {
                 case JUST_LEFT_OF_LINE:
                     if (this.turningRight) {
+                        this.immediateStop();
                         this.turningRight = false;
                     }
                     break;
                 case JUST_RIGHT_OF_LINE:
                     if (this.turningLeft) {
+                        this.immediateStop();
                         this.turningLeft = false;
                     }
                     break;

@@ -31,7 +31,7 @@ public class LineFollower implements Updatable {
     private int centralLineSensorPin;
     private LinePosition callBack;
 
-    private Timer lineFollowerTimer = new Timer(20);
+    private Timer lineFollowerTimer = new Timer(5);
 
     private int sensorTweak;
     private boolean onWhite;
