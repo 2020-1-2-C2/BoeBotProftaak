@@ -405,12 +405,12 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             // Turning while following line so it turns to the next corner (usually a 90 degree turn).
         } else if (this.followLine) {
             switch (linePosition) {
-                case LEFT_OF_LINE:
+                case JUST_LEFT_OF_LINE:
                     if (this.turningRight) {
                         this.turningRight = false;
                     }
                     break;
-                case RIGHT_OF_LINE:
+                case JUST_RIGHT_OF_LINE:
                     if (this.turningLeft) {
                         this.turningLeft = false;
                     }
