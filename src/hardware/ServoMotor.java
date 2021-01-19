@@ -221,6 +221,19 @@ public class ServoMotor implements Motor, Updatable {
     }
 
     /**
+     * Stop immediatly without it being an emergency
+     */
+    @Override
+    public void immediateStop() {
+        this.servoRight.update(this.STANDSTILL_SPEED);
+        this.servoLeft.update(this.STANDSTILL_SPEED);
+
+        // Resetting the internal speed within the software to match the emergency stop.
+        this.wantedSpeedLeft = percentToValue(0);
+        this.wantedSpeedRight = percentToValue(0);
+    }
+
+    /**
      * Overrides getSpeedLeft() in <a href="{@docRoot}/hardware/Motor.html">Motor</a>.
      * @return The pulsewidth of the left servomotor converted to a percentage speed value.
      * @see ServoMotor#getSpeedLeft()

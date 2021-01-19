@@ -140,6 +140,16 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
+     * Stops immediatly without it being an emergency
+     */
+    public void immediateStop() {
+        this.currentSpeed = 0;
+        this.currentSpeedLeft = this.currentSpeed;
+        this.currentSpeedRight = this.currentSpeed;
+        this.motor.immediateStop();
+    }
+
+    /**
      * Immediately stops the BoeBot.
      */
     public void emergencyStop() {
@@ -359,10 +369,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         if (this.followLine && !this.turningRight && !this.turningLeft) {
             switch (linePosition) {
                 case NOT_ON_LINE:
-
                     this.followLine(false);
                     this.stop();
-
                 case ON_LINE:
                     this.setSpeed(this.followSpeed);
 //                    System.out.println("Reaching the statement that should make it go forwards at speed: " + this.followSpeed);
@@ -382,7 +390,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     this.turnLeft();
                     break;
                 case CROSSING:
-                    this.stop();
+                    this.immediateStop();
                     if (this.ridingUntillTheNextCrossroad) {
                         this.followingRoute = false;
                     }

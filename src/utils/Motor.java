@@ -37,6 +37,11 @@ public interface Motor extends Updatable {
     void emergencyStop();
 
     /**
+     * Stop immediatly without it being an emergency
+     */
+    void immediateStop();
+
+    /**
      * Get the current speed in a percentage of the maximum speed.
      *
      * @return Percentage of the maximum speed (100 max forwards, -100 max backwards).
