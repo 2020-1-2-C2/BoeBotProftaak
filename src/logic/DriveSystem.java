@@ -68,7 +68,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.currentSpeed = speed;
         this.currentSpeedLeft = this.currentSpeed;
         this.currentSpeedRight = this.currentSpeed;
-
+        System.out.println("Going to speed: " + speed);
         this.motor.goToSpeed(speed, this.ACCELERATION_TIME);
     }
 
