@@ -287,6 +287,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private void routeNextStep() {
         int nextDirection = this.route.nextDirection();
         System.out.println("Next direction: " + nextDirection);
+        System.out.println("Direction after that: " + this.route.testNextDirection());
         switch (nextDirection) {
             case Route.FORWARD:
                 System.out.println("reaching this print should mean it has started moving");

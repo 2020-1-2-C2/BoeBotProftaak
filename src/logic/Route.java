@@ -43,6 +43,20 @@ public class Route {
     }
 
     /**
+     * Method that returns the next direction without increasing the index
+     * @return
+     */
+    public Integer testNextDirection() {
+        if (this.route.size() < 1) {
+            return null;
+        } else if(this.index >= this.route.size()) {
+            return NONE;
+        } else {
+            return this.route.get(index);
+        }
+    }
+
+    /**
      * Reverses the route and continue from the end of the previous route.
      */
     public void reverse() {
