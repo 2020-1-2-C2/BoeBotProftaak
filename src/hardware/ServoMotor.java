@@ -176,7 +176,6 @@ public class ServoMotor implements Motor, Updatable {
                 newSpeed = this.MAX_BACKWARD_SPEED;
             }
             servo.update(newSpeed);
-//            System.out.println("Servos going to new speed: " + newSpeed);
         }
     }
 
