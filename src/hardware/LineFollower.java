@@ -5,15 +5,16 @@ import TI.Timer;
 import utils.LineFollowCallback;
 import utils.Updatable;
 
-//TODO documentation for methods
-
 /**
  * Class for the LineFollower hardware component, used by the BoeBot to navigate using lines.
  * @see utils.Updatable
- * @author Casper Lous, Berend de Groot, Lars Hoendervangers, Tom Martens, Meindert Kempe
+ * @author Casper Lous, Berend de Groot, Tom Martens, Meindert Kempe
  */
 public class LineFollower implements Updatable {
 
+    /**
+     * Enumurations for the LineFollower class.
+     */
     public enum LinePosition {
         NOT_ON_LINE,
         LEFT_OF_LINE,
@@ -36,6 +37,9 @@ public class LineFollower implements Updatable {
     private int sensorTweak;
     private boolean onWhite;
 
+    /**
+     * Constructor for LineFollower class.
+     */
     public LineFollower(int leftLineSensorPin, int rightLineSensorPin, int middleLineSensorPin, LineFollowCallback lineFollowCallback) {
         this.lineFollowCallback = lineFollowCallback;
         this.leftLineSensorPin = leftLineSensorPin;
@@ -46,14 +50,23 @@ public class LineFollower implements Updatable {
         this.lineFollowerTimer.mark();
     }
 
+    /**
+     * This method returns true when the left line follower sensor sees black.
+     */
     private boolean leftSeesBlack() {
         return BoeBot.analogRead(this.leftLineSensorPin) > this.sensorTweak;
     }
 
+    /**
+     * This method returns true when the right line follower sensor sees black.
+     */
     private boolean rightSeesBlack() {
         return BoeBot.analogRead(this.rightLineSensorPin) > this.sensorTweak;
     }
 
+    /**
+     * This method returns true when the center line follower sensor sees black.
+     */
     private boolean centerSeesBlack() {
         return BoeBot.analogRead(this.centralLineSensorPin) > this.sensorTweak;
     }
@@ -114,7 +127,7 @@ public class LineFollower implements Updatable {
         //white surface
         int whiteCalibration = 0;
 
-        if (this.onWhite){
+        if (this.onWhite) {
             whiteCalibration = this.calibrateMeasurement();
         }
         this.sensorTweak = (whiteCalibration + blackCalibration) / 2;
