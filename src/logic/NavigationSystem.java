@@ -2,8 +2,6 @@ package logic;
 
 import java.util.ArrayList;
 
-//TODO multiple stops
-
 /**
  * Class used to generate <a href="{@docRoot}/logic/NavigationSystem.html">Route.java</a> instances, used by the BoeBot to drive.
  * The method <code>followRoute()</code> in <a href="{@docRoot}/logic/DriveSystem.html">DriveSystem.java</a> takes
@@ -252,7 +250,6 @@ public class NavigationSystem {
         return new Route(this.routeToNavigate);
     }
 
-    //TODO calculating a route with stops in between doesn't yet work.
     public Route calculateNewAdvancedRoute() {
         System.out.println("Calculating an advanced route");
         System.out.println("Amount of destinations: " + this.destinationCoordsList.size());

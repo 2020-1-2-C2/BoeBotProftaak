@@ -375,7 +375,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * Method that stops the route following using the stopFollowingRoute method.
      * Also resets all boolean values and timers used in the class so it doesn't suddenly start running again.
      */
-    //TODO for correct route resuming not all boolean values should be reset at an emergency stop
     private void emergencyStopFollowingRoute() {
         stopFollowingRoute();
         resetBooleanValues();
