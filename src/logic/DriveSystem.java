@@ -17,10 +17,10 @@ import utils.Updatable;
  */
 public class DriveSystem implements Updatable, LineFollowCallback {
     private Motor motor;
-    private final int STEPS = 10;
-    private final int MAX_SPEED = 100;
+    private static final int STEPS = 10;
+    private static final int MAX_SPEED = 100;
     private int currentMaxSpeed = MAX_SPEED;
-    private int MIN_SPEED = MAX_SPEED / STEPS;
+    public static final int MIN_SPEED = MAX_SPEED / STEPS;
     private int currentSpeed = 0;
     private int currentSpeedRight = 0;
     private int currentSpeedLeft = 0;
@@ -30,8 +30,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     public static final int FORWARD = 1;
     public static final int BACKWARD = -1;
-    private static final boolean RIGHT = true;
-    private static final boolean LEFT = false;
+    public static final boolean RIGHT = true;
+    public static final boolean LEFT = false;
 
     private boolean followingRoute = false;
     private Route route;
@@ -101,21 +101,20 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * Turn left at the lowest speed.
      */
     public void turnLeft() {
-        turn(LEFT, this.MIN_SPEED);
+        turn(LEFT);
     }
 
     /**
      * Turn right at the lowest speed.
      */
     public void turnRight() {
-        turn(RIGHT, this.MIN_SPEED);
+        turn(RIGHT);
     }
 
     /**
      * @param direction true = right, false = left.
-     * @param speed     speed in percent.
      */
-    public void turn(boolean direction, int speed) {
+    private void turn(boolean direction) {
         if (direction) {
             this.currentSpeedRight = -MIN_SPEED;
             this.currentSpeedLeft = MIN_SPEED;
@@ -123,6 +122,29 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             this.currentSpeedRight = MIN_SPEED;
             this.currentSpeedLeft = -MIN_SPEED;
         }
+        this.motor.goToSpeedRight(this.currentSpeedRight * this.direction);
+        this.motor.goToSpeedLeft(this.currentSpeedLeft * this.direction);
+    }
+
+    public void turnWithExistingSpeedAndTurnSpeed(boolean direction, int turnSpeed) {
+        if (direction) {
+            this.currentSpeedRight = this.currentSpeed - turnSpeed;
+            this.currentSpeedLeft = this.currentSpeed + turnSpeed;
+            if (this.currentSpeedLeft > 100) {
+                this.currentSpeedLeft = 100;
+                this.currentSpeedRight = 100 - turnSpeed;
+            }
+
+        } else {
+            this.currentSpeedRight = this.currentSpeed + turnSpeed;
+            this.currentSpeedLeft = this.currentSpeed - turnSpeed;
+            if (this.currentSpeedRight > 100) {
+                this.currentSpeedRight = 100;
+                this.currentSpeedLeft = 100 - turnSpeed;
+            }
+
+        }
+
         this.motor.goToSpeedRight(this.currentSpeedRight * this.direction);
         this.motor.goToSpeedLeft(this.currentSpeedLeft * this.direction);
     }

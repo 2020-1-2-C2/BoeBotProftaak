@@ -1,6 +1,7 @@
 package logic;
 
 import TI.Timer;
+import utils.TimerWithState;
 import utils.Updatable;
 
 /**
@@ -14,10 +15,8 @@ import utils.Updatable;
  */
 public class Shapes implements Updatable {
     private DriveSystem driveSystem;
-    private Timer circleTimer;
-    private Timer triangleTimer;
-    private boolean circleTimerEnabled;
-    private boolean triangleTimerEnabled;
+    private TimerWithState circleTimer;
+    private TimerWithState triangleTimer;
     private int triangleCounter;
     private boolean triangleSegmentBoolean;
 
@@ -35,9 +34,8 @@ public class Shapes implements Updatable {
      */
     public Shapes(DriveSystem driveSystem) {
         this.driveSystem = driveSystem;
-        this.circleTimer = new Timer(1000);
-        this.triangleTimer = new Timer(1000);
-        this.circleTimerEnabled = false;
+        this.circleTimer = new TimerWithState(1000, false);
+        this.triangleTimer = new TimerWithState(1000, false);
         this.triangleCounter = 0;
         this.triangleSegmentBoolean = false;
     }
@@ -48,14 +46,14 @@ public class Shapes implements Updatable {
      */
     public void beginShape(Shape shape) {
         this.driveSystem.stop();
-        this.driveSystem.setDirection(1);
+        this.driveSystem.setDirection(DriveSystem.FORWARD);
         this.driveSystem.setSpeed(20);
         if (shape.equals(Shape.CIRCLE)) {
-            this.circleTimerEnabled = true;
-            this.circleTimer.setInterval(20000);
+            this.circleTimer.setOn(true);
+            this.circleTimer.setInterval(10000);
             circle();
         } else if (shape.equals(Shape.TRIANGLE)) {
-            this.triangleTimerEnabled = true;
+            this.triangleTimer.setOn(true);
             this.triangleSegmentBoolean = false;
             triangle();
         }
@@ -65,31 +63,27 @@ public class Shapes implements Updatable {
      * Drives in a circle.
      */
     private void circle() {
-        if (this.circleTimerEnabled) {
-            this.driveSystem.turnLeft();
-        } else {
-            this.driveSystem.stop();
-        }
+        this.driveSystem.turnWithExistingSpeedAndTurnSpeed(DriveSystem.LEFT, DriveSystem.MIN_SPEED);
     }
 
     /**
      * Drives in a triangle.
      */
     private void triangle() {
-        if (this.triangleCounter < 4) {
+        this.driveSystem.immediateStop();
+        if (this.triangleCounter < 3) {
             if (this.triangleSegmentBoolean) {
-                this.driveSystem.stop();
-                this.triangleTimer.setInterval(1350);
+                this.triangleTimer.setInterval(4500);
                 this.triangleSegmentBoolean = false;
-                this.driveSystem.turn(DriveSystem.LEFT, 50);
-                this.triangleCounter++;
+                this.driveSystem.turnLeft();
             } else {
                 this.driveSystem.setSpeed(20);
-                this.triangleTimer.setInterval(2000);
+                this.triangleTimer.setInterval(3000);
                 this.triangleSegmentBoolean = true;
+                this.triangleCounter++;
             }
         } else {
-            this.triangleTimerEnabled = false;
+            this.triangleTimer.setOn(false);
             this.triangleCounter = 0;
             this.driveSystem.stop();
         }
@@ -102,12 +96,12 @@ public class Shapes implements Updatable {
      */
     @Override
     public void update() {
-        if (this.circleTimerEnabled && this.circleTimer.timeout()) {
-            this.circleTimerEnabled = false;
-            this.circle();
+        if (this.circleTimer.timeout()) {
+            this.circleTimer.setOn(false);
+            this.driveSystem.stop();
         }
 
-        if (this.triangleTimerEnabled && this.triangleTimer.timeout()) {
+        if (this.triangleTimer.timeout()) {
             this.triangleTimer.mark();
             this.triangle();
         }
