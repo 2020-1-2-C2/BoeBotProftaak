@@ -2,7 +2,6 @@ package logic.notification;
 
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
-
 import java.util.ArrayList;
 
 /**

@@ -6,8 +6,7 @@ import utils.InfraredControllerCallback;
 import utils.Updatable;
 
 /**
- * Controller for the InfraredReceiver class
- *
+ * Controller for the InfraredReceiver class.
  * @author Martijn de Kam, Berend de Groot
  */
 public class InfraredController implements Updatable, InfraredCallback {

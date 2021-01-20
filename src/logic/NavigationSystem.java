@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Class used to generate <a href="{@docRoot}/logic/NavigationSystem.html">Route.java</a> instances, used by the BoeBot to drive.
  * The method <code>followRoute()</code> in <a href="{@docRoot}/logic/DriveSystem.html">DriveSystem.java</a> takes
  * in a <code>Route</code> as a parameter, and is used for the navigation of the robot.
- * @author Berend de Groot
+ * @author Berend de Groot, Martijn de Kam
  * @version 1.1
  * @see DriveSystem#followRoute(Route)
  */
@@ -64,7 +64,7 @@ public class NavigationSystem {
 
     /**
      * Calculates the distance and adds instructions to this <code>routeToNavigate</code> ArrayList accordingly.
-     * Only supports starting from the edge, doesn't support moving backwards
+     * Only supports starting from the edge, doesn't support moving backwards.
      */
     private ArrayList<Integer> calculateRouteBetweenTwoPoints(int startingCoordX, int startingCoordY, int goalCoordX, int goalCoordY) {
         int differenceX =  goalCoordX - startingCoordX;
@@ -79,7 +79,7 @@ public class NavigationSystem {
                 route.add(Route.FORWARD);
             }
         } else if (differenceY < 0) {
-            // implement backwards implementation
+            // Implement backwards implementation.
         }
 
         if (differenceX > 0) {
@@ -106,10 +106,10 @@ public class NavigationSystem {
 
     /**
      * Calculates the distance and adds instructions to this <code>routeToNavigate</code> ArrayList accordingly.
-     * Only supports starting from the edge, doesn't support moving backwards
+     * Only supports starting from the edge, doesn't support moving backwards.
      */
     private ArrayList<Integer> calculateRouteBetweenTwoPointsWithOrientation(int startingCoordX, int startingCoordY, int goalCoordX, int goalCoordY) {
-        // if no orientation exists then it's the very start and the simple method of calculating a route can be used
+        // If no orientation exists then it's the very start and the simple method of calculating a route can be used.
         if (this.orientation == NOORIENTATION) {
             return this.calculateRouteBetweenTwoPoints(startingCoordX, startingCoordY, goalCoordX, goalCoordY);
         }
@@ -119,10 +119,10 @@ public class NavigationSystem {
 
         ArrayList<Integer> route = new ArrayList<>();
 
-        // The bot is moving in the y direction and maybe in the x direction
+        // The bot is moving in the y direction and maybe in the x direction.
         if (differenceY != 0) {
-            // rotate appropriatly
-            // also adjust orientation with a rotation
+            // Rotate appropriately.
+            // Also adjust orientation with a rotation.
             if ((this.orientation == NORTH && differenceY < 0) || (this.orientation == SOUTH && differenceY > 0)) {
                 route.add(Route.ROTATE);
                 if (this.orientation == NORTH) {
@@ -148,7 +148,7 @@ public class NavigationSystem {
                 route.add(Route.FORWARD);
             }
 
-            // move forward the amount left necessary in the y direction
+            // Move forward the amount left necessary in the y direction.
             if (differenceY > 1) {
                 for (int i = 1; i < differenceY; i++) {
                     route.add(Route.FORWARD);
@@ -159,8 +159,8 @@ public class NavigationSystem {
                 }
             }
 
-            // Now go to the necessary X position
-            // this is after moving in the y direction, so orientation should either be NORTH or SOUTH
+            // Now go to the necessary X position.
+            // This is after moving in the y direction, so orientation should either be NORTH or SOUTH.
             if ((this.orientation == NORTH && differenceX < 0) || (this.orientation == SOUTH && differenceX > 0)) {
                 route.add(Route.LEFT);
                 if (this.orientation == NORTH) {
@@ -177,7 +177,7 @@ public class NavigationSystem {
                 }
             }
 
-            // move forward the amount left necessary in the x direction
+            // Move forward the amount left necessary in the x direction.
             if (differenceX > 1) {
                 for (int i = 1; i < differenceX; i++) {
                     route.add(Route.FORWARD);
@@ -187,7 +187,7 @@ public class NavigationSystem {
                     route.add(Route.FORWARD);
                 }
             }
-            // if the bot is moving in only the x direction
+            // If the bot is moving in only the x direction.
         } else if (differenceX != 0 && differenceY == 0) {
             if ((this.orientation == NORTH && differenceX < 0) || (this.orientation == SOUTH && differenceX > 0)) {
                 route.add(Route.LEFT);
@@ -214,7 +214,7 @@ public class NavigationSystem {
                 route.add(Route.FORWARD);
             }
 
-            // move forward the amount left necessary in the x direction
+            // Move forward the amount left necessary in the x direction.
             if (differenceX > 1) {
                 for (int i = 1; i < differenceX; i++) {
                     route.add(Route.FORWARD);
@@ -234,7 +234,7 @@ public class NavigationSystem {
 
     /**
      * Adds a given list which contains a route with directions and at the end a destination and adds it to the private attribute routeToNavigate.
-     * @param routeToAdd
+     * @param routeToAdd Route to add to <code>this.routeToNavigate</code>.
      */
     private void addSingleRouteToTotal(ArrayList<Integer> routeToAdd) {
         this.routeToNavigate.addAll(routeToAdd);
@@ -267,14 +267,6 @@ public class NavigationSystem {
         return new Route(this.routeToNavigate);
     }
 
-    public void printRoute(){
-        System.out.print("RouteToNavigate: ");
-        for (Integer i : this.routeToNavigate){
-            System.out.print(i + ", ");
-        }
-        System.out.println("");
-    }
-
     /**
      * Simple method for eliminating the first digit out of a two digit number
      * @param number two digit number
@@ -302,10 +294,10 @@ public class NavigationSystem {
         } else if (this.currentCoordX == 0) {
             this.orientation = EAST;
         } else {
-            // standard if unknown is NORTH
+            // Standard if unknown is NORTH.
             this.orientation = NORTH;
         }
-        // Facing SOUTH or WEST at the start requires to know the dimensions of the roster or to include an orientation in the bluetooth message
+        // Facing SOUTH or WEST at the start requires to know the dimensions of the roster or to include an orientation in the bluetooth message.
     }
 
     private void determineOrientation(ArrayList<Integer> addedRoute) {

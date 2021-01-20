@@ -25,7 +25,7 @@ public class NotePitchGenerator {
      * @param octave Integer containing info about the pitch. It represents the octave the note should be played at. (for example: 4, 5, 6).
      * @return A rounded frequency (Hz) as an integer, representing a note in music.
      */
-    public int getNote(String note, int octave) {
+    int getNote(String note, int octave) {
         double noteFrequency;
         int halfStepDifference = 0; //This is the value assigned by default, and use by "A" or an invalid letter.
 

@@ -1,7 +1,6 @@
 package hardware;
 
 import logic.AudioPlaySystem;
-import logic.MusicNote;
 import TI.BoeBot;
 import TI.PinMode;
 import TI.Timer;
@@ -67,7 +66,6 @@ public class Buzzer implements Updatable {
                 if (this.noteDelayTimer.timeout()){
                     buzz(this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNoteLengthInMS(),
                             this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNotePitch());
-//                    System.out.println(this.toString(this.selectedSong.getNotesToPlay().get(this.currentNoteCount)));
                     this.currentNoteCount++;
                         if (this.selectedSong.getNotesToPlay().size() - 1 > this.currentNoteCount){
                             this.noteDelayTimer.setInterval(this.selectedSong.getNotesToPlay().get(this.currentNoteCount).getNoteDelayInMS()
@@ -90,19 +88,5 @@ public class Buzzer implements Updatable {
         this.selectedSong = audioPlaySystem;
         this.currentNoteCount = 0;
         this.noteDelayTimer.setInterval(1);
-    }
-
-    //TODO: REMOVE ON FINAL RELEASE ONLY!
-    /**
-     * Method used for debugging purposes only. It prints out the pitch, length and the delay for a note.
-     * @param musicNote Uses this to get information about the note.
-     * @return String containing information about a musicNote.
-     * @see MusicNote
-     */
-    private String toString(MusicNote musicNote) {
-        return "NEW MUSICNOTE" + "\n"
-                + "Note Pitch: " + musicNote.getNotePitch() + "\n"
-                + "Note Length: " + musicNote.getNoteLength() + "\n"
-                + "Note Delay: " + musicNote.getNoteDelay();
     }
 }

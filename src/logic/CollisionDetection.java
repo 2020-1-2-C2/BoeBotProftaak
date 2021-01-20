@@ -4,7 +4,6 @@ import hardware.UltraSonicReceiver;
 import utils.CollisionDetectionCallback;
 import utils.UltraSonicCallback;
 import utils.Updatable;
-
 import java.util.Arrays;
 
 /**
@@ -18,7 +17,6 @@ import java.util.Arrays;
  * @author Meindert Kempe, Berend de Groot, Martijn de Kam, Casper Lous, Lars Hoendervangers
  */
 public class CollisionDetection implements Updatable, UltraSonicCallback {
-
     private CollisionDetectionCallback collisionDetectionCallback;
     private UltraSonicReceiver ultraSonicReceiver;
 
@@ -57,7 +55,7 @@ public class CollisionDetection implements Updatable, UltraSonicCallback {
     }
 
     /**
-     * Empty <code>update()</code> method.
+     * Runs the <code>update()</code> method of <code>this.ultraSonicReceiver</code>.
      * @see Updatable#update()
      */
     @Override

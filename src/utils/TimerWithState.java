@@ -54,7 +54,7 @@ public class TimerWithState extends TI.Timer {
 
     /**
      * Overrides the timeout method of the superclass so that when the timer is off it immediately returns false
-     * @return
+     * @return super.timeout()
      */
     @Override
     public boolean timeout() {

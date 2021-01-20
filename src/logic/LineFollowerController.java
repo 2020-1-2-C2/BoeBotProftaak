@@ -4,8 +4,7 @@ import hardware.LineFollower;
 import utils.Updatable;
 
 /**
- * Controller for the LineFollower class
- *
+ * Controller for the LineFollower class.
  * @author Martijn de Kam, Berend de Groot
  */
 public class LineFollowerController implements Updatable {
@@ -13,9 +12,8 @@ public class LineFollowerController implements Updatable {
     private LineFollower lineFollower;
 
     /**
-     * Constructor for LineFollowerController
-     * Creates a LineFollower object with 3 linefollow sensors
-     *
+     * Constructor for LineFollowerController.
+     * Creates a LineFollower object with 3 line-follow-sensors.
      * @param driveSystem used for onLineFollow callbacks
      */
     public LineFollowerController(DriveSystem driveSystem) {

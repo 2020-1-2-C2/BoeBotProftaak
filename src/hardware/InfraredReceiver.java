@@ -5,7 +5,6 @@ import TI.PinMode;
 import TI.Timer;
 import utils.InfraredCallback;
 import utils.Updatable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -17,7 +16,6 @@ import java.util.Collections;
  * @author Berend de Groot, Martijn de Kam, Meindert Kempe, Casper Lous
  */
 public class InfraredReceiver implements Updatable {
-
     private int pinId;
     private InfraredCallback infraredCallback;
     private ArrayList<Integer> possibleButtons;
@@ -63,7 +61,6 @@ public class InfraredReceiver implements Updatable {
      * @return true when a start-signal has been read.
      */
     private boolean listenForStartSignal() {
-//        System.out.println("Listening for infrared start signal");
         int pulseLen = BoeBot.pulseIn(this.pinId, false, 6000);
         if (pulseLen > 2000) {
             return true;

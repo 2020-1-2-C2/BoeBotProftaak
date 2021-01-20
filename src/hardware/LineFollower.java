@@ -13,7 +13,7 @@ import utils.Updatable;
 public class LineFollower implements Updatable {
 
     /**
-     * Enumurations for the LineFollower class.
+     * Enumerations for the LineFollower class.
      */
     public enum LinePosition {
         NOT_ON_LINE,
@@ -31,14 +31,12 @@ public class LineFollower implements Updatable {
     private int rightLineSensorPin;
     private int centralLineSensorPin;
     private LinePosition callBack;
-
     private Timer lineFollowerTimer = new Timer(100);
-
     private int sensorTweak;
     private boolean onWhite;
 
     /**
-     * Constructor for LineFollower class.
+     * Constructor for the LineFollower class.
      */
     public LineFollower(int leftLineSensorPin, int rightLineSensorPin, int middleLineSensorPin, LineFollowCallback lineFollowCallback) {
         this.lineFollowCallback = lineFollowCallback;
@@ -72,8 +70,8 @@ public class LineFollower implements Updatable {
     }
 
     /**
-     * Sends a callback saying where the robot is located relative to the line
-     * Used when 2 line follower components are attached to breadboard
+     * Sends a callback saying where the robot is located relative to the line.
+     * Is used when 2 line follower components are attached to breadboard.
      */
     private void detectLine2Sensors() {
         if (!this.leftSeesBlack() && !this.rightSeesBlack()) {
@@ -91,8 +89,8 @@ public class LineFollower implements Updatable {
     }
 
     /**
-     * Saves a callback saying where the robot is located relative to the line
-     * Used when 3 line follower components are attached to breadboard
+     * Saves a callback saying where the robot is located relative to the line.
+     * Used when 3 line follower components are attached to breadboard.
      */
     private void detectLine3Sensors() {
         boolean leftSeesBlack = leftSeesBlack();
@@ -118,13 +116,13 @@ public class LineFollower implements Updatable {
 
 
     /**
-     * Used to calibrate the line followers. Sets sensorTweak to new value calculated from measurements
+     * Used to calibrate the line followers. Sets sensorTweak to new value calculated from measurements.
      */
     public void calibrate() {
-        //black surface
+        //Black surface.
         int blackCalibration = this.calibrateMeasurement();
 
-        //white surface
+        //wWite surface.
         int whiteCalibration = 0;
 
         if (this.onWhite) {
@@ -136,7 +134,7 @@ public class LineFollower implements Updatable {
     /**
      * Used by calibrate method, to acquire a measurement to be used for calibration.
      * This method is first called when the robot is positioned over a black surface, and next when over a white surface.
-     * @return Average of 10 measurements by each line follower component
+     * @return Average of 10 measurements by each line follower component.
      */
     private int calibrateMeasurement() {
         int total = 0;

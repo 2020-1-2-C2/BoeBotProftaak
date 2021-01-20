@@ -14,27 +14,6 @@ public class Jingle {
     private NotePitchGenerator notePitchGenerator = new NotePitchGenerator();
 
     /**
-     * <a href="{@docRoot}/logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the first part of the
-     * melody of <i>Somebody That I Used To Know</i> by <i>Gotye</i>.
-     * @return audioPlaySystem
-     */
-    public AudioPlaySystem somebodyThatIUsedToKnow() {
-        NoteLengthGenerator noteLengthGenerator = new NoteLengthGenerator(129);
-        AudioPlaySystem audioPlaySystem = new AudioPlaySystem();
-
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("F", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getEightNote(), this.notePitchGenerator.getNote("G", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A#", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("C", 6)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getSixteenthNote(), this.notePitchGenerator.getNote("A", 5)));
-        audioPlaySystem.addNote(new MusicNote(noteLengthGenerator.getHalfNote(), this.notePitchGenerator.getNote("G", 5)));
-        return audioPlaySystem;
-    }
-
-    /**
      * <a href="{@docRoot}/logic/AudioPlaySystem.html">AudioPlaySystem</a> containing the first part of the melody
      * of <i>Electro019-5</i>, an unfinished track by Berend de Groot. <p>
      * This <code>AudioPlaySystem</code> is used by <a href="{@docRoot}/logic/notification/ConnectedNotification.html">ConnectedNotification</a>.

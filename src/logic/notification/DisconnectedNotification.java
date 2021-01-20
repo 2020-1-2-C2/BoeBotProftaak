@@ -3,7 +3,6 @@ package logic.notification;
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
 import logic.Jingle;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -37,7 +36,6 @@ public class DisconnectedNotification extends AbstractNotification {
      */
     @Override
     public void notificationSpecificMethod() {
-        System.out.println("HAHAHAHAH");
         this.setBlinkTime(250);
         this.getBuzzer().playSong(new Jingle().disconnectedJingle());
         this.useLightsBasedOnString();

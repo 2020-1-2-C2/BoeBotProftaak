@@ -3,7 +3,6 @@ package logic.notification;
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
 import logic.Jingle;
-
 import java.awt.*;
 import java.util.ArrayList;
 

@@ -1,6 +1,5 @@
 package logic;
 
-import TI.Timer;
 import utils.TimerWithState;
 import utils.Updatable;
 

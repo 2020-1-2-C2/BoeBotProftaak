@@ -1,8 +1,8 @@
 package utils;
 
 /**
- * Interface for updatable classes, allows for the use of the update method
- *
+ * Interface for updatable classes, allows for the use of the <code>update()</code> method.
+ * <h>
  * hardware package classes that implement this interface:
  * @see hardware.BluetoothReceiver
  * @see hardware.Buzzer
@@ -12,7 +12,7 @@ package utils;
  * @see hardware.ServoMotor
  * @see hardware.UltraSonicReceiver
  *
- * logic package classes that implement this interface:
+ * Logic package classes that implement this interface:
  * @see logic.BluetoothController
  * @see logic.CollisionDetection
  * @see logic.DriveSystem
@@ -26,7 +26,7 @@ package utils;
  */
 public interface Updatable {
     /**
-     * update method usable by all classes that implement Updatable
+     * <code>update()</code> method usable by all classes that implement <code>Updatable</code>.
      */
     void update();
 }

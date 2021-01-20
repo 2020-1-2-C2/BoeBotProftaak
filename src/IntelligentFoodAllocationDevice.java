@@ -7,12 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-//General software TODO-list:
-//TODO: Add latency compensation for the Buzzer.
-
-//For Berend
-//TODO: Final grammar check before submitting.
-
 /** Main class of the BoeBot, often described as being the brain of the robot.
  * @author Projectgroep C2 - Berend de Groot, Lars Hoendervangers, Capser Lous, Martijn de Kam, Meindert Kempe, Tom Martens
  * @version 1.0
@@ -54,7 +48,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         System.out.println("Initialisation");
         this.driveSystem = new DriveSystem();
         Shapes shapes = new Shapes(this.driveSystem);
-        this.notificationSystemController = new NotificationSystemController(this.driveSystem);
+        this.notificationSystemController = new NotificationSystemController();
         this.bluetoothController = new BluetoothController(this);
         this.lineFollowerController = new LineFollowerController(this.driveSystem);
 
@@ -168,7 +162,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      * {@link #updatables}
      */
     private void run() {
-        //This used to be this.isRunning, but that always returned true so it has been replaced with "true".
+        //NOTE: this used to be this.isRunning, but that always returned true so it has been replaced with "true".
         System.out.println("Running");
         while (true) {
             for (Updatable u : this.updatables) {
@@ -234,11 +228,8 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.notificationSystemController.setNotification(
                 new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
         );
-//        this.notificationSystemController.setNotification(
-//                new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
-//        );
 
-//          If the received command is following a route, then the program should stop following the route and stop following lines.
+        // If the received command is following a route, then the program should stop following the route and stop following lines.
         if (this.driveSystem.isFollowingRoute()) {
             this.driveSystem.stopFollowingRoute();
         }

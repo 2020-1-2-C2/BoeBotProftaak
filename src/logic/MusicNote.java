@@ -38,7 +38,7 @@ public class MusicNote {
      * Auto-generated getter for the <code>noteLength</code> attribute.
      * @return this.noteLength
      */
-    public double getNoteLength() {
+    double getNoteLength() {
         return this.noteLength;
     }
 
@@ -55,7 +55,7 @@ public class MusicNote {
      * Auto-generated getter for the <code>noteDelay</code> attribute.
      * @return this.noteDelay.
      */
-    public double getNoteDelay() {
+    double getNoteDelay() {
         return this.noteDelay;
     }
 

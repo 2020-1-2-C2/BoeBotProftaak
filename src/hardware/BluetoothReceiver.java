@@ -96,11 +96,11 @@ public class BluetoothReceiver implements Updatable {
                     return Commands.TEN;
                 case 32:
                     //Key: Space bar
-                    //Start reading route information
+                    //Start reading route information.
                     return Commands.START_ROUTE;
                 case 126:
                     //Key: ~
-                    //Stop reading route information
+                    //Stop reading route information.
                     return Commands.STOP_ROUTE;
                 case 37:
                     //Key: %

@@ -4,24 +4,23 @@ import TI.Servo;
 import utils.Motor;
 import utils.TimerWithState;
 import utils.Updatable;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class which controls two DirectionServos
+ * Class which controls two DirectionServos.
  *
- * Implements the Motor interface to ensure easy switching of hardware
+ * Implements the Motor interface to ensure easy switching of hardware.
  *
- * Contains methods to set the desired speed of the motors and to stop the motors
- *
+ * Contains methods to set the desired speed of the motors and to stop the motors.
+ * <p>
  * Implements the Updatable interface,
  * the update method incrementally changes the speed of the DirectionServos towards the desired speed,
  * until the desired speed has been achieved.
  *
  * @see Motor
  * @see DirectionalServo
- * @version 1.0
+ * @version 1.2
  * @author Martijn de Kam, Berend de Groot, Meindert Kempe, Tom Martens, Lars Hoendervangers
  */
 public class ServoMotor implements Motor, Updatable {
@@ -154,7 +153,6 @@ public class ServoMotor implements Motor, Updatable {
     /**
      * Update both servos to change the servo motor speed by one step-size.
      * Can't go higher or lower than the maximum speeds.
-     *
      * @param servos      Both servos of the bot.
      * @param stepSize    Step size to change the servo motor pulse-width with.
      * @param wantedSpeed Desired speed to change to.
@@ -196,7 +194,7 @@ public class ServoMotor implements Motor, Updatable {
     }
 
     /**
-     * Stop immediatly without it being an emergency
+     * Stops immediately without it being an emergency.
      */
     @Override
     public void immediateStop() {
@@ -210,7 +208,7 @@ public class ServoMotor implements Motor, Updatable {
 
     /**
      * Overrides getSpeedLeft() in <a href="{@docRoot}/hardware/Motor.html">Motor</a>.
-     * @return The pulsewidth of the left servomotor converted to a percentage speed value.
+     * @return The pulse-width of the left servomotor converted to a percentage speed value.
      * @see ServoMotor#getSpeedLeft()
      */
     @Override
@@ -220,7 +218,7 @@ public class ServoMotor implements Motor, Updatable {
 
     /**
      * Overrides getSpeedRight() in <a href="{@docRoot}/hardware/Motor.html">Motor</a>.
-     * @return The pulsewidth of the right servomotor converted to a percentage speed value.
+     * @return The pulse-width of the right servomotor converted to a percentage speed value.
      * @see ServoMotor#getSpeedRight()
      */
     @Override
@@ -230,9 +228,9 @@ public class ServoMotor implements Motor, Updatable {
 
     /**
      * Overrides the <code>update()</code> method.
-     * Update the servo motors to go to the desired speed in a small step (2ms pulse width)
+     * Update the servo motors to go to the desired speed in a small step (2ms pulse-width).
      * It will make a step each time the timer for the servo motor times out
-     * As soon as the actual speed matches the desired speed the timer is turned off
+     * as soon as the actual speed matches the desired speed the timer is turned off.
      * @see Updatable#update()
      */
     @Override

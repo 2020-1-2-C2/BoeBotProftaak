@@ -25,7 +25,7 @@ public class DirectionalServo extends TI.Servo {
 
     /**
      * Use the super method to update the servo motor, auto adjust the pulse-width to the orientation of this object.
-     * <code>update()</code> method from <code>TI.Servo</code>.
+     * The <code>update()</code> method from <code>TI.Servo</code>.
      * @param speed speed in pulse-width.
      * @see TI.Servo#update(int)
      */

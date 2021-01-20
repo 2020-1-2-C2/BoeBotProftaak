@@ -6,19 +6,19 @@ package logic;
  */
 public class Configuration {
 
-    // GPIO pins
-    public static int infraredReceiverPinId = 0;
-    public static int ultraSonicReceiverTriggerPinId = 1;
-    public static int ultraSonicReceiverEchoPinId = 2;
-    public static int buzzerPinId = 3;
-    public static int servoMotor1PinId = 12;
-    public static int servoMotor2PinId = 13;
+    // GPIO-pins
+    static int infraredReceiverPinId = 0;
+    static int ultraSonicReceiverTriggerPinId = 1;
+    static int ultraSonicReceiverEchoPinId = 2;
+    static int buzzerPinId = 3;
+    static int servoMotor1PinId = 12;
+    static int servoMotor2PinId = 13;
 
-    // ADC pins
-    public static int lineFollowerLeftLineSensorADCPinId = 3;
-    public static int lineFollowerRightLineSensorADCPinId = 1;
-    public static int lineFollowerMiddleLineSensorADCPinId = 2;
+    // ADC-pins
+    static int lineFollowerLeftLineSensorADCPinId = 3;
+    static int lineFollowerRightLineSensorADCPinId = 1;
+    static int lineFollowerMiddleLineSensorADCPinId = 2;
 
-    // NeoPixel leds
+    // NeoPixelLeds
     public static int neoPixelLEDCount = 6;
 }

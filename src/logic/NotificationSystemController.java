@@ -5,7 +5,6 @@ import hardware.Buzzer;
 import hardware.NeoPixelLed;
 import logic.notification.AbstractNotification;
 import logic.notification.EmptyNotification;
-import logic.notification.ReverseNotification;
 import utils.Updatable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,20 +17,17 @@ import java.util.Collections;
 public class NotificationSystemController implements Updatable {
 
     private ArrayList<Updatable> updatables;
-
     private ArrayList<NeoPixelLed> neoPixelLeds;
     private Buzzer buzzer;
-    private DriveSystem driveSystem;
     private AbstractNotification notification;
 
     private Timer timer;
     private boolean timerIsEnabled;
 
-    public NotificationSystemController(DriveSystem driveSystem) {
+    public NotificationSystemController() {
         this.updatables = new ArrayList<>();
         this.neoPixelLeds = new ArrayList<>();
         this.buzzer = new Buzzer(Configuration.buzzerPinId);
-        this.driveSystem = driveSystem;
         this.timer = new Timer(0);
 
         // Filling the NeoPixelLeds ArrayList.
@@ -83,18 +79,6 @@ public class NotificationSystemController implements Updatable {
     }
 
     /**
-     * Returns a boolean which is: <p> <ul>
-     * <li><i>True</i>: if <code><b>this.</b>notification</code> is an
-     * instance of <a href="{@docRoot}/logic/notification/EmptyNotification.html">EmptyNotification</a>.
-     * <li><i>False</i>: if <code><b>this.</b>notification</code> is NOT an instance of <code>EmptyNotification</code>.
-     * </ul>
-     * @return If the last set instance that implements AbstractNotification is an instance of EmptyNotification true, else it returns false.
-     */
-    private boolean isNotificationEmpty(){
-        return this.notification instanceof EmptyNotification;
-    }
-
-    /**
      * Runs <code>update()</code> all <b>this.</b>updatables. <p>
      * This method also checks whether the BoeBot is driving (<code>this.drivesystem.getDirection()</code>) backwards,
      * and if it is, it sets (<code>this.setNotification</code>) an
@@ -114,15 +98,5 @@ public class NotificationSystemController implements Updatable {
                 this.setNotification(new EmptyNotification(this.getBuzzer(), this.getNeoPixelLeds()));
             }
         }
-
-
-        //TODO: Handling the DriveSystem notifications.
-//        if (this.driveSystem.getDirection() == DriveSystem.BACKWARD && this.driveSystem.getCurrentSpeed() != 0 && this.isNotificationEmpty()){
-//            this.setNotification(new ReverseNotification(this.getBuzzer(), this.getNeoPixelLeds()));
-//        } else if (this.driveSystem.getDirection() != DriveSystem.BACKWARD && this.notification instanceof ReverseNotification){
-//            this.setNotification(new EmptyNotification(this.getBuzzer(), this.getNeoPixelLeds()));
-//        } else if (this.driveSystem.isFollowingRoute() == false){
-//            this.setNotification(new EmptyNotification(this.getBuzzer(), this.getNeoPixelLeds()));
-//        }
     }
 }

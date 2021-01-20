@@ -3,15 +3,16 @@ package logic.notification;
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
 import logic.Route;
-
 import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * notification for when the bot is following a <a href="{@docRoot}/logic/Route.html"></a>. Extends <code>AbstractNotification</code>.
+ * Notification for when the bot is following a <a href="{@docRoot}/logic/Route.html"></a>. Extends <code>AbstractNotification</code>.
  * @see AbstractNotification
  * @see logic.Route
  * @see logic.DriveSystem#followRoute(Route)
+ * @author Berend de Groot
+ * @version 1.3
  */
 public class FollowingRouteNotification extends AbstractNotification {
     /**

@@ -3,12 +3,12 @@ package logic;
 import java.util.ArrayList;
 
 /**
- * Instances made from this class are made in Jingle.java for sounds relying on pitch and rhythm (songs). This class contains methods to add notes with the right timings.
+ * Instances made from this class are made in <a href="{@docRoot}/logic/Jingle.html">Jingle</a> for sounds relying on pitch and rhythm (songs).
+ * This class contains methods to add notes with the right timings.
  * @author Berend de Groot
  * @version 2.3
  */
 public class AudioPlaySystem {
-
     private ArrayList<MusicNote> notesToPlay;
 
     /**

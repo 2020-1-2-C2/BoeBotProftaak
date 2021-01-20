@@ -24,7 +24,7 @@ public class UltraSonicReceiver implements Updatable {
      * Constructor for the ultrasonic-sensor.
      * @param pinIdTrigger       ultrasonic-sensor trigger pin id.
      * @param pinIdEcho          ultrasonic-sensor echo pin id.
-     * @param ultraSonicCallback ultrasoniccallback object.
+     * @param ultraSonicCallback ultraSonicCallback object.
      */
     public UltraSonicReceiver(int pinIdTrigger, int pinIdEcho, UltraSonicCallback ultraSonicCallback) {
         this.pinIdTrigger = pinIdTrigger;
@@ -45,7 +45,7 @@ public class UltraSonicReceiver implements Updatable {
         BoeBot.wait(1);
         BoeBot.digitalWrite(this.pinIdTrigger, false);
 
-        //Pulse length in micro seconds.
+        //Pulse length in microseconds.
         int pulse = BoeBot.pulseIn(this.pinIdEcho, true, 10000);
 
         if (pulse < 0) {
@@ -56,9 +56,9 @@ public class UltraSonicReceiver implements Updatable {
     }
 
     /**
-     * Using the pulse length in microseconds, calculate the distance of an ultrasonicpulse echo in cm.
+     * Using the pulse length in microseconds, calculate the distance of an ultrasonic-pulse echo in cm.
      * The pulse length can be a null object, in which case a null object is directly returned
-     * @return The distance an ultrasonicpulse has traveled one way, in cm.
+     * @return The distance an ultrasonic-pulse has traveled one way, in cm.
      */
     private Integer distance() {
         Integer pulse = ultraSonicPulse();

@@ -2,7 +2,6 @@ package logic.notification;
 
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
-
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -24,7 +23,8 @@ public class ReverseNotification extends AbstractNotification {
     public ReverseNotification(Buzzer buzzer, ArrayList<NeoPixelLed> neoPixelLeds) {
         super(buzzer, neoPixelLeds);
         this.neoPixelLedColorA = Color.orange;
-        this.setLightColorPattern("AXAAXA"); //Only uses the lights on the sides to simulate garbage truck lights.
+        //Only uses the lights on the sides to simulate garbage truck lights.
+        this.setLightColorPattern("AXAAXA");
     }
 
     /**

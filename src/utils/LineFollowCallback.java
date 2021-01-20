@@ -11,9 +11,8 @@ import hardware.LineFollower;
  */
 public interface LineFollowCallback {
     /**
-     * Callback on an object that implements the LineFollowCallback interface
-     * is called upon when an object of LineFollower senses something.
-     *
+     * Callback on an object that implements the LineFollowCallback interface.
+     * Is called upon when an object of LineFollower senses something.
      * @param linePosition enumerator for different line positions
      */
     void onLineFollow(LineFollower.LinePosition linePosition);

@@ -3,13 +3,12 @@ package logic.notification;
 import hardware.Buzzer;
 import hardware.NeoPixelLed;
 import logic.Configuration;
-
 import java.awt.*;
 import java.util.ArrayList;
 
 /**
  * Class used by the BoeBot for handling notifications. All notification classes extend this class, and thus inherit attributes.
- * Every notification has it's own unique <code>notificationSpecificMethod()</code> used to give instructions to the
+ * Every notification has its own unique <code>notificationSpecificMethod()</code> used to give instructions to the
  * <a href="{@docRoot}/hardware/Buzzer.html">Buzzer</a> and <a href="{@docRoot}/hardware/NeoPixelLed.html">NeoPixelLed</a>s.
  * @version 1.4
  * @author Berend de Groot
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 public abstract class AbstractNotification {
 
     protected Buzzer buzzer;
-    protected ArrayList<NeoPixelLed> neoPixelLeds;
+    private ArrayList<NeoPixelLed> neoPixelLeds;
     Color neoPixelLedColorA;
     Color neoPixelLedColorB;
     private String lightColorPattern;
@@ -58,7 +57,7 @@ public abstract class AbstractNotification {
      * @return this.neoPixelLeds, the <a href="{@docRoot}/hardware/NeoPixelLed.html">NeoPixelLed</a> ArrayList.
      * @see NeoPixelLed
      */
-    public ArrayList<NeoPixelLed> getNeoPixelLeds() {
+    ArrayList<NeoPixelLed> getNeoPixelLeds() {
         return this.neoPixelLeds;
     }
 
@@ -89,7 +88,7 @@ public abstract class AbstractNotification {
      * Auto-generated setter for the disableAfterTime attribute.
      * @param disableAfterTime Changes <code>this.disableAfterTime</code> to the parameter's value.
      */
-    public void setDisableAfterTime(int disableAfterTime) {
+    void setDisableAfterTime(int disableAfterTime) {
         this.disableAfterTime = disableAfterTime;
     }
 
@@ -116,8 +115,7 @@ public abstract class AbstractNotification {
                 neoPixelLed.setColor(this.neoPixelLedColorB);
                 neoPixelLed.blink(this.blinkTime);
             } else if (this.lightColorPattern.charAt(i) == 'X') {
-                //TODO: Make sure the light is off and STAYS off.
-                neoPixelLed.blink(0); //TODO: Remove once the bug is fixed.
+                neoPixelLed.blink(0);
                 neoPixelLed.off();
             }
         }
