@@ -78,6 +78,9 @@ public class Route {
         this.index = 0;
     }
 
+    /**
+     * @return the current route.
+     */
     public ArrayList<Integer> getRoute() {
         return this.route;
     }
