@@ -15,6 +15,9 @@ public class InfraredController implements Updatable, InfraredCallback {
     private InfraredReceiver infraredReceiver;
     private InfraredControllerCallback infraredControllerCallback;
 
+    /**
+     * Constructor for InfraredController class.
+     */
     public InfraredController(InfraredControllerCallback infraredControllerCallback) {
         this.infraredReceiver = new InfraredReceiver(Configuration.infraredReceiverPinId, this);
         this.infraredControllerCallback = infraredControllerCallback;
