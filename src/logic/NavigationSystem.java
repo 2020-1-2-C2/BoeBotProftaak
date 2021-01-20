@@ -34,22 +34,15 @@ public class NavigationSystem {
         this(0, 0, destinationCoordsList);
     }
 
-//    /**
-//     * Constructor taking in all information related to the BoeBot's position, and then initializing them.
-//     * @param currentCoordX X-coordinate of the original position, used for calculating the distance to the final destination.
-//     * @param currentCoordY Y-coordinate of the original position, used for calculating the distance to the final destination.
-//     * @param goalCoordX X-coordinate of destination. Think about this like your car's GPS.
-//     * @param goalCoordY Y-coordinate of destination. Think about this like your car's GPS.
-//     */
-//    public NavigationSystem(int currentCoordX, int currentCoordY, int goalCoordX, int goalCoordY) {
-//        this.currentCoordX = currentCoordX;
-//        this.currentCoordY = currentCoordY;
-//        this.goalCoordX = goalCoordX;
-//        this.goalCoordY = goalCoordY;
-//        this.routeToNavigate = new ArrayList<>();
-//        System.out.println("NavigationSystem: " + "" + currentCoordX + "" + currentCoordY + "" + goalCoordX + "" + goalCoordY);
-//    }
-
+    /**
+     * Constructor for a NavigationSystem object.
+     * Takes the current coordinates of X and Y as the starting position.
+     * Takes a list of destinations, in the format of a two digit integer in the format of XY as each element.
+     *
+     * @param currentCoordX start coord X
+     * @param currentCoordY start coord Y
+     * @param destinationsCoordsXAndY all destination coords
+     */
     public NavigationSystem(int currentCoordX, int currentCoordY, ArrayList<Integer> destinationsCoordsXAndY) {
         System.out.println(destinationsCoordsXAndY);
         this.destinationCoordsList = destinationsCoordsXAndY;
@@ -104,6 +97,10 @@ public class NavigationSystem {
         return route;
     }
 
+    /**
+     * Adds a given list which contains a route with directions and at the end a destination and adds it to the private attribute routeToNavigate.
+     * @param routeToAdd
+     */
     private void addSingleRouteToTotal(ArrayList<Integer> routeToAdd) {
         this.routeToNavigate.addAll(routeToAdd);
     }
@@ -144,6 +141,11 @@ public class NavigationSystem {
         System.out.println("");
     }
 
+    /**
+     * Simple method for eliminating the first digit out of a two digit number
+     * @param number two digit number
+     * @return first digit of the number
+     */
     private int getFirstDigitOfATwoDigitNumber(int number) {
         if (number < 10) {
             return 0;
@@ -151,6 +153,11 @@ public class NavigationSystem {
         return number / 10;
     }
 
+    /**
+     * Simple method for eliminating the second digit out of a two digit number
+     * @param number two digit number
+     * @return second digit of the number
+     */
     private int getSeoncdDigitOfATwoDigitNumber(int number) {
         return number % 10;
     }

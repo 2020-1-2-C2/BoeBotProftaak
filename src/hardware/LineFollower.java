@@ -78,7 +78,7 @@ public class LineFollower implements Updatable {
     }
 
     /**
-     * Sends a callback saying where the robot is located relative to the line
+     * Saves a callback saying where the robot is located relative to the line
      * Used when 3 line follower components are attached to breadboard
      */
     private void detectLine3Sensors() {
@@ -114,7 +114,7 @@ public class LineFollower implements Updatable {
         //white surface
         int whiteCalibration = 0;
 
-        if (onWhite){
+        if (this.onWhite){
             whiteCalibration = this.calibrateMeasurement();
         }
         this.sensorTweak = (whiteCalibration + blackCalibration) / 2;

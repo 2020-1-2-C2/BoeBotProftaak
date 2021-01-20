@@ -21,7 +21,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private final int MAX_SPEED = 100;
     private int currentMaxSpeed = MAX_SPEED;
     private int MIN_SPEED = MAX_SPEED / STEPS;
-    private int turningSpeed = 50;
     private int currentSpeed = 0;
     private int currentSpeedRight = 0;
     private int currentSpeedLeft = 0;
@@ -31,8 +30,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     public static final int FORWARD = 1;
     public static final int BACKWARD = -1;
-    public static final boolean RIGHT = true;
-    public static final boolean LEFT = false;
+    private static final boolean RIGHT = true;
+    private static final boolean LEFT = false;
 
     private boolean followingRoute = false;
     private Route route;
@@ -45,7 +44,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private TimerWithState drivingSlightlyForwardsBeforeTurningTimer = new TimerWithState(1000, false);
     private TimerWithState notOnLineTimer = new TimerWithState(2000, false);
     private boolean hasTurnedAroundAtTheEndOfRoute = false;
-    private boolean getReadyForNextRoute = false;
 
     private TimerWithState drivingBackAtTheEndOfTheRouteTimer = new TimerWithState(500, false);
 
@@ -140,7 +138,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
-     * Stops immediatly without it being an emergency
+     * Stops immediatly without it being an emergency, also doesn't stop route following.
      */
     public void immediateStop() {
         this.currentSpeed = 0;
@@ -204,7 +202,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
         // When seeing a crossroads while following a route and the next step is left or right, then the bot first drives forwards a little bit
         // After a timer expires it stops and starts turning the appropriate direction
-        if (this.drivingSlightlyForwardsBeforeTurningTimer.isOn() && this.drivingSlightlyForwardsBeforeTurningTimer.timeout()) {
+        if (this.drivingSlightlyForwardsBeforeTurningTimer.timeout()) {
             System.out.println("Driving slightly forwards before turning");
             immediateStop();
             if (this.turningLeft) {
@@ -233,33 +231,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             // Can only turn left, see onLineFollow method else if statement with this.turnAtEnd for elaboration.
             turnLeft();
         }
-
-
-//        // logic for getting ready for the next route when the previous has finished
-//        if (this.hasTurnedAroundAtTheEndOfRoute && this.getReadyForNextRoute) {
-//            if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
-//                // Stop driving forwards and start turning around.
-//                this.stop();
-//                // always turn to the left
-//                this.turn(LEFT, this.turningSpeed);
-//                this.turnAtEndTimer.setOn(false);
-//            } else if (this.turnAtEnd && this.routeEndtimer.isOn() && this.routeEndtimer.timeout()) {
-//                // Start driving forwards slowly to pass the crossroad.
-//                this.setSpeed(MIN_SPEED);
-//                this.setDirection(FORWARD);
-//                this.turnAtEndTimer.mark();
-//                this.turnAtEndTimer.setOn(true);
-//                this.routeEndtimer.setOn(false);
-//            } else if (routeDestinationWaitTimer.isOn()) {
-//                // When the bot has turned around it can then stop and wait for further instructions, doesn't have to wait the 10 seconds here
-//                this.routeDestinationWaitTimer.setOn(false);
-//                this.hasTurnedAroundAtTheEndOfRoute = false;
-//                this.getReadyForNextRoute = false;
-//                // Follow the line untill the next crossroad, then stop
-//                this.followingRoute = true;
-//                this.ridingUntillTheNextCrossroad = true;
-//            }
-//        }
     }
 
     /**
@@ -353,11 +324,19 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.followLine(false);
     }
 
+    /**
+     * Method that stops the route following using the stopFollowingRoute method.
+     * Also resets all boolean values and timers used in the class so it doesn't suddenly start running again.
+     */
+    //TODO for correct route resuming not all boolean values should be reset at an emergency stop
     private void emergencyStopFollowingRoute() {
         stopFollowingRoute();
         resetBooleanValues();
     }
 
+    /**
+     * Reset all boolean and TimerWithState private attributes to be false/off
+     */
     private void resetBooleanValues() {
         this.turningLeft = false;
         this.turningRight = false;
@@ -368,7 +347,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.drivingSlightlyForwardsBeforeTurningTimer.setOn(false);
         this.notOnLineTimer.setOn(false);
         this.hasTurnedAroundAtTheEndOfRoute = false;
-        this.getReadyForNextRoute = false;
     }
 
     /**
@@ -428,10 +406,10 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     }
                     break;
                 case JUST_LEFT_OF_LINE:
-
+                    // this should be empty
                     break;
                 case JUST_RIGHT_OF_LINE:
-
+                    // this should be empty
                     break;
                 case CROSSING:
                     if (this.crossRoadTimer.timeout()) {
@@ -484,8 +462,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.immediateStop();
                 this.followLine(true);
                 this.followingRoute = true;
-            } else {
-//                System.out.println("[DriveSystem]:error default onLineFollowCallback 3");
             }
         }
     }

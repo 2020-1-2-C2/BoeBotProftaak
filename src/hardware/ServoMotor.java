@@ -84,7 +84,7 @@ public class ServoMotor implements Motor, Updatable {
      * Set the desired speed (percentage of maximum) for both motors to go to.
      *
      * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
-     * @see Motor#goToSpeed(int, int)
+     * @see Motor#goToSpeed(int)
      */
     @Override
     public void goToSpeed(int speed) {

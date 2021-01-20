@@ -142,6 +142,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                         Character.getNumericValue(route.charAt(0)), Character.getNumericValue(route.charAt(1)), listOfDestinationCoords);
                 this.driveSystem.followRoute(navigationSystem.calculateNewSimpleRoute());
             } else if (route.length() > 4) {
+                //TODO multiple destinations in a route hasn't correctly been implemented yet
 //                System.out.println("Route: (5+) " + route);
 //                NavigationSystem navigationSystem = new NavigationSystem(0, 0);
 //                navigationSystem.getCompleteRoute().clear();
