@@ -17,6 +17,7 @@ public class Route {
     public static final int NONE = 2;
 
     private ArrayList<Integer> route;
+    boolean isReversed = false;
     private int index;
 
     /**
@@ -32,9 +33,14 @@ public class Route {
      * @return Returns the next direction as an integer.
      */
     public Integer nextDirection() {
+        // a reversed route should not execute the final step
+        int correction = 0;
+        if (this.isReversed) {
+            correction = 1;
+        }
         if (this.route.size() < 1) {
             return null;
-        } else if(this.index >= this.route.size()) {
+        } else if(this.index >= this.route.size() - 1) {
             return NONE;
         } else {
             int result = this.route.get(index);
@@ -77,6 +83,7 @@ public class Route {
         }
         this.route = reversedRoute;
         this.index = 0;
+        this.isReversed = true;
     }
 
     /**

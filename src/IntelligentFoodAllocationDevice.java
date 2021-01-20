@@ -92,7 +92,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> shapes.beginShape(Shapes.Shape.CIRCLE));
         this.onInfraredCommandMap.put(InfraredReceiver.RESUME, () -> {
             //TODO this doesn't fully work yet, so until it does and is safe it shouldn't be called upon
-//            this.driveSystem.resumeRoute();
+            this.driveSystem.resumeRoute();
         });
 
         // BluetoothReceiver commands.
@@ -126,36 +126,25 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 } else { route += (char) data; }
             }
 
-            if (route.length() < 1) {
-                System.out.println("No information about the route has been received upon wanting to start it");
-            } else if (route.length() < 3) {
+            int routeLength = route.length();
+
+            if (routeLength < 1 || routeLength % 2 != 0) {
+                System.out.println("No information about the route has been received upon wanting to start it or a wrong route has been received");
+            } else if (routeLength < 3) {
                 System.out.println("Route: (2) " + route);
                 ArrayList<Integer> listOfDestinationCoords = new ArrayList<>();
                 listOfDestinationCoords.add(Character.getNumericValue(route.charAt(0)) * 10 + Character.getNumericValue(route.charAt(1)));
                 NavigationSystem navigationSystem = new NavigationSystem(listOfDestinationCoords);
                 this.driveSystem.followRoute(navigationSystem.calculateNewSimpleRoute());
-            } else if (route.length() > 2 && route.length() < 5) {
-                System.out.println("Route: (4) " + route);
+            } else if (routeLength > 2) {
+                System.out.println("Route: (2+) " + route);
                 ArrayList<Integer> listOfDestinationCoords = new ArrayList<>();
-                listOfDestinationCoords.add(Character.getNumericValue(route.charAt(2)) * 10 + Character.getNumericValue(route.charAt(3)));
+                for (int i = 2; i < routeLength; i += 2) {
+                    listOfDestinationCoords.add(Character.getNumericValue(route.charAt(i)) * 10 + Character.getNumericValue(route.charAt(i + 1)));
+                }
                 NavigationSystem navigationSystem = new NavigationSystem(
                         Character.getNumericValue(route.charAt(0)), Character.getNumericValue(route.charAt(1)), listOfDestinationCoords);
-                this.driveSystem.followRoute(navigationSystem.calculateNewSimpleRoute());
-            } else if (route.length() > 4) {
-                //TODO multiple destinations in a route hasn't correctly been implemented yet
-//                System.out.println("Route: (5+) " + route);
-//                NavigationSystem navigationSystem = new NavigationSystem(0, 0);
-//                navigationSystem.getCompleteRoute().clear();
-//                //Add every integer from the received string and put it in an ArrayList.
-//                for (int i = 0; i < route.length(); i++) {
-//                    navigationSystem.getCompleteRoute().add(route.charAt(i));
-//                }
-//                //The next system out is used for debugging:
-//                System.out.println("getCompleteRoute: " + navigationSystem.getCompleteRoute());
-//                //Start driving the route
-//                this.driveSystem.followRoute(navigationSystem.calculateNewSimpleRoute());
-//                System.out.println("HERE WE GO");
-//                navigationSystem.printRoute();
+                this.driveSystem.followRoute(navigationSystem.calculateNewAdvancedRoute());
             }
         });
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.AUTO_CALIBRATE, () -> {

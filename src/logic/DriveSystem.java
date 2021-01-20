@@ -39,10 +39,13 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private boolean turningRight = false;
     private boolean adjustingPosition = false;
     private boolean turnAtEnd = false;
-    private TimerWithState routeDestinationWaitTimer = new TimerWithState(2000, false);
-    private TimerWithState crossRoadTimer = new TimerWithState(3000, true);
-    private TimerWithState drivingSlightlyForwardsBeforeTurningTimer = new TimerWithState(1000, false);
+    private boolean rotateFully = false;
+    private boolean isRotateFullyPartOneComplete = false;
+    private TimerWithState routeDestinationWaitTimer = new TimerWithState(10000, false);
+    private TimerWithState crossRoadTimer = new TimerWithState(1000, true);
+    private TimerWithState drivingSlightlyForwardsBeforeTurningTimer = new TimerWithState(1200, false);
     private TimerWithState notOnLineTimer = new TimerWithState(2000, false);
+    private TimerWithState routeEndTimer = new TimerWithState(10000, false);
     private boolean hasTurnedAroundAtTheEndOfRoute = false;
 
     private TimerWithState drivingBackAtTheEndOfTheRouteTimer = new TimerWithState(500, false);
@@ -80,7 +83,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         }
 
         // always set the speed to min when the direction is tried to change
-        setSpeed(this.MIN_SPEED);
+        setSpeed(MIN_SPEED);
     }
 
     /**
@@ -194,7 +197,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     /**
      * @param follow if true the BoeBot will start line following functionality
      */
-    public void followLine(boolean follow) {
+    public void setFollowLine(boolean follow) {
         this.followLine = follow;
         this.followSpeed = 10;
         setDirectionNoSpeed(FORWARD);
@@ -211,8 +214,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @param currentMaxSpeed new maximum speed
      */
     public void setCurrentMaxSpeed(int currentMaxSpeed) {
-        if (currentMaxSpeed > this.MAX_SPEED) {
-            currentMaxSpeed = this.MAX_SPEED;
+        if (currentMaxSpeed > MAX_SPEED) {
+            currentMaxSpeed = MAX_SPEED;
         }
         this.currentMaxSpeed = currentMaxSpeed;
     }
@@ -240,6 +243,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 turnLeft();
             } else if (this.turningRight) {
                 turnRight();
+            } else if (this.rotateFully) {
+                turnLeft();
             }
             this.drivingSlightlyForwardsBeforeTurningTimer.setOn(false);
         }
@@ -262,6 +267,21 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             // Can only turn left, see onLineFollow method else if statement with this.turnAtEnd for elaboration.
             turnLeft();
         }
+
+        // at the end of the route wait some time before resuming
+        if (this.routeEndTimer.timeout()) {
+            this.routeEndTimer.setOn(false);
+            if (!this.hasTurnedAroundAtTheEndOfRoute) {
+                // logic for turning around at the end of the route to go back to the start
+                this.route.reverse();
+                System.out.println("Reversed route: " + this.route.getRoute());
+                System.out.println("Start driving backwards at the end of the route");
+                this.drivingBackAtTheEndOfTheRouteTimer.setOn(true);
+                this.setDirection(BACKWARD);
+            } else {
+                System.out.println("FINISHED WITH THE ROUTE! BACK AT START!");
+            }
+        }
     }
 
     /**
@@ -276,8 +296,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         System.out.println("Starting with following a route in DriveSystem");
         this.setFollowingRoute(true);
         this.route = route;
-        this.followLine(true);
+        this.setFollowLine(true);
         this.crossRoadTimer.setOn(true);
+        this.crossRoadTimer.setInterval(1000);
         System.out.println("Route: " + this.route.getRoute());
     }
 
@@ -297,34 +318,29 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.setSpeed(this.followSpeed);
                 break;
             case Route.LEFT:
+                this.crossRoadTimer.setInterval(7000);
                 System.out.println("Turning around during the route");
                 this.turningLeft = true;
                 this.setSpeed(MIN_SPEED);
                 this.drivingSlightlyForwardsBeforeTurningTimer.setOn(true);
-                this.drivingSlightlyForwardsBeforeTurningTimer.mark();
                 break;
             case Route.RIGHT:
+                this.crossRoadTimer.setInterval(7000);
                 System.out.println("Turning around during the route");
                 this.turningRight = true;
                 this.setSpeed(MIN_SPEED);
                 this.drivingSlightlyForwardsBeforeTurningTimer.setOn(true);
-                this.drivingSlightlyForwardsBeforeTurningTimer.mark();
+                break;
+            case Route.ROTATE:
+                this.crossRoadTimer.setInterval(12000);
+                this.rotateFully = true;
+                this.drivingSlightlyForwardsBeforeTurningTimer.setOn(true);
                 break;
             case Route.NONE:
                 System.out.println("Route has ended so stop for now");
                 this.stopFollowingRoute();
                 this.immediateStop();
-                if (!this.hasTurnedAroundAtTheEndOfRoute) {
-                    // logic for turning around at the end of the route to go back to the start
-                    this.route.reverse();
-                    System.out.println("Reversed route: " + this.route.getRoute());
-                    System.out.println("Start driving backwards at the end of the route");
-                    this.drivingBackAtTheEndOfTheRouteTimer.setOn(true);
-                    this.setDirection(BACKWARD);
-                } else {
-                    System.out.println("FINISHED WITH THE ROUTE! BACK AT START!");
-                }
-
+                this.routeEndTimer.setOn(true);
                 break;
             case Route.DESTINATION:
                 System.out.println("Reached a destination in the route, waiting for some time");
@@ -352,7 +368,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void stopFollowingRoute() {
         this.setFollowingRoute(false);
-        this.followLine(false);
+        this.setFollowLine(false);
     }
 
     /**
@@ -374,10 +390,12 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.adjustingPosition = false;
         this.turnAtEnd = false;
         this.routeDestinationWaitTimer.setOn(false);
-        this.crossRoadTimer.setOn(false);
         this.drivingSlightlyForwardsBeforeTurningTimer.setOn(false);
         this.notOnLineTimer.setOn(false);
         this.hasTurnedAroundAtTheEndOfRoute = false;
+        this.rotateFully = false;
+        this.isRotateFullyPartOneComplete = false;
+        this.routeEndTimer.setOn(false);
     }
 
     /**
@@ -386,7 +404,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void resumeRoute() {
         if (this.route != null) {
             this.followingRoute = true;
-            this.followLine(true);
+            this.setFollowLine(true);
         }
     }
 
@@ -404,7 +422,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
         //Following the line normally while not turning
-        if (this.followLine && !this.turningRight && !this.turningLeft && !this.adjustingPosition) {
+        if (this.followLine && !this.turningRight && !this.turningLeft && !this.adjustingPosition && !this.rotateFully) {
             switch (linePosition) {
                 case NOT_ON_LINE:
                     if (!this.notOnLineTimer.isOn()) {
@@ -447,9 +465,11 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     break;
                 case CROSSING:
                     if (this.crossRoadTimer.timeout()) {
+                        // when turning left, right or rotating then the crossRoadTimer interval is set higher, this automatically resets it back
+                        this.crossRoadTimer.setInterval(3000);
                         this.immediateStop();
                         this.notOnLineTimer.mark();
-                        System.out.println("Crossing, should stop");
+                        System.out.println("Crossing passed");
 
                         //If a route is being followed detect crossroads to determine the next step in the route.
                         if (this.isFollowingRoute()) {
@@ -481,6 +501,17 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 System.out.println("Completed a turn to the left");
                 this.immediateStop();
                 this.turningLeft = false;
+            } else if (linePosition == LineFollower.LinePosition.ON_LINE && this.rotateFully) {
+                if (!this.isRotateFullyPartOneComplete) {
+                    System.out.println("Completed part one of fully rotating");
+                    this.immediateStop();
+                    this.drivingSlightlyForwardsBeforeTurningTimer.setOn(true);
+                    this.isRotateFullyPartOneComplete = true;
+                } else {
+                    System.out.println("Completed part two of rotating fully");
+                    this.immediateStop();
+                    this.rotateFully = false;
+                }
             }
 
             // For turning at the end of a route, also needs to give back that the turn has been completed.
@@ -494,7 +525,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 this.hasTurnedAroundAtTheEndOfRoute = true;
                 this.turnAtEnd = false;
                 this.immediateStop();
-                this.followLine(true);
+                this.setFollowLine(true);
                 this.followingRoute = true;
             }
         }

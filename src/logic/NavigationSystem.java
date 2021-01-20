@@ -60,7 +60,7 @@ public class NavigationSystem {
         this.goalCoordX = getFirstDigitOfATwoDigitNumber(destinationsCoordsXAndY.get(0));
         // get the second digit of the first index of destinationCoordsXAndY
         this.goalCoordY = getSecondDigitOfATwoDigitNumber(destinationsCoordsXAndY.get(0));
-        //TODO determine starting orientation based on the current coords
+        determineStartingOrientation();
         System.out.println("NavigationSystem: " + "" + currentCoordX + "" + currentCoordY + "" + this.goalCoordX + "" + this.goalCoordY);
     }
 
@@ -266,7 +266,6 @@ public class NavigationSystem {
                     getFirstDigitOfATwoDigitNumber(this.destinationCoordsList.get(i + 1)),
                     getSecondDigitOfATwoDigitNumber(this.destinationCoordsList.get(i + 1)));
             addSingleRouteToTotal(newRoute);
-//            determineOrientation(newRoute);
         }
         return new Route(this.routeToNavigate);
     }
@@ -301,7 +300,15 @@ public class NavigationSystem {
     }
 
     private void determineStartingOrientation() {
-
+        if (this.currentCoordY == 0) {
+            this.orientation = NORTH;
+        } else if (this.currentCoordX == 0) {
+            this.orientation = EAST;
+        } else {
+            // standard if unknown is NORTH
+            this.orientation = NORTH;
+        }
+        // Facing SOUTH or WEST at the start requires to know the dimensions of the roster or to include an orientation in the bluetooth message
     }
 
     private void determineOrientation(ArrayList<Integer> addedRoute) {
