@@ -91,7 +91,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> shapes.beginShape(Shapes.Shape.TRIANGLE));
         this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> shapes.beginShape(Shapes.Shape.CIRCLE));
         this.onInfraredCommandMap.put(InfraredReceiver.RESUME, () -> {
-            //TODO this doesn't fully work yet, so untill it does and is safe it shouldn't be called upon
+            //TODO this doesn't fully work yet, so until it does and is safe it shouldn't be called upon
 //            this.driveSystem.resumeRoute();
         });
 

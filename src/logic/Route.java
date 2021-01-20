@@ -12,6 +12,7 @@ public class Route {
     public static final int LEFT = -1;
     public static final int FORWARD = 0;
     public static final int RIGHT = 1;
+    public static final int ROTATE = -2;
     public static final int DESTINATION = 3;
     public static final int NONE = 2;
 
