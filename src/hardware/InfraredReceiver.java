@@ -41,6 +41,7 @@ public class InfraredReceiver implements Updatable {
     public static final int POWER    = 0b000010010101;
     public static final int TRIANGLE = 0b000111001000;
     public static final int TVVCR    = 0b000010100101;
+    public static final int RESUME   = 0b000111001110;
 
     /**
      * Constructor for the infrared-sensor.
@@ -53,7 +54,7 @@ public class InfraredReceiver implements Updatable {
         this.infraredCallback = infraredCallback;
         this.possibleButtons = new ArrayList<>();
         Collections.addAll(this.possibleButtons, FORWARD, BACKWARD, RIGHT, LEFT, ONE, TWO, THREE, FOUR, FIVE, SIX,
-                SEVEN, EIGHT, NINE, ZERO, POWER, TRIANGLE, TVVCR);
+                SEVEN, EIGHT, NINE, ZERO, POWER, TRIANGLE, TVVCR, RESUME);
         this.infraredTimer.mark();
     }
 
@@ -62,8 +63,12 @@ public class InfraredReceiver implements Updatable {
      * @return true when a start-signal has been read.
      */
     private boolean listenForStartSignal() {
+//        System.out.println("Listening for infrared start signal");
         int pulseLen = BoeBot.pulseIn(this.pinId, false, 6000);
-        return pulseLen > 2000;
+        if (pulseLen > 2000) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -109,6 +114,7 @@ public class InfraredReceiver implements Updatable {
     @Override
     public void update() {
         if (this.infraredTimer.timeout() && listenForStartSignal()) {
+            System.out.println("Started listening for infrared signal");
             this.infraredTimer.mark();
             this.infraredCallback.onInfraredButton(convertBitSignalToBinary(listenForBitSignal()));
         }

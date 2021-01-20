@@ -47,5 +47,20 @@ public class TimerWithState extends TI.Timer {
      */
     public void setOn(boolean on) {
         this.isOn = on;
+        if (on) {
+            super.mark();
+        }
+    }
+
+    /**
+     * Overrides the timeout method of the superclass so that when the timer is off it immediately returns false
+     * @return
+     */
+    @Override
+    public boolean timeout() {
+        if (!this.isOn) {
+            return false;
+        }
+        return super.timeout();
     }
 }

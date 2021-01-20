@@ -60,14 +60,21 @@ public class Route {
      * Reverses the route and continue from the end of the previous route.
      */
     public void reverse() {
-        for (int i = 0; i < this.route.size(); i++) {
-            if (this.route.get(i) == LEFT) {
-                this.route.set(i, RIGHT);
-            } else if (this.route.get(i) == RIGHT) {
-                this.route.set(i, LEFT);
+        ArrayList<Integer> reversedRoute = new ArrayList<>();
+        // reverses the route
+        // LEFT and RIGHT need to be swapped with eachother
+        // DESTINATIONs should not be taken into the new list
+        for (int i = this.route.size() - 1; i >= 0; i--) {
+            int direction = this.route.get(i);
+            if (direction == LEFT) {
+                reversedRoute.add(RIGHT);
+            } else if (direction == RIGHT) {
+                reversedRoute.add(LEFT);
+            } else if (direction != DESTINATION) {
+                reversedRoute.add(direction);
             }
         }
-        Collections.reverse(this.route);
+        this.route = reversedRoute;
         this.index = 0;
     }
 

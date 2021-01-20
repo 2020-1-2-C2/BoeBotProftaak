@@ -22,9 +22,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private int currentMaxSpeed = MAX_SPEED;
     private int MIN_SPEED = MAX_SPEED / STEPS;
     private int turningSpeed = 50;
-    // Time in ms.
-    private final int ACCELERATION_TIME = 500;
-    private final int STOPPING_TIME = 5;
     private int currentSpeed = 0;
     private int currentSpeedRight = 0;
     private int currentSpeedLeft = 0;
@@ -41,16 +38,16 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     private Route route;
     private boolean turningLeft = false;
     private boolean turningRight = false;
+    private boolean adjustingPosition = false;
     private boolean turnAtEnd = false;
-    private TimerWithState routeTimer = new TimerWithState(10000, false);
-    private TimerWithState routeWaitTimer = new TimerWithState(2000, false);
-    private TimerWithState turnAtEndTimer = new TimerWithState(1000, false);
-    private TimerWithState crossRoadTimer = new TimerWithState(2000, true);
+    private TimerWithState routeDestinationWaitTimer = new TimerWithState(2000, false);
+    private TimerWithState crossRoadTimer = new TimerWithState(3000, true);
     private TimerWithState drivingSlightlyForwardsBeforeTurningTimer = new TimerWithState(1000, false);
+    private TimerWithState notOnLineTimer = new TimerWithState(2000, false);
     private boolean hasTurnedAroundAtTheEndOfRoute = false;
     private boolean getReadyForNextRoute = false;
 
-    private boolean ridingUntillTheNextCrossroad = false;
+    private TimerWithState drivingBackAtTheEndOfTheRouteTimer = new TimerWithState(500, false);
 
     public DriveSystem() {
         this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, DirectionalServo.RIGHT_SIDE_SERVO_ORIENTATION),
@@ -70,8 +67,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.currentSpeed = speed;
         this.currentSpeedLeft = this.currentSpeed;
         this.currentSpeedRight = this.currentSpeed;
-//        System.out.println("Going to speed: " + speed);
-        this.motor.goToSpeed(speed, this.ACCELERATION_TIME);
+        this.motor.goToSpeed(speed);
     }
 
     /**
@@ -80,7 +76,18 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     public void setDirection(int direction) {
         if (direction != this.direction && (direction == FORWARD || direction == BACKWARD)) {
             this.direction = direction;
-            setSpeed(this.MIN_SPEED);
+        }
+
+        // always set the speed to min when the direction is tried to change
+        setSpeed(this.MIN_SPEED);
+    }
+
+    /**
+     * @param direction 1 is forward, -1 is backward
+     */
+    public void setDirectionNoSpeed(int direction) {
+        if (direction != this.direction && (direction == FORWARD || direction == BACKWARD)) {
+            this.direction = direction;
         }
     }
 
@@ -112,23 +119,14 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void turn(boolean direction, int speed) {
         if (direction) {
-            this.currentSpeedRight = this.currentSpeed - speed;
-            this.currentSpeedLeft = this.currentSpeed + speed;
-            if (this.currentSpeedLeft > 100) {
-                this.currentSpeedLeft = 100;
-                this.currentSpeedRight = 100 - speed;
-            }
+            this.currentSpeedRight = -MIN_SPEED;
+            this.currentSpeedLeft = MIN_SPEED;
         } else {
-            this.currentSpeedRight = this.currentSpeed + speed;
-            this.currentSpeedLeft = this.currentSpeed - speed;
-            if (this.currentSpeedRight > 100) {
-                this.currentSpeedRight = 100;
-                this.currentSpeedLeft = 100 - speed;
-            }
+            this.currentSpeedRight = MIN_SPEED;
+            this.currentSpeedLeft = -MIN_SPEED;
         }
-
-        this.motor.goToSpeedRight(this.currentSpeedRight * this.direction, this.ACCELERATION_TIME);
-        this.motor.goToSpeedLeft(this.currentSpeedLeft * this.direction, this.ACCELERATION_TIME);
+        this.motor.goToSpeedRight(this.currentSpeedRight * this.direction);
+        this.motor.goToSpeedLeft(this.currentSpeedLeft * this.direction);
     }
 
     /**
@@ -138,7 +136,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.currentSpeed = 0;
         this.currentSpeedLeft = this.currentSpeed;
         this.currentSpeedRight = this.currentSpeed;
-        this.motor.goToSpeed(0, this.STOPPING_TIME);
+        this.motor.goToSpeed(0);
     }
 
     /**
@@ -148,16 +146,19 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.currentSpeed = 0;
         this.currentSpeedLeft = this.currentSpeed;
         this.currentSpeedRight = this.currentSpeed;
+        this.motor.goToSpeed(0);
         this.motor.immediateStop();
     }
 
     /**
-     * Immediately stops the BoeBot.
+     * Immediately stops the BoeBot and any route following.
      */
     public void emergencyStop() {
-        this.currentSpeed = 0;
-        this.currentSpeedLeft = this.currentSpeed;
-        this.currentSpeedRight = this.currentSpeed;
+        this.currentMaxSpeed = 0;
+        this.currentSpeed = this.currentMaxSpeed;
+        this.currentSpeedLeft = this.currentMaxSpeed;
+        this.currentSpeedRight = this.currentMaxSpeed;
+        this.emergencyStopFollowingRoute();
         this.motor.emergencyStop();
     }
 
@@ -166,9 +167,8 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void followLine(boolean follow) {
         this.followLine = follow;
-//        System.out.println("Volgt nu een lijn " + follow);
         this.followSpeed = 10;
-        setDirection(FORWARD);
+        setDirectionNoSpeed(FORWARD);
     }
 
     /**
@@ -205,6 +205,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         // When seeing a crossroads while following a route and the next step is left or right, then the bot first drives forwards a little bit
         // After a timer expires it stops and starts turning the appropriate direction
         if (this.drivingSlightlyForwardsBeforeTurningTimer.isOn() && this.drivingSlightlyForwardsBeforeTurningTimer.timeout()) {
+            System.out.println("Driving slightly forwards before turning");
             immediateStop();
             if (this.turningLeft) {
                 turnLeft();
@@ -214,62 +215,51 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             this.drivingSlightlyForwardsBeforeTurningTimer.setOn(false);
         }
 
-//        this.debugToString();
-        //TODO: if route resuming is implemented the resuming of the endturn needs to be implemented correctly, especially the reversing of the route needs to be implemented correctly.
-        if (!this.hasTurnedAroundAtTheEndOfRoute) {
-            if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
-                // Stop driving backwards and start turning around.
-//                System.out.println("Stop driving backwards and start turning around.");
-                this.stop();
-                // always turn to the left
-                this.setDirection(FORWARD);
-                this.turn(LEFT, this.turningSpeed);
-                this.turnAtEndTimer.setOn(false);
-            } else if (this.turnAtEnd && this.routeTimer.isOn() && this.routeTimer.timeout()) {
-                // Start driving backwards at a minimal speed when then end of a route is reached and set a timer to stop this.
-//                System.out.println("Start driving backwards at a minimal speed when then end of a route is reached and set a timer to stop this.");
-                this.setSpeed(MIN_SPEED);
-                this.setDirection(BACKWARD);
-                this.turnAtEndTimer.mark();
-                this.turnAtEndTimer.setOn(true);
-                this.routeTimer.setOn(false);
-            } else if (routeWaitTimer.isOn() && routeWaitTimer.timeout()) {
-                // When the BoeBot is turned around and has waited 10 seconds, follow the new reversed route back to the starting position.
-//                System.out.println("When the BoeBot is turned around and has waited 10 seconds, follow the new reversed route back to the starting position.");
-                this.followLine(true);
-                this.routeWaitTimer.setOn(false);
-                this.followRoute(this.route);
-                this.hasTurnedAroundAtTheEndOfRoute = true;
-            }
+        // logic for resuming a route after waiting for some time at a destination
+        if (this.routeDestinationWaitTimer.timeout()) {
+            System.out.println("Resuming the route after waiting at the destination");
+            this.resumeRoute();
+            this.routeDestinationWaitTimer.setOn(false);
         }
-        // logic for getting ready for the next route when the previous has finished
-        if (this.hasTurnedAroundAtTheEndOfRoute && this.getReadyForNextRoute) {
-            if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
-                // Stop driving forwards and start turning around.
-//                System.out.println("Stop driving forwards and start turning around.");
-                this.stop();
-                // always turn to the left
-                this.turn(LEFT, this.turningSpeed);
-                this.turnAtEndTimer.setOn(false);
-            } else if (this.turnAtEnd && this.routeTimer.isOn() && this.routeTimer.timeout()) {
-                // Start driving forwards slowly to pass the crossroad.
-//                System.out.println("Start driving forwards slowly to pass the crossroad.");
-                this.setSpeed(MIN_SPEED);
-                this.setDirection(FORWARD);
-                this.turnAtEndTimer.mark();
-                this.turnAtEndTimer.setOn(true);
-                this.routeTimer.setOn(false);
-            } else if (routeWaitTimer.isOn()) {
-                // When the bot has turned around it can then stop and wait for further instructions, doesn't have to wait the 10 seconds here
-//                System.out.println("RIP RIP RIP RIP");
-                this.routeWaitTimer.setOn(false);
-                this.hasTurnedAroundAtTheEndOfRoute = false;
-                this.getReadyForNextRoute = false;
-                // Follow the line untill the next crossroad, then stop
-                this.followingRoute = true;
-                this.ridingUntillTheNextCrossroad = true;
-            }
+
+        // logic for recognising when the bot is done driving backwards at the end of the route and then starting to turn
+        if (this.drivingBackAtTheEndOfTheRouteTimer.timeout()) {
+            System.out.println("Done driving backwards at the end of the route");
+            this.drivingBackAtTheEndOfTheRouteTimer.setOn(false);
+            this.immediateStop();
+            // Start turning around to face the other direction.
+            System.out.println("Starting to turn around to face the other direction at the end of the route");
+            this.turnAtEnd = true;
+            // Can only turn left, see onLineFollow method else if statement with this.turnAtEnd for elaboration.
+            turnLeft();
         }
+
+
+//        // logic for getting ready for the next route when the previous has finished
+//        if (this.hasTurnedAroundAtTheEndOfRoute && this.getReadyForNextRoute) {
+//            if (this.turnAtEndTimer.isOn() && this.turnAtEndTimer.timeout()) {
+//                // Stop driving forwards and start turning around.
+//                this.stop();
+//                // always turn to the left
+//                this.turn(LEFT, this.turningSpeed);
+//                this.turnAtEndTimer.setOn(false);
+//            } else if (this.turnAtEnd && this.routeEndtimer.isOn() && this.routeEndtimer.timeout()) {
+//                // Start driving forwards slowly to pass the crossroad.
+//                this.setSpeed(MIN_SPEED);
+//                this.setDirection(FORWARD);
+//                this.turnAtEndTimer.mark();
+//                this.turnAtEndTimer.setOn(true);
+//                this.routeEndtimer.setOn(false);
+//            } else if (routeDestinationWaitTimer.isOn()) {
+//                // When the bot has turned around it can then stop and wait for further instructions, doesn't have to wait the 10 seconds here
+//                this.routeDestinationWaitTimer.setOn(false);
+//                this.hasTurnedAroundAtTheEndOfRoute = false;
+//                this.getReadyForNextRoute = false;
+//                // Follow the line untill the next crossroad, then stop
+//                this.followingRoute = true;
+//                this.ridingUntillTheNextCrossroad = true;
+//            }
+//        }
     }
 
     /**
@@ -278,73 +268,71 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      * @param route Route object to use
      */
     public void followRoute(Route route) {
-//        System.out.println("FollowRoute: " + route.getRoute());
+        // first reset all old values in case of a shutdown in the middle of a route
+        this.resetBooleanValues();
+        // then initialise the route following
+        System.out.println("Starting with following a route in DriveSystem");
         this.setFollowingRoute(true);
         this.route = route;
         this.followLine(true);
         this.crossRoadTimer.setOn(true);
-        // reset old values in case of an unexpected ending of the route
-        this.turningLeft = false;
-        this.turningRight = false;
-        this.turnAtEnd = false;
-        this.routeTimer.setOn(false);
-        this.routeWaitTimer.setOn(false);
-        this.turnAtEndTimer.setOn(false);
-        this.hasTurnedAroundAtTheEndOfRoute = false;
-        this.getReadyForNextRoute = false;
-        this.ridingUntillTheNextCrossroad = false;
+        System.out.println("Route: " + this.route.getRoute());
     }
 
     /**
      * Get the next step of the route and take the appropriate action to follow it.
      */
     private void routeNextStep() {
+        if (this.route == null) {
+            // if route doesn't exist then you can't do this method
+            return;
+        }
         int nextDirection = this.route.nextDirection();
-//        System.out.println("Next direction: " + nextDirection);
-//        System.out.println("Direction after that: " + this.route.testNextDirection());
+        System.out.println("Next direction in the route: " + nextDirection);
         switch (nextDirection) {
             case Route.FORWARD:
-//                System.out.println("reaching this print should mean it has started moving");
                 this.setSpeed(this.followSpeed);
                 break;
             case Route.LEFT:
+                System.out.println("Turning around during the route");
                 this.turningLeft = true;
                 this.setSpeed(MIN_SPEED);
                 this.drivingSlightlyForwardsBeforeTurningTimer.setOn(true);
                 this.drivingSlightlyForwardsBeforeTurningTimer.mark();
-//                this.turnLeft();
                 break;
             case Route.RIGHT:
+                System.out.println("Turning around during the route");
                 this.turningRight = true;
                 this.setSpeed(MIN_SPEED);
                 this.drivingSlightlyForwardsBeforeTurningTimer.setOn(true);
                 this.drivingSlightlyForwardsBeforeTurningTimer.mark();
-//                this.turnRight();
                 break;
             case Route.NONE:
-                this.followLine(false);
-                this.setFollowingRoute(false);
-                this.stop();
-                this.turnAtEnd = true;
-                this.routeTimer.mark();
-                this.routeTimer.setOn(true);
+                System.out.println("Route has ended so stop for now");
+                this.stopFollowingRoute();
+                this.immediateStop();
                 if (!this.hasTurnedAroundAtTheEndOfRoute) {
+                    // logic for turning around at the end of the route to go back to the start
                     this.route.reverse();
-                    break;
+                    System.out.println("Reversed route: " + this.route.getRoute());
+                    System.out.println("Start driving backwards at the end of the route");
+                    this.drivingBackAtTheEndOfTheRouteTimer.setOn(true);
+                    this.setDirection(BACKWARD);
                 } else {
-                    this.getReadyForNextRoute = true;
-                    break;
+                    System.out.println("FINISHED WITH THE ROUTE! BACK AT START!");
                 }
+
+                break;
             case Route.DESTINATION:
-                this.followLine(false);
-                this.stop();
-                this.routeWaitTimer.mark();
-                this.routeWaitTimer.setOn(true);
+                System.out.println("Reached a destination in the route, waiting for some time");
+                this.stopFollowingRoute();
+                this.immediateStop();
+                this.routeDestinationWaitTimer.setOn(true);
+                break;
             default:
                 // If there are no valid instructions, stop following the route.
                 //TODO: Set the notification MissingRouteNotification.
-                this.followLine(false);
-                this.setFollowingRoute(false);
+                this.stopFollowingRoute();
                 this.stop();
                 break;
         }
@@ -362,17 +350,34 @@ public class DriveSystem implements Updatable, LineFollowCallback {
      */
     public void stopFollowingRoute() {
         this.setFollowingRoute(false);
-        this.turnAtEndTimer.setOn(false);
-        this.routeTimer.setOn(false);
+        this.followLine(false);
     }
 
+    private void emergencyStopFollowingRoute() {
+        stopFollowingRoute();
+        resetBooleanValues();
+    }
+
+    private void resetBooleanValues() {
+        this.turningLeft = false;
+        this.turningRight = false;
+        this.adjustingPosition = false;
+        this.turnAtEnd = false;
+        this.routeDestinationWaitTimer.setOn(false);
+        this.crossRoadTimer.setOn(false);
+        this.drivingSlightlyForwardsBeforeTurningTimer.setOn(false);
+        this.notOnLineTimer.setOn(false);
+        this.hasTurnedAroundAtTheEndOfRoute = false;
+        this.getReadyForNextRoute = false;
+    }
 
     /**
      * Resume following of route after it is interrupted.
      */
     public void resumeRoute() {
         if (this.route != null) {
-            followRoute(this.route);
+            this.followingRoute = true;
+            this.followLine(true);
         }
     }
 
@@ -387,86 +392,101 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
         // Following the line normally while not turning
-        if (this.followLine && !this.turningRight && !this.turningLeft) {
+        if (this.followLine && !this.turningRight && !this.turningLeft && !this.adjustingPosition) {
             switch (linePosition) {
                 case NOT_ON_LINE:
-                    this.followLine(false);
-                    this.stop();
+                    if (!this.notOnLineTimer.isOn()) {
+                        this.notOnLineTimer.setOn(true);
+                    } else if (this.notOnLineTimer.timeout()) {
+                        this.stopFollowingRoute();
+                        this.immediateStop();
+                        System.out.println("Not on line for too long, stopping");
+                        this.notOnLineTimer.setOn(false);
+                    }
+
+                    break;
                 case ON_LINE:
                     this.setSpeed(this.followSpeed);
-//                    System.out.println("Reaching the statement that should make it go forwards at speed: " + this.followSpeed);
+                    this.notOnLineTimer.mark();
                     break;
                 case LEFT_OF_LINE:
-                    this.immediateStop();
-                    this.turnRight();
+                    System.out.println("Left of line, should stop and turn");
+                    if (!this.adjustingPosition) {
+                        System.out.println("Starting to adjust position");
+                        this.immediateStop();
+                        this.turnRight();
+                        this.adjustingPosition = true;
+                        this.notOnLineTimer.mark();
+                    }
                     break;
                 case RIGHT_OF_LINE:
-                    this.immediateStop();
-                    this.turnLeft();
+                    if (!this.adjustingPosition) {
+                        this.immediateStop();
+                        this.turnLeft();
+                        this.adjustingPosition = true;
+                        this.notOnLineTimer.mark();
+                    }
                     break;
                 case JUST_LEFT_OF_LINE:
-                    this.turnRight();
+
                     break;
                 case JUST_RIGHT_OF_LINE:
-                    this.turnLeft();
+
                     break;
                 case CROSSING:
-                    this.immediateStop();
-                    if (this.ridingUntillTheNextCrossroad) {
-                        this.followingRoute = false;
-                    }
-                    // If a route is being followed detect crossroads to determine the next step in the route.
-                    if (this.isFollowingRoute() && this.crossRoadTimer.timeout()) {
-                        this.routeNextStep();
-                        this.crossRoadTimer.mark();
-                    }
-            }
-            // Turning while following line so it turns to the next corner (usually a 90 degree turn).
-        } else if (this.followLine) {
-            switch (linePosition) {
-                case JUST_LEFT_OF_LINE:
-                    if (this.turningRight) {
+                    if (this.crossRoadTimer.timeout()) {
                         this.immediateStop();
-                        this.turningRight = false;
+                        this.notOnLineTimer.mark();
+                        System.out.println("Crossing, should stop");
+
+                        // If a route is being followed detect crossroads to determine the next step in the route.
+                        if (this.isFollowingRoute()) {
+                            this.routeNextStep();
+                        }
                     }
                     break;
-                case JUST_RIGHT_OF_LINE:
-                    if (this.turningLeft) {
-                        this.immediateStop();
-                        this.turningLeft = false;
-                    }
+                default:
+                    System.out.println("[DriveSystem]:error default onLineFollowCallback 1");
                     break;
             }
+            // adjusting position slightly while following the route
+        } else if (this.followLine && this.adjustingPosition) {
+            if (linePosition == LineFollower.LinePosition.ON_LINE) {
+                System.out.println("Adjusted position to be on the line");
+                this.immediateStop();
+                this.adjustingPosition = false;
+                this.setSpeed(this.followSpeed);
+            } else if (linePosition == LineFollower.LinePosition.CROSSING) {
+                this.adjustingPosition = false;
+            }
+//            Turning while following line so it turns to the next corner (usually a 90 degree turn).
+        } else if (this.followLine && !this.drivingSlightlyForwardsBeforeTurningTimer.isOn()) {
+            if (linePosition == LineFollower.LinePosition.LEFT_OF_LINE && this.turningRight) {
+                System.out.println("Completed a turn to the right");
+                this.immediateStop();
+                this.turningRight = false;
+            } else if (linePosition == LineFollower.LinePosition.RIGHT_OF_LINE && this.turningLeft) {
+                System.out.println("Completed a turn to the left");
+                this.immediateStop();
+                this.turningLeft = false;
+            }
+
             // For turning at the end of a route, also needs to give back that the turn has been completed.
             // Followline will be false when this turn happens, so the above else if statement isn't reached.
             // Once the turn has been completed it stops and waits for a new timer to expire before following the new route.
-        } else if (this.turnAtEnd && !this.drivingSlightlyForwardsBeforeTurningTimer.isOn()) {
-            switch (linePosition) {
+        } else if (this.turnAtEnd /*&& !this.drivingSlightlyForwardsBeforeTurningTimer.isOn()*/) {
+            if (linePosition == LineFollower.LinePosition.LEFT_OF_LINE) {
                 // Turning can only happen in one direction, otherwise it will stop almost immediately.
                 // For now it turns leftwards.
-                case RIGHT_OF_LINE:
-                    this.turnAtEnd = false;
-                    this.stop();
-                    this.routeWaitTimer.mark();
-                    this.routeWaitTimer.setOn(true);
-                    break;
+                System.out.println("Done turning at the end");
+                this.hasTurnedAroundAtTheEndOfRoute = true;
+                this.turnAtEnd = false;
+                this.immediateStop();
+                this.followLine(true);
+                this.followingRoute = true;
+            } else {
+//                System.out.println("[DriveSystem]:error default onLineFollowCallback 3");
             }
         }
     }
-
-    //TODO: Remove on final release.
-    /**
-     * For debugging purposes only.
-     * Called in <code>update()</code> to print out useful information.
-     * @see #update()
-     */
-    private void debugToString() {
-        if (this.route != null && this.route.nextDirection() != Route.NONE) {
-            for (int i : this.route.getRoute()) {
-                System.out.println("Next move: " + i);
-            }
-            System.out.println("\n");
-        }
-    }
-
 }

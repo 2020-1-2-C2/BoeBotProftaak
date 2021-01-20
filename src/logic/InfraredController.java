@@ -37,6 +37,7 @@ public class InfraredController implements Updatable, InfraredCallback {
      */
     @Override
     public void onInfraredButton(int button) {
+        System.out.println("Infrared button: " + button);
         if (this.infraredReceiver.getPossibleButtons().contains(button)) {
             this.infraredControllerCallback.onInfraredControllerCommand(button);
         }

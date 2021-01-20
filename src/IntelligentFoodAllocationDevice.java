@@ -51,6 +51,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      */
     private void initialise() {
         // Creating all the different objects which will be used.
+        System.out.println("Initialisation");
         this.driveSystem = new DriveSystem();
         Shapes shapes = new Shapes(this.driveSystem);
         this.notificationSystemController = new NotificationSystemController(this.driveSystem);
@@ -89,6 +90,10 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 
         this.onInfraredCommandMap.put(InfraredReceiver.TRIANGLE, () -> shapes.beginShape(Shapes.Shape.TRIANGLE));
         this.onInfraredCommandMap.put(InfraredReceiver.TVVCR, () -> shapes.beginShape(Shapes.Shape.CIRCLE));
+        this.onInfraredCommandMap.put(InfraredReceiver.RESUME, () -> {
+            //TODO this doesn't fully work yet, so untill it does and is safe it shouldn't be called upon
+//            this.driveSystem.resumeRoute();
+        });
 
         // BluetoothReceiver commands.
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.FORWARD, () -> this.driveSystem.setDirection(DriveSystem.FORWARD));
@@ -121,31 +126,35 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
                 } else { route += (char) data; }
             }
 
-            if (route.length() < 3) {
+            if (route.length() < 1) {
+                System.out.println("No information about the route has been received upon wanting to start it");
+            } else if (route.length() < 3) {
                 System.out.println("Route: (2) " + route);
-                NavigationSystem navigationSystem = new NavigationSystem(
-                        Character.getNumericValue(route.charAt(0)), Character.getNumericValue(route.charAt(1)));
-                this.driveSystem.followRoute(navigationSystem.getRoute());
+                ArrayList<Integer> listOfDestinationCoords = new ArrayList<>();
+                listOfDestinationCoords.add(Character.getNumericValue(route.charAt(0)) * 10 + Character.getNumericValue(route.charAt(1)));
+                NavigationSystem navigationSystem = new NavigationSystem(listOfDestinationCoords);
+                this.driveSystem.followRoute(navigationSystem.calculateNewSimpleRoute());
             } else if (route.length() > 2 && route.length() < 5) {
                 System.out.println("Route: (4) " + route);
+                ArrayList<Integer> listOfDestinationCoords = new ArrayList<>();
+                listOfDestinationCoords.add(Character.getNumericValue(route.charAt(2)) * 10 + Character.getNumericValue(route.charAt(3)));
                 NavigationSystem navigationSystem = new NavigationSystem(
-                        Character.getNumericValue(route.charAt(0)), Character.getNumericValue(route.charAt(1)),
-                        Character.getNumericValue(route.charAt(2)), Character.getNumericValue(route.charAt(3)));
-                this.driveSystem.followRoute(navigationSystem.getRoute());
+                        Character.getNumericValue(route.charAt(0)), Character.getNumericValue(route.charAt(1)), listOfDestinationCoords);
+                this.driveSystem.followRoute(navigationSystem.calculateNewSimpleRoute());
             } else if (route.length() > 4) {
-                System.out.println("Route: (5+) " + route);
-                NavigationSystem navigationSystem = new NavigationSystem(0, 0);
-                navigationSystem.getCompleteRoute().clear();
-                //Add every integer from the received string and put it in an ArrayList.
-                for (int i = 0; i < route.length(); i++) {
-                    navigationSystem.getCompleteRoute().add(route.charAt(i));
-                }
-                //The next system out is used for debugging:
-                System.out.println("getCompleteRoute: " + navigationSystem.getCompleteRoute());
-                //Start driving the route
-                this.driveSystem.followRoute(navigationSystem.getRoute());
-                System.out.println("HERE WE GO");
-                navigationSystem.printRoute();
+//                System.out.println("Route: (5+) " + route);
+//                NavigationSystem navigationSystem = new NavigationSystem(0, 0);
+//                navigationSystem.getCompleteRoute().clear();
+//                //Add every integer from the received string and put it in an ArrayList.
+//                for (int i = 0; i < route.length(); i++) {
+//                    navigationSystem.getCompleteRoute().add(route.charAt(i));
+//                }
+//                //The next system out is used for debugging:
+//                System.out.println("getCompleteRoute: " + navigationSystem.getCompleteRoute());
+//                //Start driving the route
+//                this.driveSystem.followRoute(navigationSystem.calculateNewSimpleRoute());
+//                System.out.println("HERE WE GO");
+//                navigationSystem.printRoute();
             }
         });
         this.onBlueToothCommandMap.put(BluetoothReceiver.Commands.AUTO_CALIBRATE, () -> {
@@ -171,6 +180,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      */
     private void run() {
         //This used to be this.isRunning, but that always returned true so it has been replaced with "true".
+        System.out.println("Running");
         while (true) {
             for (Updatable u : this.updatables) {
                 u.update();
@@ -189,9 +199,6 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
         if (distance < 30) {
             // Prevent calling emergency stop if the speed is already 0, otherwise turning of the BoeBot is also prevented.
             if (this.driveSystem.getCurrentSpeed() != 0 && this.driveSystem.getCurrentMaxSpeed() != 0) {
-                this.driveSystem.followLine(false);
-                this.driveSystem.stopFollowingRoute();
-                this.driveSystem.setCurrentMaxSpeed(0);
                 this.driveSystem.emergencyStop();
                 this.notificationSystemController.setNotification(
                         new EmergencyStopNotification(
@@ -234,6 +241,7 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
      */
     @Override
     public void onInfraredControllerCommand(int button) {
+        System.out.println("infrared button " + button);
         this.notificationSystemController.setNotification(
                 new RemoteNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
         );
@@ -241,13 +249,14 @@ public class IntelligentFoodAllocationDevice implements CollisionDetectionCallba
 //                new EmptyNotification(this.notificationSystemController.getBuzzer(), this.notificationSystemController.getNeoPixelLeds())
 //        );
 
-        this.onInfraredCommandMap.get(button).Execute();
-
-        // If the received command is following a route, then the program should stop following the route and stop following lines.
+//          If the received command is following a route, then the program should stop following the route and stop following lines.
         if (this.driveSystem.isFollowingRoute()) {
-            this.driveSystem.followLine(false);
             this.driveSystem.stopFollowingRoute();
         }
+
+        this.onInfraredCommandMap.get(button).Execute();
+
+
     }
 
     /**

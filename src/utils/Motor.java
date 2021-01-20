@@ -11,25 +11,22 @@ public interface Motor extends Updatable {
      * Got to a certain speed over a certain time
      *
      * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
-     * @param time  Time in milliseconds over which to accelerate.
      */
-    void goToSpeed(int speed, int time);
+    void goToSpeed(int speed);
 
     /**
      * Got to a certain speed over a certain time
      *
      * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
-     * @param time  Time in milliseconds over which to accelerate.
      */
-    void goToSpeedLeft(int speed, int time);
+    void goToSpeedLeft(int speed);
 
     /**
      * Got to a certain speed over a certain time.
      *
      * @param speed Percentage of the maximum speed (100 max forwards, -100 max backwards).
-     * @param time  Time in milliseconds over which to accelerate.
      */
-    void goToSpeedRight(int speed, int time);
+    void goToSpeedRight(int speed);
 
     /**
      * Stop as soon as possible.
