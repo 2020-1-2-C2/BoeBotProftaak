@@ -60,14 +60,14 @@ public class Shapes implements Updatable {
     }
 
     /**
-     * Drives in a circle.
+     * Drive in a circle.
      */
     private void circle() {
         this.driveSystem.turnWithExistingSpeedAndTurnSpeed(DriveSystem.LEFT, DriveSystem.MIN_SPEED);
     }
 
     /**
-     * Drives in a triangle.
+     * Drive in a triangle.
      */
     private void triangle() {
         this.driveSystem.immediateStop();
