@@ -47,6 +47,9 @@ public class DriveSystem implements Updatable, LineFollowCallback {
 
     private TimerWithState drivingBackAtTheEndOfTheRouteTimer = new TimerWithState(500, false);
 
+    /**
+     * Constructor for DriveSystem class.
+     */
     public DriveSystem() {
         this.motor = new ServoMotor(new DirectionalServo(Configuration.servoMotor1PinId, DirectionalServo.RIGHT_SIDE_SERVO_ORIENTATION),
                 new DirectionalServo(Configuration.servoMotor2PinId, DirectionalServo.LEFT_SIDE_SERVO_ORIENTATION));
@@ -112,6 +115,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
     }
 
     /**
+     * Turn the bot on the spot.
      * @param direction true = right, false = left.
      */
     private void turn(boolean direction) {
@@ -126,6 +130,11 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.motor.goToSpeedLeft(this.currentSpeedLeft * this.direction);
     }
 
+    /**
+     * Turn the bot with the current speed setting.
+     * @param direction Current driving direction.
+     * @param turnSpeed The speed the bot has to use while making this turn.
+     */
     public void turnWithExistingSpeedAndTurnSpeed(boolean direction, int turnSpeed) {
         if (direction) {
             this.currentSpeedRight = this.currentSpeed - turnSpeed;
@@ -280,6 +289,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             // if route doesn't exist then you can't do this method
             return;
         }
+        
         int nextDirection = this.route.nextDirection();
         System.out.println("Next direction in the route: " + nextDirection);
         switch (nextDirection) {
@@ -324,7 +334,6 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                 break;
             default:
                 // If there are no valid instructions, stop following the route.
-                //TODO: Set the notification MissingRouteNotification.
                 this.stopFollowingRoute();
                 this.stop();
                 break;
@@ -389,9 +398,12 @@ public class DriveSystem implements Updatable, LineFollowCallback {
         this.followingRoute = followingRoute;
     }
 
+    /**
+     * This method detects the lines while following a route, and run the correct directions.
+     */
     @Override
     public void onLineFollow(LineFollower.LinePosition linePosition) {
-        // Following the line normally while not turning
+        //Following the line normally while not turning
         if (this.followLine && !this.turningRight && !this.turningLeft && !this.adjustingPosition) {
             switch (linePosition) {
                 case NOT_ON_LINE:
@@ -428,10 +440,10 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                     }
                     break;
                 case JUST_LEFT_OF_LINE:
-                    // this should be empty
+                    //This should be empty
                     break;
                 case JUST_RIGHT_OF_LINE:
-                    // this should be empty
+                    //This should be empty
                     break;
                 case CROSSING:
                     if (this.crossRoadTimer.timeout()) {
@@ -439,17 +451,17 @@ public class DriveSystem implements Updatable, LineFollowCallback {
                         this.notOnLineTimer.mark();
                         System.out.println("Crossing, should stop");
 
-                        // If a route is being followed detect crossroads to determine the next step in the route.
+                        //If a route is being followed detect crossroads to determine the next step in the route.
                         if (this.isFollowingRoute()) {
                             this.routeNextStep();
                         }
                     }
                     break;
                 default:
-                    System.out.println("[DriveSystem]:error default onLineFollowCallback 1");
+                    System.out.println("[DriveSystem] Error default onLineFollowCallback 1");
                     break;
             }
-            // adjusting position slightly while following the route
+            //Adjusting position slightly while following the route
         } else if (this.followLine && this.adjustingPosition) {
             if (linePosition == LineFollower.LinePosition.ON_LINE) {
                 System.out.println("Adjusted position to be on the line");
@@ -459,7 +471,7 @@ public class DriveSystem implements Updatable, LineFollowCallback {
             } else if (linePosition == LineFollower.LinePosition.CROSSING) {
                 this.adjustingPosition = false;
             }
-//            Turning while following line so it turns to the next corner (usually a 90 degree turn).
+             //Turning while following line so it turns to the next corner (usually a 90 degree turn).
         } else if (this.followLine && !this.drivingSlightlyForwardsBeforeTurningTimer.isOn()) {
             if (linePosition == LineFollower.LinePosition.LEFT_OF_LINE && this.turningRight) {
                 System.out.println("Completed a turn to the right");
