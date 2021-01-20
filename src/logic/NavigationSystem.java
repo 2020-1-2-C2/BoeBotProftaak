@@ -54,9 +54,9 @@ public class NavigationSystem {
         this.routeToNavigate = new ArrayList<>();
         this.currentCoordX = currentCoordX;
         this.currentCoordY = currentCoordY;
-        // get the first digit of the first index of destinationCoordsXAndY
+        // Get the first digit of the first index of destinationCoordsXAndY.
         this.goalCoordX = getFirstDigitOfATwoDigitNumber(destinationsCoordsXAndY.get(0));
-        // get the second digit of the first index of destinationCoordsXAndY
+        // Get the second digit of the first index of destinationCoordsXAndY.
         this.goalCoordY = getSecondDigitOfATwoDigitNumber(destinationsCoordsXAndY.get(0));
         determineStartingOrientation();
         System.out.println("NavigationSystem: " + "" + currentCoordX + "" + currentCoordY + "" + this.goalCoordX + "" + this.goalCoordY);
@@ -78,8 +78,6 @@ public class NavigationSystem {
             for (int i = 0; i < differenceY; i++) {
                 route.add(Route.FORWARD);
             }
-        } else if (differenceY < 0) {
-            // Implement backwards implementation.
         }
 
         if (differenceX > 0) {
